@@ -20,10 +20,12 @@ class CreateAnswersTable extends Migration
             $table->integer('answer_integer')->nullable();
             $table->dateTimeTz('answer_date')->nullable();
             $table->boolean('answer_bool')->nullable();
+            $table->integer('answer_variant_id')->unsigned();
             $table->boolean('is_correct')->default(false);
             $table->timestamps();
 
             $table->foreign('exercises_id')->on('exercises')->references('id');
+            $table->foreign('answer_variant_id')->on('answer_variants')->references('id');
         });
     }
 
