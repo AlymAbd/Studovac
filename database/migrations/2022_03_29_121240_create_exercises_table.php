@@ -15,7 +15,7 @@ class CreateExercisesTable extends Migration
     {
         Schema::create('exercises', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->string('description', 1500);
             $table->integer('exam_variant_id')->unsigned();
             $table->smallInteger('difficulty')->default(1); # range 0 - 5
             $table->integer('points')->default(0);

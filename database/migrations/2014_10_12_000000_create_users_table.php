@@ -17,10 +17,15 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
+            $table->boolean('account_verified')->default(false);
+            $table->integer('pin_code')->nullable();
             $table->string('password');
-            $table->enum('access_type', ['guest', 'student', 'teacher', 'administrator']);
+            $table->enum('access_type', ['guest', 'student', 'teacher', 'tester', 'moderator', 'administrator']);
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

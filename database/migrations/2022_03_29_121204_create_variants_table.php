@@ -17,6 +17,7 @@ class CreateVariantsTable extends Migration
             $table->id();
             $table->integer('exam_id')->unsigned();
             $table->string('name', 255);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('exam_id')->on('exams')->references('id');

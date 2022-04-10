@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVariantStudentsTable extends Migration
+class CreateExerciseStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,16 @@ class CreateVariantStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('variant_students', function (Blueprint $table) {
+        Schema::create('exercise_answers', function (Blueprint $table) {
             $table->id();
-            $table->integer('exam_variant_id')->unsigned();
             $table->integer('student_id')->unsigned();
-            $table->integer('checking_teacher_id')->unsigned();
+            $table->integer('excercise_variant_id')->unsigned();
+            $table->text('string_answer');
+            $table->text('teacher_comment');
             $table->decimal('points');
-            $table->dateTimeTz('started_at')->nullable();
-            $table->dateTimeTz('return_date');
             $table->dateTimeTz('finished_at')->nullable();
-            $table->softDeletes();
+            $table->timestamps();
 
-            $table->foreign('exam_variant_id')->on('variants')->references('id');
-            $table->foreign('checking_teacher_id')->on('users')->references('id');
             $table->foreign('student_id')->on('users')->references('id');
         });
     }
@@ -37,6 +34,6 @@ class CreateVariantStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('variant_students');
+        Schema::dropIfExists('exercise_students');
     }
 }

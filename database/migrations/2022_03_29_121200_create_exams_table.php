@@ -21,6 +21,7 @@ class CreateExamsTable extends Migration
             $table->string('description_for_student', 1200)->nullable();
             $table->string('description_for_teacher', 1200)->nullable();
             $table->integer('duration_minutes')->default(60);
+            $table->enum('type', ['practice', 'final']);
             $table->integer('creator_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
