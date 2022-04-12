@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExerciseStudentsTable extends Migration
+class CreateExerciseAnswersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,15 +15,10 @@ class CreateExerciseStudentsTable extends Migration
     {
         Schema::create('exercise_answers', function (Blueprint $table) {
             $table->id();
-            $table->integer('student_id')->unsigned();
-            $table->integer('excercise_variant_id')->unsigned();
-            $table->text('string_answer');
-            $table->text('teacher_comment');
-            $table->decimal('points');
-            $table->dateTimeTz('finished_at')->nullable();
+            $table->integer('exercise_id')->unsigned();
+            $table->string('answer');
+            $table->boolean('is_correct')->default(false);
             $table->timestamps();
-
-            $table->foreign('student_id')->on('users')->references('id');
         });
     }
 
@@ -34,6 +29,6 @@ class CreateExerciseStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exercise_students');
+        Schema::dropIfExists('exercise_answers');
     }
 }

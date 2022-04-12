@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Exam;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AnswerVariant extends Model
+class StudentExamVariant extends Model
 {
     use HasFactory;
 }

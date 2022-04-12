@@ -21,8 +21,11 @@ class CreateExamsTable extends Migration
             $table->string('description_for_student', 1200)->nullable();
             $table->string('description_for_teacher', 1200)->nullable();
             $table->integer('duration_minutes')->default(60);
+            $table->enum('calculation_type', ['points', 'percent'])->default('percent');
             $table->enum('type', ['practice', 'final']);
+            $table->integer('exercise_limit')->nullable();
             $table->integer('creator_id')->unsigned();
+            $table->integer('level_logic')->nullable()->unsigned();
             $table->softDeletes();
             $table->timestamps();
 

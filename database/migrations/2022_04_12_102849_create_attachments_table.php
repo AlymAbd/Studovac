@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVariantsTable extends Migration
+class CreateAttachmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateVariantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('variants', function (Blueprint $table) {
+        Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->integer('exam_id')->unsigned();
-            $table->string('name', 255);
-            $table->softDeletes();
+            $table->string('filename');
+            $table->string('file_type');
+            $table->string('path');
+            $table->integer('creator_id')->unsigned();
+            $table->dateTime('valid_to');
             $table->timestamps();
-
-            $table->foreign('exam_id')->on('exams')->references('id');
         });
     }
 
@@ -31,6 +31,6 @@ class CreateVariantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('variants');
+        Schema::dropIfExists('attachments');
     }
 }
