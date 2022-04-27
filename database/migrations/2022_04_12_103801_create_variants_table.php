@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Database\Custom\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateVariantsTable extends Migration
 {
+    public $table = 'exam_variants';
+
     /**
      * Run the migrations.
      *
@@ -13,13 +15,13 @@ class CreateVariantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('variants', function (Blueprint $table) {
-            $table->id();
+        Schema::create($this->table, function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('name', 255);
-            $table->integer('exam_id')->unsigned();
+            $table->bigInteger('exam_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('exam_id')->on('exams')->references('id');
+            $table->foreign('exam_id')->on('exams')->references('id')->onDelete('cascade');
         });
     }
 
@@ -30,6 +32,6 @@ class CreateVariantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('variants');
+        Schema::dropIfExists($this->table);
     }
 }

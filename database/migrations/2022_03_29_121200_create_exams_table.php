@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Database\Custom\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateExamsTable extends Migration
 {
+    public $table = 'exam_exams';
+
     /**
      * Run the migrations.
      *
@@ -13,8 +15,8 @@ class CreateExamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('exams', function (Blueprint $table) {
-            $table->id();
+        Schema::create($this->table, function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('title', 255);
             $table->dateTimeTz('active_from');
             $table->dateTimeTz('active_to');
@@ -24,12 +26,12 @@ class CreateExamsTable extends Migration
             $table->enum('calculation_type', ['points', 'percent'])->default('percent');
             $table->enum('type', ['practice', 'final']);
             $table->integer('exercise_limit')->nullable();
-            $table->integer('creator_id')->unsigned();
+            $table->bigInteger('creator_id')->unsigned();
             $table->integer('level_logic')->nullable()->unsigned();
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('creator_id')->on('users')->references('id');
+            $table->foreign('creator_id')->on(\CreateUsersTable::getTableName())->references('id')->onDelete('cascade');
         });
     }
 
@@ -40,6 +42,6 @@ class CreateExamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exams');
+        Schema::dropIfExists($this->table);
     }
 }

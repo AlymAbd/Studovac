@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Database\Custom\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateLevelsTable extends Migration
 {
+    public $table = 'exam_levels';
+
     /**
      * Run the migrations.
      *
@@ -13,9 +15,9 @@ class CreateLevelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('levels', function (Blueprint $table) {
-            $table->id();
-            $table->integer('level_id')->unsigned();
+        Schema::create($this->table, function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('level_id')->unsigned();
             $table->string('level', 255);
             $table->integer('max_points_to_reach');
             $table->integer('max_percent_to_reach');
@@ -30,6 +32,6 @@ class CreateLevelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('levels');
+        Schema::dropIfExists($this->table);
     }
 }

@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Database\Custom\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateStudentAnswersTable extends Migration
 {
+    public $table = 'exam_student_answers';
+
     /**
      * Run the migrations.
      *
@@ -13,13 +15,16 @@ class CreateStudentAnswersTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_answers', function (Blueprint $table) {
-            $table->id();
-            $table->integer('student_variant_id')->unsigned();
-            $table->integer('exercise_id')->unsigned();
+        Schema::create($this->table, function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('student_variant_id')->unsigned();
+            $table->bigInteger('exercise_id')->unsigned();
             $table->boolean('is_correct');
             $table->string('string_answer', 1500);
             $table->timestamps();
+
+            $table->foreign('student_variant_id')->on('student_exam_variants')->references('id')->onDelete('cascade');
+            $table->foreign('exercise_id')->on('exercises')->references('id')->onDelete('cascade');
         });
     }
 
@@ -30,6 +35,6 @@ class CreateStudentAnswersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_answers');
+        Schema::dropIfExists($this->table);
     }
 }

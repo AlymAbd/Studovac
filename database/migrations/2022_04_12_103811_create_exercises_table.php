@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Database\Custom\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateExercisesTable extends Migration
 {
+    public $table = 'exam_exercises';
+
     /**
      * Run the migrations.
      *
@@ -13,10 +15,10 @@ class CreateExercisesTable extends Migration
      */
     public function up()
     {
-        Schema::create('exercises', function (Blueprint $table) {
-            $table->id();
+        Schema::create($this->table, function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('description', 600);
-            $table->integer('attachment_id')->unsigned();
+            $table->bigInteger('attachment_id')->unsigned();
             $table->smallInteger('difficulty')->nullable();
             $table->smallInteger('max_attempts')->default(3);
             $table->boolean('manual_cheking')->default(false);
@@ -28,7 +30,7 @@ class CreateExercisesTable extends Migration
             $table->string('data_format');
             $table->timestamps();
 
-            $table->foreign('attachment_id')->on('attachments')->references('id');
+            $table->foreign('attachment_id')->on('attachments')->references('id')->onDelete('cascade');
         });
     }
 
@@ -39,6 +41,6 @@ class CreateExercisesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exercises');
+        Schema::dropIfExists($this->table);
     }
 }

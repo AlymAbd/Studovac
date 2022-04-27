@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Database\Custom\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateAttachmentsTable extends Migration
 {
+    public $table = 'exam_attachments';
+
     /**
      * Run the migrations.
      *
@@ -13,14 +15,17 @@ class CreateAttachmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('attachments', function (Blueprint $table) {
-            $table->id();
+        Schema::create($this->table, function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('filename');
             $table->string('file_type');
+            $table->string('purpose');
             $table->string('path');
-            $table->integer('creator_id')->unsigned();
+            $table->bigInteger('creator_id')->unsigned();
             $table->dateTime('valid_to');
             $table->timestamps();
+
+            $table->foreign('creator_id')->on('users')->references('id')->onDelete('cascade');
         });
     }
 
@@ -31,6 +36,6 @@ class CreateAttachmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attachments');
+        Schema::dropIfExists($this->table);
     }
 }
