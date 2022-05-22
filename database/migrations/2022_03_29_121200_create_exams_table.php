@@ -1,6 +1,6 @@
 <?php
 
-use Database\Custom\Migration;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -31,7 +31,7 @@ class CreateExamsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('creator_id')->on(\CreateUsersTable::getTableName())->references('id')->onDelete('cascade');
+            $table->foreign('creator_id')->on('users')->references('id')->onDelete('cascade');
         });
     }
 

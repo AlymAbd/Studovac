@@ -1,6 +1,6 @@
 <?php
 
-use Database\Custom\Migration;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -22,7 +22,7 @@ class CreateExerciseAnswersTable extends Migration
             $table->boolean('is_correct')->default(false);
             $table->timestamps();
 
-            $table->foreign('exercise_id')->on('exercises')->references('id')->onDelete('cascade');
+            $table->foreign('exercise_id')->on('exam_exercises')->references('id')->onDelete('cascade');
         });
     }
 

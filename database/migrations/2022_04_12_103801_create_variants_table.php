@@ -1,6 +1,6 @@
 <?php
 
-use Database\Custom\Migration;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -21,7 +21,7 @@ class CreateVariantsTable extends Migration
             $table->bigInteger('exam_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('exam_id')->on('exams')->references('id')->onDelete('cascade');
+            $table->foreign('exam_id')->on('exam_exams')->references('id')->onDelete('cascade');
         });
     }
 

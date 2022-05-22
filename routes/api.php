@@ -15,6 +15,18 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::namespace('App\Http\Controllers\API')->group(function () {
+    Route::get('data/{model}', 'DynamicModelController@display')
+        ->name('data.model');
+    Route::post('data/{model}', 'DynamicModelController@store')
+        ->name('data.model.create');
+    Route::get('data/{model}/detail/{id}', 'DynamicModelController@show')
+        ->name('data.model.detail');
+    Route::delete('data/{model}/detail/{id}', 'DynamicModelController@delete')
+        ->name('data.model.detail.delete');
+    Route::put('data/{model}/detail/{id}', 'DynamicModelController@update')
+        ->name('data.model.detail.update');
+
+
     Route::middleware('verify-pin')->group(function () {
         Route::post('login', 'Auth\LoginLogoutController@login')
             ->name('login');
@@ -29,6 +41,7 @@ Route::namespace('App\Http\Controllers\API')->group(function () {
 
     Route::post('register', 'Auth\RegisterController@register')
         ->name('register');
+
 
     // Route::middleware('auth:sanctum')->group(function () {
 

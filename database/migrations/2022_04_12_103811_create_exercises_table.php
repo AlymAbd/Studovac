@@ -1,6 +1,6 @@
 <?php
 
-use Database\Custom\Migration;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -30,7 +30,7 @@ class CreateExercisesTable extends Migration
             $table->string('data_format');
             $table->timestamps();
 
-            $table->foreign('attachment_id')->on('attachments')->references('id')->onDelete('cascade');
+            $table->foreign('attachment_id')->on('exam_attachments')->references('id')->onDelete('cascade');
         });
     }
 

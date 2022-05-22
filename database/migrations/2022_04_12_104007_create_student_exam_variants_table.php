@@ -1,6 +1,6 @@
 <?php
 
-use Database\Custom\Migration;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -25,7 +25,7 @@ class CreateStudentExamVariantsTable extends Migration
             $table->timestamps();
 
             $table->foreign('student_id')->on('users')->references('id')->onDelete('cascade');
-            $table->foreign('exam_variant_id')->on('variants')->references('id')->onDelete('cascade');
+            $table->foreign('exam_variant_id')->on('exam_variants')->references('id')->onDelete('cascade');
         });
     }
 

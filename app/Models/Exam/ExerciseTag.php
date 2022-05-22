@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Exam;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudentAnswer extends Model
+class ExerciseTag extends Model
 {
     use HasFactory;
 }
