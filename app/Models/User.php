@@ -14,7 +14,10 @@ class User extends Authenticatable
     /**
      * Access user types
      */
-    const ACCESS_TYPES = ['guest', 'student', 'teacher', 'administrator'];
+    const GUEST = 'guest';
+    const STUDENT = 'student';
+    const TEACHER = 'teacher';
+    const ADMIN = 'administrator';
 
     /**
      * The attributes that are mass assignable.
@@ -59,7 +62,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return $this->access_type == static::ACCESS_TYPES[3];
+        return $this->access_type == static::ADMIN;
     }
 
     /**
@@ -67,7 +70,7 @@ class User extends Authenticatable
      */
     public function isTeacher()
     {
-        return $this->access_type == static::ACCESS_TYPES[2];
+        return $this->access_type == static::TEACHER;
     }
 
     /**
@@ -75,7 +78,7 @@ class User extends Authenticatable
      */
     public function isStudent()
     {
-        return $this->access_type == static::ACCESS_TYPES[1];
+        return $this->access_type == static::STUDENT;
     }
 
     public static function validateEmail($email, $token)

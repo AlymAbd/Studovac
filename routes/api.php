@@ -15,17 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::namespace('App\Http\Controllers\API')->group(function () {
-    Route::get('data/{model}', 'DynamicModelController@display')
+    Route::get('data/{folder}/{model}', 'DynamicModelController@display')
         ->name('data.model');
-    Route::post('data/{model}', 'DynamicModelController@store')
+    Route::post('data/{folder}/{model}', 'DynamicModelController@store')
         ->name('data.model.create');
-    Route::get('data/{model}/detail/{id}', 'DynamicModelController@show')
+    Route::get('data/{folder}/{model}/detail/{id}', 'DynamicModelController@show')
         ->name('data.model.detail');
-    Route::delete('data/{model}/detail/{id}', 'DynamicModelController@delete')
+    Route::delete('data/{folder}/{model}/detail/{id}', 'DynamicModelController@delete')
         ->name('data.model.detail.delete');
-    Route::put('data/{model}/detail/{id}', 'DynamicModelController@update')
+    Route::put('data/{folder}/{model}/detail/{id}', 'DynamicModelController@update')
         ->name('data.model.detail.update');
-
 
     Route::middleware('verify-pin')->group(function () {
         Route::post('login', 'Auth\LoginLogoutController@login')
