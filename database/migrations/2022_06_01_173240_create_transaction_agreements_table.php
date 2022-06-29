@@ -15,6 +15,7 @@ class CreateTransactionAgreementsTable extends Migration
     {
         Schema::create('transaction_agreements', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_name', 63);
             $table->timestamps();
         });
     }

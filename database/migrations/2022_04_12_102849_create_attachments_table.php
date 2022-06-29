@@ -17,6 +17,8 @@ class CreateAttachmentsTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('unique_name', 63);
+            $table->string('title');
             $table->string('filename');
             $table->string('file_type');
             $table->string('purpose');

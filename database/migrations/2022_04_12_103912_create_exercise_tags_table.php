@@ -17,6 +17,7 @@ class CreateExerciseTagsTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('unique_name', 63);
             $table->bigInteger('exercise_id')->unsigned();
             $table->string('tag');
             $table->timestamps();

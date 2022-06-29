@@ -14,19 +14,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->namespace('App\Http\Controllers\API\V1')->group(function() {
-    Route::get('{folder}/{model}', 'DynamicModelController@display')
+    Route::get('{folder}/{model}', 'GetDynamicModelController@display')
         ->name('v1.model');
 
-    Route::post('{folder}/{model}', 'DynamicModelController@store')
+    Route::post('{folder}/{model}', 'PostDynamicModelController@store')
         ->name('v1.model.create');
 
-    Route::get('{folder}/{model}/detail/{id}', 'DynamicModelController@show')
+    Route::get('{folder}/{model}/detail/{id}', 'GetDynamicModelController@show')
         ->name('v1.model.detail');
 
-    Route::delete('{folder}/{model}/detail/{id}', 'DynamicModelController@delete')
+    Route::delete('{folder}/{model}/detail/{id}', 'DeleteDynamicModelController@delete')
         ->name('v1.model.detail.delete');
 
-    Route::put('{folder}/{model}/detail/{id}', 'DynamicModelController@update')
+    Route::put('{folder}/{model}/detail/{id}', 'PutDynamicModelController@update')
         ->name('v1.model.detail.update');
 
     Route::middleware('verify-pin')->group(function () {

@@ -17,6 +17,7 @@ class CreateStudentExamVariantsTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('unique_name', 63);
             $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('exam_variant_id')->unsigned();
             $table->dateTimeTz('started_at')->nullable();

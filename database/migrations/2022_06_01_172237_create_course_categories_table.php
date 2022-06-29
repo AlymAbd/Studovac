@@ -15,7 +15,8 @@ class CreateCourseCategoriesTable extends Migration
     {
         Schema::create('course_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('unique_name', 63);
+            $table->string('title');
             $table->string('description', 255);
             $table->integer('parent_id')->nullable();
             $table->timestamps();

@@ -15,6 +15,7 @@ class CreateTransactionCoursesTable extends Migration
     {
         Schema::create('transaction_courses', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_name', 63);
             $table->integer('course_order_id')->unsigned();
             $table->integer('transaction_id')->unsigned();
             $table->boolean('is_paid')->default(false);

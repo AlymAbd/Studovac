@@ -15,6 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_name', 63);
             $table->string('reference')->nullable();
             $table->boolean('is_paid')->default(false);
             $table->enum('type', ['incoming', 'outgoing']);

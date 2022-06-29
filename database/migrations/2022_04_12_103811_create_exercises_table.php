@@ -17,7 +17,7 @@ class CreateExercisesTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 63);
+            $table->string('unique_name', 63);
             $table->string('description', 600);
             $table->bigInteger('attachment_id')->unsigned();
             $table->smallInteger('difficulty')->nullable();

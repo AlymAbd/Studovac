@@ -15,6 +15,7 @@ class CreateCoursePricesTable extends Migration
     {
         Schema::create('course_prices', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_name', 63);
             $table->integer('course_id')->unsigned();
             $table->string('currency')->default('CZK');
             $table->integer('price')->unsigned();

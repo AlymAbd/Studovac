@@ -17,6 +17,7 @@ class CreateLevelsTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('unique_name', 63);
             $table->bigInteger('level_id')->unsigned();
             $table->string('level', 255);
             $table->integer('max_points_to_reach');

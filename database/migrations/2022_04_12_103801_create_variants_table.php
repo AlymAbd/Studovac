@@ -17,7 +17,8 @@ class CreateVariantsTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 255);
+            $table->string('unique_name', 63);
+            $table->string('title', 255);
             $table->bigInteger('exam_id')->unsigned();
             $table->timestamps();
 
