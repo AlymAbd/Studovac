@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ApiModelController;
@@ -9,8 +9,8 @@ class DynamicModelController extends ApiModelController
 {
     const MAX_LIMIT = 1000;
 
-    protected $offset = 0;
-    protected $limit = 50;
+    protected $modelClass = null;
+    protected $modelQuery = null;
 
     /**
      * Display the specified resource.
@@ -20,9 +20,9 @@ class DynamicModelController extends ApiModelController
      */
     public function display(Request $request, String $folder, String $model)
     {
-        $model = $this->getModel($folder, $model);
+        $this->modelClass = $this->getModel($request->all(), $folder, $model);
         return [
-            'result' => $model->paginate($this->limit < self::MAX_LIMIT ? $this->limit : self::MAX_LIMIT)->get()
+            'result' => $this->modelClass->simplePaginate(15)
         ];
     }
 

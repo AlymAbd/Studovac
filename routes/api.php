@@ -13,18 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::prefix('v1')->namespace('App\Http\Controllers\API\V1')->group(function() {
+    Route::get('{folder}/{model}', 'DynamicModelController@display')
+        ->name('v1.model');
 
-Route::namespace('App\Http\Controllers\API')->group(function () {
-    Route::get('data/{folder}/{model}', 'DynamicModelController@display')
-        ->name('data.model');
-    Route::post('data/{folder}/{model}', 'DynamicModelController@store')
-        ->name('data.model.create');
-    Route::get('data/{folder}/{model}/detail/{id}', 'DynamicModelController@show')
-        ->name('data.model.detail');
-    Route::delete('data/{folder}/{model}/detail/{id}', 'DynamicModelController@delete')
-        ->name('data.model.detail.delete');
-    Route::put('data/{folder}/{model}/detail/{id}', 'DynamicModelController@update')
-        ->name('data.model.detail.update');
+    Route::post('{folder}/{model}', 'DynamicModelController@store')
+        ->name('v1.model.create');
+
+    Route::get('{folder}/{model}/detail/{id}', 'DynamicModelController@show')
+        ->name('v1.model.detail');
+
+    Route::delete('{folder}/{model}/detail/{id}', 'DynamicModelController@delete')
+        ->name('v1.model.detail.delete');
+
+    Route::put('{folder}/{model}/detail/{id}', 'DynamicModelController@update')
+        ->name('v1.model.detail.update');
 
     Route::middleware('verify-pin')->group(function () {
         Route::post('login', 'Auth\LoginLogoutController@login')
@@ -46,3 +49,4 @@ Route::namespace('App\Http\Controllers\API')->group(function () {
 
     // });
 });
+

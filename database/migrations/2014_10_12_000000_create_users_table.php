@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->integer('pin_code')->nullable();
             $table->string('password');
             $table->enum('access_type', ['guest', 'student', 'teacher', 'tester', 'moderator', 'administrator']);
+            $table->string('path_to_photo', 255)->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
