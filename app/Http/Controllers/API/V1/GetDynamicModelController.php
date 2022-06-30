@@ -9,22 +9,24 @@ use App\Http\Controllers\API\ApiModelController;
 class GetDynamicModelController extends ApiModelController
 {
     /**
-     * Display the specified resource.
+     * Display resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function display(Request $request, String $folder, String $model)
     {
-        $query = $request->all();
-        $model = $this->getModel($folder, $model);
-        $model = $this->modifySelect($model, $query);
-        $model = $this->modifyOrder($model, $query);
-        $model = $this->modifyScope($model, $query);
-
-        return [
-            'result' => $model->simplePaginate(15)
-        ];
+        try {
+            $query = $request->all();
+            $model = $this->getModel($folder, $model)::select('*');
+            $model = $this->modifySelect($model, $query);
+            $model = $this->modifyOrder($model, $query);
+            $model = $this->modifyScope($model, $query);
+            $model = $model->simplePaginate(15);
+        } catch (\Illuminate\Database\QueryException) {
+            return abort(400, 'Wrong input data');
+        }
+        return $model;
     }
 
     /**
@@ -35,7 +37,17 @@ class GetDynamicModelController extends ApiModelController
      */
     public function show(Request $request, String $folder, String $model, String $id)
     {
-        //
+        try {
+            $query = $request->all();
+            $model = $this->getModel($folder, $model)::where('unique_name', $id);
+            $model = $this->modifySelect($model, $query);
+            $model = $this->modifyOrder($model, $query);
+            $model = $this->modifyScope($model, $query);
+            $model = $model->firstOrFail();
+        } catch (\Illuminate\Database\QueryException) {
+            return abort(400, 'Wrong input data');
+        }
+        return ['data' => $model];
     }
 
     protected function modifySelect(Builder $eloq, Array $query): Builder
@@ -72,6 +84,16 @@ class GetDynamicModelController extends ApiModelController
         } else {
             return $eloq->orderBy('id');
         }
+    }
+
+    protected function modifyWhere(Builder $eloq, Array $query): Builder
+    {
+        if (isset($query['where'])) {
+            foreach($query['where'] as $field => $value) {
+                $eloq = $eloq->where($field, $value);
+            }
+        }
+        return $eloq;
     }
 
     protected function modifyScope(Builder $eloq, Array $query): Builder

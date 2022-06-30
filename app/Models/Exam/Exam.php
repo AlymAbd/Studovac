@@ -2,7 +2,8 @@
 
 namespace App\Models\Exam;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Model;
+
 
 class Exam extends Model
 {

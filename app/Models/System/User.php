@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\ModelApiTrait;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, SoftDeletes;
+    use HasApiTokens, HasFactory, SoftDeletes, ModelApiTrait;
 
     /**
      * Access user types
@@ -25,7 +26,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'unique_name',
+        'title',
         'email',
         'password',
         'access_type',
@@ -44,6 +46,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'pin_code'
     ];
 
     /**
@@ -84,5 +87,30 @@ class User extends Authenticatable
     public static function validateEmail($email, $token)
     {
         //
+    }
+
+    public function rules(): array
+    {
+        return [
+            'create' => [
+                'title' => 'required|string|max:50',
+                'phone' => 'required_without:email|number|email|max:9|unique:users,phone',
+                'email' => 'required_without:phone|string|email|max:255|unique:users',
+                'password' => 'required|min:8|confirmed'
+            ],
+            'update' => [
+                'title' => 'required|string|max:50',
+                'password' => 'required|min:8|confirmed'
+            ]
+        ];
+    }
+
+    public function updateModifierBeforeValidation(array $query): array
+    {
+        $query['access_type'] = self::GUEST;
+        $query['pin_code'] = rand(1000, 9999);
+        $query['unique_name'] = \App\Models\Model::generateUniqueName();
+        $query['passwod'] = \Hash::make($query['password']);
+        return $query;
     }
 }

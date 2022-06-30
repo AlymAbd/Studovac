@@ -20,7 +20,7 @@ class ApiModelController extends Controller
     {
         $modelPath = $this->transformName($folder, $model);
         if (class_exists($modelPath)) {
-            return $modelPath::select('*');
+            return new $modelPath;
         } else {
             return abort(404, 'Model not found');
         }

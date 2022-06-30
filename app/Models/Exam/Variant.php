@@ -2,7 +2,7 @@
 
 namespace App\Models\Exam;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Model;
 
 class Variant extends Model
 {

@@ -13,7 +13,7 @@ trait ApiControllerValidation
      * @param Request $request
      * @param Array $rules
      * @param Array $messages
-     * @return Validator||null
+     * @return Validator|null
      */
     public function validate(
         Request|Array $request,
