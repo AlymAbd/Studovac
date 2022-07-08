@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use Eloquent;
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiModelController extends Controller
 {
@@ -16,13 +15,13 @@ class ApiModelController extends Controller
     protected $modelClass = null;
     protected $modelQuery = null;
 
-    protected function getModel(String $folder, String $model)
+    protected function getModel(String $folder, String $model, Array $query)
     {
         $modelPath = $this->transformName($folder, $model);
         if (class_exists($modelPath)) {
             return new $modelPath;
         } else {
-            return abort(404, 'Model not found');
+            return abort(Response::HTTP_NOT_FOUND, 'Model not found');
         }
         return;
     }

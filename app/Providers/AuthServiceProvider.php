@@ -13,7 +13,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        \App\Models\Model::class => \App\Policies\ModelPolicy::class,
+        \App\Models\Course\Category::class => \App\Policies\ModelPolicy::class,
     ];
 
     /**
@@ -25,6 +26,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        \Gate::define('isAdmin', function($user) {
+            return $user->access_type === \App\Models\System\User::ADMIN;
+        });
     }
 }

@@ -93,24 +93,41 @@ class User extends Authenticatable
     {
         return [
             'create' => [
-                'title' => 'required|string|max:50',
-                'phone' => 'required_without:email|number|email|max:9|unique:users,phone',
-                'email' => 'required_without:phone|string|email|max:255|unique:users',
-                'password' => 'required|min:8|confirmed'
+                'title' => ['required', 'string', 'max:50'],
+                'phone' => ['required_without:email', 'number', 'max:9', 'unique:users,phone'],
+                'email' => ['required_without:phone', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'min:8', 'confirmed']
             ],
             'update' => [
-                'title' => 'required|string|max:50',
-                'password' => 'required|min:8|confirmed'
+                'title' => ['string', 'max:50'],
+                'password' => ['min:8','confirmed']
             ]
         ];
     }
 
-    public function updateModifierBeforeValidation(array $query): array
+    public function updateModifierAfterValidation(array $query): array
+    {
+        if (array_key_exists('password', $query)) {
+            $query['password'] = \Hash::make($query['password']);
+        }
+        return $query;
+    }
+
+    public function createModifierAfterValidation(array $query): array
     {
         $query['access_type'] = self::GUEST;
         $query['pin_code'] = rand(1000, 9999);
-        $query['unique_name'] = \App\Models\Model::generateUniqueName();
-        $query['passwod'] = \Hash::make($query['password']);
+        $query['password'] = bcrypt($query['password']);
         return $query;
+    }
+
+    public static function getRoles(): array
+    {
+        return [
+            self::GUEST => 'Guest',
+            self::STUDENT => 'Student',
+            self::TEACHER => 'Teacher',
+            self::ADMIN => 'Administrator'
+        ];
     }
 }

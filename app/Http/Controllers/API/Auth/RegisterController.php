@@ -1,23 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\API\ApiModelController;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostDynamicModelController extends ApiModelController
+class RegisterController extends ApiModelController
 {
-    /**
-     * Create a new record.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, String $folder, String $model)
+    public function store(Request $request)
     {
-        $model = $this->getModel($folder, $model, $request->all());
         $requestData = $request->all();
+        $model = new \App\Models\System\User;
         $requestData = $model->createModifierBeforeValidation($requestData);
         $requestData = $this->validate($requestData, $model->getRules('create'))->validated();
         $requestData = $model->createModifierAfterValidation($requestData);

@@ -18,13 +18,32 @@ class GetDynamicModelController extends ApiModelController
     {
         try {
             $query = $request->all();
-            $model = $this->getModel($folder, $model)::select('*');
+            $model = $this->getModel($folder, $model, $request->all())::select('*');
             $model = $this->modifySelect($model, $query);
             $model = $this->modifyOrder($model, $query);
+
+            $queryFilters = array_filter($query, function ($key) {
+                return in_array($key, ['where', 'whereOr', 'whereIn']);
+            }, ARRAY_FILTER_USE_KEY);
+
+            foreach($queryFilters as $key => $value) {
+                switch ($key) {
+                    case 'where':
+                        $model = $this->modifyWhere($model, ['where' => $value]);
+                        break;
+                    case 'whereOr':
+                        $model = $this->modifyWhereOr($model, ['whereOr' => $value]);
+                        break;
+                    case 'whereIn':
+                        $model = $this->modifyWhereIn($model, ['whereIn' => $value]);
+                        break;
+                }
+            }
+
             $model = $this->modifyScope($model, $query);
             $model = $model->simplePaginate(15);
-        } catch (\Illuminate\Database\QueryException) {
-            return abort(400, 'Wrong input data');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return abort(400, 'Wrong input data: '. $e);
         }
         return $model;
     }
@@ -39,10 +58,9 @@ class GetDynamicModelController extends ApiModelController
     {
         try {
             $query = $request->all();
-            $model = $this->getModel($folder, $model)::where('unique_name', $id);
+            $model = $this->getModel($folder, $model, $request->all());
+            $model = $model::where('unique_name', $id);
             $model = $this->modifySelect($model, $query);
-            $model = $this->modifyOrder($model, $query);
-            $model = $this->modifyScope($model, $query);
             $model = $model->firstOrFail();
         } catch (\Illuminate\Database\QueryException) {
             return abort(400, 'Wrong input data');
@@ -91,6 +109,26 @@ class GetDynamicModelController extends ApiModelController
         if (isset($query['where'])) {
             foreach($query['where'] as $field => $value) {
                 $eloq = $eloq->where($field, $value);
+            }
+        }
+        return $eloq;
+    }
+
+    protected function modifyWhereOr(Builder $eloq, Array $query): Builder
+    {
+        if (isset($query['whereOr'])) {
+            foreach($query['whereOr'] as $field => $value) {
+                $eloq = $eloq->orWhere($field, $value);
+            }
+        }
+        return $eloq;
+    }
+
+    protected function modifyWhereIn(Builder $eloq, Array $query): Builder
+    {
+        if (isset($query['whereIn'])) {
+            foreach($query['whereIn'] as $field => $value) {
+                $eloq = $eloq->whereIn($field, $value);
             }
         }
         return $eloq;

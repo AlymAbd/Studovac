@@ -9,7 +9,7 @@ trait ModelApiTrait
         return ['unique_name' => ['unique' . static::getTableName(), 'max:64']];
     }
 
-    public function updateModifierAterValidation(array $query): array
+    public function updateModifierAfterValidation(array $query): array
     {
         return $query;
     }
@@ -19,12 +19,12 @@ trait ModelApiTrait
         return $query;
     }
 
-    public function putModifierAterValidation(array $query): array
+    public function createModifierAfterValidation(array $query): array
     {
         return $query;
     }
 
-    public function putModifierBeforeValidation(array $query): array
+    public function createModifierBeforeValidation(array $query): array
     {
         return $query;
     }
