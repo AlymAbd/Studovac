@@ -15,6 +15,7 @@ class CreateVariantsTable extends Migration
      */
     public function up()
     {
+        // distributed exercise
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('unique_name', 63);

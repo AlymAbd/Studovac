@@ -18,6 +18,9 @@ class CreateCourseCategoryCoursesTable extends Migration
             $table->string('unique_name', 63);
             $table->integer('category_id')->unsigned();
             $table->integer('course_id')->unsigned();
+
+            $table->foreign('category_id')->references('id')->on('course_categories')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
     }
 

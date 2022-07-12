@@ -4,9 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExerciseAnswersTable extends Migration
+class CreateExerciseAnswerOptionsTable extends Migration
 {
-    public $table = 'exam_exercise_answers';
+    public $table = 'exam_exercise_answer_options';
 
     /**
      * Run the migrations.
@@ -19,7 +19,7 @@ class CreateExerciseAnswersTable extends Migration
             $table->bigIncrements('id');
             $table->string('unique_name', 63);
             $table->bigInteger('exercise_id')->unsigned();
-            $table->string('answer');
+            $table->string('answer', 1200);
             $table->boolean('is_correct')->default(false);
             $table->timestamps();
 

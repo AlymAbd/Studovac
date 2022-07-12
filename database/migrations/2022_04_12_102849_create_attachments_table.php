@@ -15,6 +15,7 @@ class CreateAttachmentsTable extends Migration
      */
     public function up()
     {
+        // files, videos for the exam or exercise
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('unique_name', 63);

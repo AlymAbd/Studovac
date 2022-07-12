@@ -15,6 +15,7 @@ class CreateExerciseTagsTable extends Migration
      */
     public function up()
     {
+        // for quick search
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('unique_name', 63);
@@ -23,6 +24,7 @@ class CreateExerciseTagsTable extends Migration
             $table->timestamps();
 
             $table->foreign('exercise_id')->on('exam_exercises')->references('id')->onDelete('cascade');
+            $table->index('tag');
         });
     }
 

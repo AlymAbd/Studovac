@@ -16,13 +16,19 @@ class CreateCoursePriceDiscountsTable extends Migration
         Schema::create('course_price_discounts', function (Blueprint $table) {
             $table->id();
             $table->string('unique_name', 63);
-            $table->string('title');
-            $table->integer('course_price_id')->unsigned();
+            $table->string('activation_code', 63);
+            $table->string('title', 255);
+            $table->integer('course_price_id')->unsigned()->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->integer('discount_percent')->unsigned()->nullable();
             $table->integer('discount_amount')->unsigned()->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
+            $table->dateTime('activated_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('course_price_id')->references('id')->on('course_prices')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

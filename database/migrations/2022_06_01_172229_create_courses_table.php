@@ -19,9 +19,10 @@ class CreateCoursesTable extends Migration
             $table->string('title', 255);
             $table->text('description');
             $table->integer('creator_id')->unsigned();
-            $table->integer('moderator_id')->unsigned();
+            $table->integer('moderator_id')->unsigned();        // checker id
             $table->dateTime('active_from');
             $table->dateTime('active_to');
+            $table->dateTime('checked_at')->nullable();
             $table->dateTime('deactivated_at')->nullable();
             $table->string('path_to_photo', 255)->nullable();
             $table->string('style', 255)->nullable();

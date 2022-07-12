@@ -16,7 +16,14 @@ class CreateAgreementsTable extends Migration
         Schema::create('agreements', function (Blueprint $table) {
             $table->id();
             $table->string('unique_name', 63);
+            $table->string('aggreement_type', 63); // for student, teacher, etc.
+            $table->text('agreement_text');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
+
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

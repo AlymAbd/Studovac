@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionsTable extends Migration
+class CreateTransactionAgreementTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,17 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('transaction_agreement', function (Blueprint $table) {
             $table->id();
             $table->string('unique_name', 63);
             $table->string('reference')->nullable();
             $table->boolean('is_paid')->default(false);
-            $table->enum('type', ['incoming', 'outgoing']);
-            $table->string('response', 1023)->nullable();
-            $table->string('payment_system', 255);
-            $table->dateTimeTz('paid_at');
+            $table->decimal('initial_amount', 127, 2)->unsigned();
+            $table->decimal('final_amount', 127, 2)->unsigned();
+            $table->integer('agreement_teacher_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('agreement_teacher_id')->references('id')->on('agreements_user');
         });
     }
 
@@ -33,6 +34,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('transaction_courses');
     }
 }

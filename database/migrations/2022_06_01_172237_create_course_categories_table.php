@@ -18,6 +18,7 @@ class CreateCourseCategoriesTable extends Migration
             $table->string('unique_name', 63);
             $table->string('title');
             $table->string('description', 255);
+            $table->string('icon', 127);
             $table->integer('parent_id')->nullable();
             $table->timestamps();
         });
