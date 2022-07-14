@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateExamsTable extends Migration
 {
-    public $table = 'exam_exams';
+    public $table = 'exams';
 
     /**
      * Run the migrations.

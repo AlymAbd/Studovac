@@ -8,7 +8,7 @@ use App\Models\Model;
 
 class Course extends Model
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'courses';
 
@@ -20,6 +20,7 @@ class Course extends Model
         'moderator_id',
         'active_from',
         'active_to',
+        'checked_at',
         'deactivated_at',
         'path_to_photo',
         'style',
@@ -29,6 +30,7 @@ class Course extends Model
         'active_from' => 'datetime',
         'active_to' => 'datetime',
         'deactivated_at' => 'datetime',
+        'checked_at' => 'datetime'
     ];
 
     public function rules(): array
@@ -43,6 +45,7 @@ class Course extends Model
                 'deactivated_at' => 'nullable|date|date_format:Y-m-d H:i:s',
                 'path_to_photo' => 'nullable|string|max:255',
                 'style' => 'nullable|string|max:255',
+                'checked_at' => 'date|date_format:Y-m-d H:i:s'
             ],
             'update' => [
                 'title' => 'string|max:255',
@@ -52,6 +55,7 @@ class Course extends Model
                 'deactivated_at' => 'nullable|date|date_format:Y-m-d H:i:s',
                 'path_to_photo' => 'nullable|string|max:255',
                 'style' => 'nullable|string|max:255',
+                'checked_at' => 'date|date_format:Y-m-d H:i:s'
             ]
         ];
     }

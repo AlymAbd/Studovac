@@ -14,6 +14,7 @@ class CourseCategory extends Model
 
     protected $fillable = [
         'unique_name',
+        'title',
         'course_id',
         'currency',
         'price',
@@ -35,6 +36,7 @@ class CourseCategory extends Model
             'price' => 'integer|min:0',
             'valid_from' => 'date',
             'valid_to' => 'date|after:valid_from',
+            'title' => 'required|string|max:255'
         ];
     }
 

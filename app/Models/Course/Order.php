@@ -12,5 +12,24 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
+        'unique_name',
+        'course_id',
+        'price_id',
+        'buyer_id',
+        'discount_id',
+        'is_paid',
+        'order_status',
     ];
+
+    public function rules(): array
+    {
+        return [
+            'create' => [
+                'course_id' => 'exists:courses,id',
+                'price_id' => 'exists:course_prices,id',
+                'buyer_id' => 'exists:users,id',
+                'discount_id' => 'exists:course_price_discounts,id',
+            ],
+        ];
+    }
 }
