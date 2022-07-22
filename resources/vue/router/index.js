@@ -2,19 +2,27 @@ import { createWebHistory, createRouter } from 'vue-router'
 
 export const routes = [
   {
-    name: 'home',
-    path: '/',
-    component: () => import('../pages/Welcome/Home.vue'),
+    path: '',
+    redirect: '/home'
+  },
+  {
+    name: 'base',
+    component: () => import('../components/welcome/BasicComponent.vue'),
     children: [
+      {
+        name: 'home',
+        path: '/home',
+        component: () => import('../pages/welcome/Home.vue')
+      },
       {
         name: 'register',
         path: '/register',
-        component: () => import('../pages/Welcome/Register.vue')
+        component: () => import('../pages/welcome/Register.vue')
       },
       {
         name: 'login',
         path: '/login',
-        component: () => import('../pages/Welcome/Login.vue')
+        component: () => import('../pages/welcome/Login.vue')
       }
     ]
   },
@@ -23,6 +31,7 @@ export const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes: routes,
+  linkExactActiveClass: 'active',
 })
 
 export default router
