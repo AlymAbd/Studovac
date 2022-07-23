@@ -1,49 +1,40 @@
 <template>
-  <div class="ui true fixed inverted menu">
+  <div class="ui menu">
     <div class="ui container">
-      <a data-v-115fd1f0="" class="header item" href="#"
-        ><img data-v-115fd1f0="" src="/static/images/logo.png" class="logo" />
-        Project Name
+      <a data-v-115fd1f0="" class="header item" href="/home">
+        <img src="/images/logo.png" class="logo" />
+        Studovac
       </a>
-      <a data-v-115fd1f0="" class="item" href="#">Home</a>
-      <div
-        data-v-115fd1f0=""
-        role="listbox"
-        tabindex="0"
-        class="simple ui item dropdown"
-      >
+      <router-link class="item" :to="{name: 'home'}">Home</router-link>
+      <div role="listbox" tabindex="0" class="simple ui item dropdown">
         <div role="alert" aria-live="polite" class="text">Dropdown</div>
-        <i aria-hidden="true" class="dropdown icon"></i
-        ><span class="sizer"></span>
-        <div data-v-115fd1f0="" tabindex="-1" class="menu transition">
-          <a data-v-115fd1f0="" role="option" class="item" href="#"
-            >Link Item</a
-          >
-          <a data-v-115fd1f0="" role="option" class="item" href="#"
-            >Link Item</a
-          >
-          <div data-v-115fd1f0="" role="option" class="divider"></div>
-          <div data-v-115fd1f0="" class="header">Header Item</div>
-          <div data-v-115fd1f0="" role="option" class="item">
-            <i data-v-115fd1f0="" class="dropdown icon"></i> Submenu
-
-            <div
-              data-v-115fd1f0=""
-              tabindex="-1"
-              class="simple menu transition"
-            >
-              <a data-v-115fd1f0="" role="option" class="item" href="#"
-                >Link Item</a
-              >
-              <a data-v-115fd1f0="" role="option" class="item" href="#"
-                >Link Item</a
-              >
+        <i aria-hidden="true" class="dropdown icon"></i>
+        <span class="sizer"></span>
+        <div tabindex="-1" class="menu transition">
+          <a role="option" class="item" href="#">Link Item</a>
+          <a role="option" class="item" href="#">Link Item</a>
+          <div role="option" class="divider"></div>
+          <div class="header">Header Item</div>
+          <div role="option" class="item">
+            <i class="dropdown icon"></i> Submenu
+            <div tabindex="-1" class="simple menu transition">
+              <a role="option" class="item" href="#">Link Item</a>
+              <a role="option" class="item" href="#">Link Item</a>
             </div>
           </div>
-          <a data-v-115fd1f0="" role="option" class="item" href="#"
-            >Link Item</a
-          >
+          <a role="option" class="item" href="#">Link Item</a>
         </div>
+      </div>
+      <div class="right menu">
+        <div class="item">
+          <div class="ui action left icon input" placeholder="Submit">
+            <input type="text" placeholder="Submit">
+            <i class="search icon"></i>
+            <button role="button" class="ui button">Submit</button>
+          </div>
+        </div>
+        <router-link class="item" :to="{name: 'login'}">Sing in</router-link>
+        <router-link class="item" :to="{name: 'register'}">Sing up</router-link>
       </div>
     </div>
   </div>

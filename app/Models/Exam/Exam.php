@@ -9,7 +9,7 @@ class Exam extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'exam_exams';
+    protected $table = 'exams';
 
     protected $fillable = [
         'unique_name',
