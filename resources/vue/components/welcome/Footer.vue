@@ -47,7 +47,7 @@
             </div>
           </div>
           <div class="right column">
-            <img src="images/full_logo.png" class="ui mini image" />
+            <img src="images/logo.png" class="ui mini image" />
           </div>
         </div>
       </div>

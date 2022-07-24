@@ -1,7 +1,6 @@
 <template>
   <Header></Header>
-  <div class="ui divider"></div>
-  <div class="ui fluid container">
+  <div class="ui grid container">
     <router-view />
   </div>
   <Footer></Footer>
