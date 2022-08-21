@@ -1,13 +1,15 @@
 <template>
   <div>
-    {{ $t('description') }}
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-form-group label="Email address:" label-for="input-email">
+    <b-form @submit="onSubmit" v-if="show">
+      <b-form-group
+        :label="$t('register.email.description')"
+        label-for="input-email"
+      >
         <b-form-input
           id="input-email"
           v-model="form.email"
           type="email"
-          placeholder="Enter email"
+          :placeholder="$t('register.email')"
           required
         ></b-form-input>
         <b-form-invalid-feedback :state="validations.email">
@@ -15,12 +17,15 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Phone number:" label-for="input-phone">
+      <b-form-group
+        :label="$t('register.phone.description')"
+        label-for="input-phone"
+      >
         <b-form-input
           id="input-phone"
           v-model="form.phone"
           type="number"
-          placeholder="Phone"
+          :placeholder="$t('register.phone')"
           required
         ></b-form-input>
         <b-form-invalid-feedback :state="validations.phone">
@@ -28,11 +33,14 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Your Name:" label-for="input-title">
+      <b-form-group
+        :label="$t('register.title.description')"
+        label-for="input-title"
+      >
         <b-form-input
           id="input-title"
           v-model="form.title"
-          placeholder="Enter name"
+          :placeholder="$t('register.title')"
           required
         ></b-form-input>
         <b-form-invalid-feedback :state="validations.title">
@@ -40,12 +48,15 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Password:" label-for="input-password">
+      <b-form-group
+        :label="$t('register.password.description')"
+        label-for="input-password"
+      >
         <b-form-input
           id="input-password"
           v-model="form.password"
           type="password"
-          placeholder="Password"
+          :placeholder="$t('register.password')"
           required
         ></b-form-input>
         <b-form-invalid-feedback :state="validations.password">
@@ -54,14 +65,14 @@
       </b-form-group>
 
       <b-form-group
-        label="Password confirmation:"
+        :label="$t('register.password-confirmation.description')"
         label-for="input-password-confirm"
       >
         <b-form-input
           id="input-password-confirm"
           v-model="form.password_confirmation"
           type="password"
-          placeholder="Password"
+          :placeholder="$t('register.password-confirmation')"
           required
         ></b-form-input>
         <b-form-invalid-feedback :state="validations.password_confirmation">
@@ -69,18 +80,20 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="I want to be a teacher" label-for="input-checkbox">
+      <b-form-group
+        :label="$t('register.im-teacher')"
+        label-for="input-checkbox"
+      >
         <b-form-checkbox
           id="input-checkbox"
           v-model="form.as_teacher"
         ></b-form-checkbox>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
+      <b-button type="submit" variant="primary">
+        {{ $t('register.submit') }}
+      </b-button>
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ validations }}</pre>
-    </b-card>
   </div>
 </template>
 
@@ -97,11 +110,11 @@ export default {
         as_teacher: false,
       },
       validations: {
-        title: 'is required',
+        title: this.$t('register.is-required'),
         phone: null,
-        email: 'is required',
-        password: 'is required',
-        password_confirmation: 'is required',
+        email: this.$t('register.is-required'),
+        password: this.$t('register.is-required'),
+        password_confirmation: this.$t('register.is-required'),
         as_teacher: false,
       },
       show: true,

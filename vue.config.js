@@ -10,5 +10,8 @@ module.exports = defineConfig({
       compositionOnly: false,
       fullInstall: true
     }
+  },
+  devServer: {
+    https: false
   }
 })

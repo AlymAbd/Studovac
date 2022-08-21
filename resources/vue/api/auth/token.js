@@ -1,13 +1,6 @@
 import { base, session } from '@v/api/axios'
 
-const obtainToken = function (email, personal_uid) {
-  return base.post(`/login/`, {
-    email: email,
-    personal_uid: personal_uid,
-  })
-}
-
-const destroyToken = function () {
+const destroyToken = () => {
   return new Promise((resolve, reject) => {
     session
       .post(`/logout/`)
@@ -20,4 +13,4 @@ const destroyToken = function () {
   })
 }
 
-export { obtainToken, destroyToken }
+export { destroyToken }

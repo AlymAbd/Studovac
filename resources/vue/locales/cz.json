@@ -1,4 +1,20 @@
 {
-  "title": "Vue 3 i18n CZ",
-  "description": "A CZ Vue i18n next example using vue-i18n-next"
+  "title": "Studovac - najdi si učitele, najdi si lekce",
+  "description": "Tady si můžeš najít svýcho učitele",
+  "homepage": "Hlavní stranka",
+  "signin": "Prihlasit se",
+  "singup": "Nový učet",
+  "register.email": "Email",
+  "register.email.description": "Tvůj email",
+  "register.phone": "Telefonní čislo",
+  "register.phone.description": "Tvoje telefonní čislo",
+  "register.title": "Jmeno a přimění",
+  "register.title.description": "Tvoje jmeno a přimění",
+  "register.password": "Heslo",
+  "register.password.description": "Napíš pevné heslo",
+  "register.password-confirmation": "Podtvzení hesla",
+  "register.password-confirmation.description": "Heslo ještě jednou",
+  "register.im-teacher": "Chci založít učet jako učitel",
+  "register.submit": "Založít",
+  "register.is-required": "Je nutne vyplnit"
 }

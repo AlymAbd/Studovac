@@ -1,4 +1,20 @@
 {
-  "title": "Vue 3 RUS",
-  "description": "RUS A Vue i18n next example using vue-i18n-next"
+  "title": "Studovac - find your teacher. Find your course",
+  "description": "There you can find some course or you can can create your own course",
+  "homepage": "Home page",
+  "signin": "",
+  "singup": "",
+  "register.email": "",
+  "register.email.description": "",
+  "register.phone": "",
+  "register.phone.description": "",
+  "register.title": "",
+  "register.title.description": "",
+  "register.password": "",
+  "register.password.description": "",
+  "register.password-confirmation": "",
+  "register.password-confirmation.description": "",
+  "register.im-teacher": "",
+  "register.submit": "",
+  "register.is-required": "Is required"
 }

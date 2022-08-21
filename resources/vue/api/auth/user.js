@@ -3,17 +3,29 @@ import { base } from '@v/api/axios'
 const register = (
   email,
   name,
-  surname,
-  personal_uid,
-  personal_uid_confirmation,
+  password,
+  password_confirmation,
+  phone
 ) => {
   return base.post(`/register/`, {
     email: email,
     name: name,
-    surname: surname,
-    personal_uid: personal_uid,
-    personal_uid_confirmation: personal_uid_confirmation,
+    password: password,
+    password_confirmation: password_confirmation,
+    phone: phone
   })
 }
 
-export { register }
+const login = (
+  email,
+  phone,
+  password
+) => {
+  return base.post('/login/', {
+    email: email,
+    phone: phone,
+    password: password
+  })
+}
+
+export { register, login }

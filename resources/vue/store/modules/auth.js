@@ -1,5 +1,5 @@
-import { obtainToken, destroyToken } from '@v/api/auth/token'
-import { register } from '@v/api/auth/user'
+import { destroyToken } from '@v/api/auth/token'
+import { register, login } from '@v/api/auth/user'
 import { ACCESS_TOKEN, USER_DATA, EXPIR_DATE } from '@v/config/definitions'
 
 export default {

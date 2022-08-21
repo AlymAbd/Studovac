@@ -18,7 +18,11 @@ app.config.globalProperties.$axios = axios
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 
-app.use(BootstrapVue3).use(VueCookies, { expire: '3d'}).use(store).use(router).use(i18n)
+app.use(BootstrapVue3)
+   .use(VueCookies, { expire: '3d', samesite: 'none'})
+   .use(store)
+   .use(router)
+   .use(i18n)
 app.mount('#app')
 
 if (!$cookies.get('lang')) {
