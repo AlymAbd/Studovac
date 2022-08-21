@@ -22,6 +22,7 @@ class LoginLogoutController extends Controller
             return response()->json(['error' => 'wrong email or password'], 401);
         }
         $user = Auth::user();
+        $this->removeTokens();
         $user['token'] = $user->createToken('auth_token')->plainTextToken;
         return response()->json($user);
     }
@@ -32,12 +33,21 @@ class LoginLogoutController extends Controller
      * @param null
      * @return response
      */
-
     public function logout()
     {
         return response()->json([
-            'deleted' => Auth::user()->tokens()->delete()
+            'deleted' => $this->removeTokens()
         ]);
+    }
+
+    /**
+     * Obtain access token
+     */
+    public function token()
+    {
+        $user = Auth::user();
+        $this->removeTokens();
+        return response()->json(['token' => $user->createToken('auth_token')->plainTextToken]);
     }
 
     /**
@@ -51,5 +61,13 @@ class LoginLogoutController extends Controller
             'email' => 'required|string|email|max:255',
             'password' => 'required|min:8',
         ];
+    }
+
+    /**
+     * Remove tokens
+     */
+    protected function removeTokens()
+    {
+        return Auth::user()->tokens()->delete();
     }
 }

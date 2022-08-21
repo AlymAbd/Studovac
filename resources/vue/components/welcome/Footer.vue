@@ -1,57 +1,42 @@
 <template>
-  <footer class="footer">
-    <div class="ui inverted vertical footer segment">
-      <div class="ui center aligned container">
-        <!-- <div class="ui stackable inverted divided grid">
-        <div class="three wide column">
-          <h4 class="ui inverted header">Group 1</h4>
-          <div class="ui inverted link list">
-            <a href="#" class="item">Link One</a>
-            <a href="#" class="item">Link Two</a>
-            <a href="#" class="item">Link Three</a>
-            <a href="#" class="item">Link Four</a>
-          </div>
-        </div>
-        <div class="three wide column">
-          <h4 class="ui inverted header">Group 2</h4>
-          <div class="ui inverted link list">
-            <a href="#" class="item">Link One</a>
-            <a href="#" class="item">Link Two</a>
-            <a href="#" class="item">Link Three</a>
-            <a href="#" class="item">Link Four</a>
-          </div>
-        </div>
-        <div class="three wide column">
-          <h4 class="ui inverted header">Group 3</h4>
-          <div class="ui inverted link list">
-            <a href="#" class="item">Link One</a>
-            <a href="#" class="item">Link Two</a>
-            <a href="#" class="item">Link Three</a>
-            <a href="#" class="item">Link Four</a>
-          </div>
-        </div>
-        <div class="seven wide column">
-          <h4 class="ui inverted header">Footer Header</h4>
-          <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
-        </div>
-      </div>
-      <div class="ui inverted section divider"></div> -->
-
-        <div class="ui grid">
-          <div class="seven wide centered column">
-            <div class="ui horizontal inverted small divided link list">
-              <a class="item" href="#">Site Map</a>
-              <a class="item" href="#">Contact Us</a>
-              <a class="item" href="#">Terms and Conditions</a>
-              <a class="item" href="#">Privacy Policy</a>
-            </div>
-          </div>
-          <div class="right column">
-            <img src="images/logo.png" class="ui mini image" />
-          </div>
-        </div>
-      </div>
+  <footer
+    class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"
+  >
+    <div class="col-md-4 d-flex align-items-center">
+      <a
+        href="/about"
+        class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
+      >
+        <img
+          src="/images/logo.png"
+          class="rounded-circle"
+          width="32"
+          height="32"
+        />
+      </a>
+      <span class="mb-3 mb-md-0 text-muted">© 2022 Felina s.r.o</span>
     </div>
+
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+      <li class="ms-3">
+        <a class="text-muted" href="#"
+          ><svg class="bi" width="24" height="24">
+            <use xlink:href="#twitter"></use></svg
+        ></a>
+      </li>
+      <li class="ms-3">
+        <a class="text-muted" href="#"
+          ><svg class="bi" width="24" height="24">
+            <use xlink:href="#instagram"></use></svg
+        ></a>
+      </li>
+      <li class="ms-3">
+        <a class="text-muted" href="#"
+          ><svg class="bi" width="24" height="24">
+            <use xlink:href="#facebook"></use></svg
+        ></a>
+      </li>
+    </ul>
   </footer>
 </template>
 <script>

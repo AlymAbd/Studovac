@@ -1,33 +1,25 @@
 <template>
-  <div class="ui four column centered grid">
-    <form class="ui form">
-      <div class="field">
-        <label>First Name</label>
-        <input type="text" name="first-name" placeholder="First Name" />
-      </div>
-      <div class="field">
-        <label>Last Name</label>
-        <input type="text" name="last-name" placeholder="Last Name" />
-      </div>
-      <div class="field">
-        <div class="ui checkbox">
-          <input type="checkbox" tabindex="0" class="hidden" />
-          <label>I agree to the Terms and Conditions</label>
-        </div>
-      </div>
-      <button class="ui button" type="submit">Submit</button>
-    </form>
-  </div>
+  <h1>Login</h1>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      email: '',
-      password: '',
-      error: null,
+      first_name: null,
+      last_name: null,
+      email: null,
+      phone: null,
+      password: null,
+      password_confirmation: null,
+      is_agree: false,
+      validation: {},
     }
+  },
+  methods: {
+    async login() {
+      console.log(this.email)
+    },
   },
 }
 </script>

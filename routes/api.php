@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function() {
-    Route::prefix('v1')->namespace('App\Http\Controllers\API\V1')->group(function() {
+Route::middleware('auth:sanctum')->namespace('App\Http\Controllers')->group(function () {
+    Route::prefix('v1')->namespace('API\V1')->group(function () {
         Route::get('{folder}/{model}', 'GetDynamicModelController@display')
             ->name('v1.model');
 
@@ -37,14 +37,15 @@ Route::middleware('auth:sanctum')->group(function() {
             ->name('v1.model.detail.update');
     });
 
-    Route::post('logout', 'Auth\LoginLogoutController@logout')
-        ->name('logout')
-        ->middleware('auth:sanctum');
+    Route::post('logout', 'API\Auth\LoginLogoutController@logout')
+        ->name('logout');
+    Route::post('token', 'API\Auth\LoginLogoutController@token')
+        ->name('token.obtain');
 });
 
-Route::namespace('App\Http\Controllers\API')->group(function() {
+Route::namespace('App\Http\Controllers\API')->group(function () {
     Route::post('login', 'Auth\LoginLogoutController@login')->name('login');
     Route::post('register', 'Auth\RegisterController@store')->name('register');
     Route::post('user/pin-code/resend', 'Auth\VerifyPinController@resend');
-    Route::post('user/pin-code/verify', 'Auth\VerifyPinController@verify');    
+    Route::post('user/pin-code/verify', 'Auth\VerifyPinController@verify');
 });

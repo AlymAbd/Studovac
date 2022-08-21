@@ -1,11 +1,21 @@
-import { createI18n } from "vue-i18n";
+import { createI18n } from 'vue-i18n'
 
-/**
- * Load locale messages
- *
- * The loaded `JSON` locale messages is pre-compiled by `@intlify/vue-i18n-loader`, which is integrated into `vue-cli-plugin-i18n`.
- * See: https://github.com/intlify/vue-i18n-loader#rocket-i18n-resource-pre-compilation
- */
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(";");
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 function loadLocaleMessages() {
   const locales = require.context(
     "./locales",
@@ -14,10 +24,10 @@ function loadLocaleMessages() {
   );
   const messages = {};
   locales.keys().forEach((key) => {
-    const matched = key.match(/([A-Za-z0-9-_]+)\./i);
+    const matched = key.match(/([A-Za-z0-9-_]+)\./i)
     if (matched && matched.length > 1) {
-      const locale = matched[1];
-      messages[locale] = locales(key).default;
+      const locale = matched[1]
+      messages[locale] = locales(key).default
     }
   });
   return messages;
@@ -26,7 +36,7 @@ function loadLocaleMessages() {
 export default createI18n({
   legacy: false,
   globalInjection: true,
-  locale: process.env.VUE_APP_I18N_LOCALE || "en",
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "en",
+  locale: getCookie("lang"),
+  fallbackLocale: "eng",
   messages: loadLocaleMessages(),
-});
+})

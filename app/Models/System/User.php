@@ -94,13 +94,14 @@ class User extends Authenticatable
         return [
             'create' => [
                 'title' => ['required', 'string', 'max:50'],
-                'phone' => ['required_without:email', 'number', 'max:9', 'unique:users,phone'],
+                'phone' => ['required_without:email', 'numeric', 'min:8', 'unique:users,phone'],
                 'email' => ['required_without:phone', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'min:8', 'confirmed']
             ],
             'update' => [
                 'title' => ['string', 'max:50'],
-                'password' => ['min:8','confirmed']
+                'phone' => ['numeric', 'min:8', 'unique:users,phone'],
+                'password' => ['min:8', 'confirmed']
             ]
         ];
     }
@@ -109,6 +110,9 @@ class User extends Authenticatable
     {
         if (array_key_exists('password', $query)) {
             $query['password'] = \Hash::make($query['password']);
+        }
+        if (array_key_exists('phone', $query)) {
+            $query['phone_verified_at'] = null;
         }
         return $query;
     }
