@@ -56,3 +56,4 @@ package-lock.json
 .vscode/*
 yarn.lock
 public/mix-manifest.json
+docker-compose/database_env
