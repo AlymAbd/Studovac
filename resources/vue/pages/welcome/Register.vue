@@ -1,55 +1,85 @@
 <template>
   <div>
+    {{ $t('description') }}
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-form-group
-        id="input-group-1"
-        label="Email address:"
-        label-for="input-1"
-        description="We'll never share your email with anyone else."
-      >
+      <b-form-group label="Email address:" label-for="input-email">
         <b-form-input
-          id="input-1"
+          id="input-email"
           v-model="form.email"
           type="email"
           placeholder="Enter email"
           required
         ></b-form-input>
+        <b-form-invalid-feedback :state="validations.email">
+          {{ validations.email }}
+        </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+      <b-form-group label="Phone number:" label-for="input-phone">
         <b-form-input
-          id="input-2"
-          v-model="form.name"
+          id="input-phone"
+          v-model="form.phone"
+          type="number"
+          placeholder="Phone"
+          required
+        ></b-form-input>
+        <b-form-invalid-feedback :state="validations.phone">
+          {{ validations.phone }}
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group label="Your Name:" label-for="input-title">
+        <b-form-input
+          id="input-title"
+          v-model="form.title"
           placeholder="Enter name"
           required
         ></b-form-input>
+        <b-form-invalid-feedback :state="validations.title">
+          {{ validations.title }}
+        </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group id="input-group-3" label="Food:" label-for="input-3">
-        <b-form-select
-          id="input-3"
-          v-model="form.food"
-          :options="foods"
+      <b-form-group label="Password:" label-for="input-password">
+        <b-form-input
+          id="input-password"
+          v-model="form.password"
+          type="password"
+          placeholder="Password"
           required
-        ></b-form-select>
+        ></b-form-input>
+        <b-form-invalid-feedback :state="validations.password">
+          {{ validations.password }}
+        </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
-        <b-form-checkbox-group
-          v-model="form.checked"
-          id="checkboxes-4"
-          :aria-describedby="ariaDescribedby"
-        >
-          <b-form-checkbox value="me">Check me out</b-form-checkbox>
-          <b-form-checkbox value="that">Check that out</b-form-checkbox>
-        </b-form-checkbox-group>
+      <b-form-group
+        label="Password confirmation:"
+        label-for="input-password-confirm"
+      >
+        <b-form-input
+          id="input-password-confirm"
+          v-model="form.password_confirmation"
+          type="password"
+          placeholder="Password"
+          required
+        ></b-form-input>
+        <b-form-invalid-feedback :state="validations.password_confirmation">
+          {{ validations.password_confirmation }}
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group label="I want to be a teacher" label-for="input-checkbox">
+        <b-form-checkbox
+          id="input-checkbox"
+          v-model="form.as_teacher"
+        ></b-form-checkbox>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
     <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
+      <pre class="m-0">{{ validations }}</pre>
     </b-card>
   </div>
 </template>
@@ -62,15 +92,18 @@ export default {
         title: null,
         phone: null,
         email: null,
-        password: [],
+        password: null,
+        password_confirmation: null,
+        as_teacher: false,
       },
-      foods: [
-        { text: 'Select One', value: null },
-        'Carrots',
-        'Beans',
-        'Tomatoes',
-        'Corn',
-      ],
+      validations: {
+        title: 'is required',
+        phone: null,
+        email: 'is required',
+        password: 'is required',
+        password_confirmation: 'is required',
+        as_teacher: false,
+      },
       show: true,
     }
   },
@@ -79,19 +112,21 @@ export default {
       event.preventDefault()
       alert(JSON.stringify(this.form))
     },
-    onReset(event) {
-      event.preventDefault()
-      // Reset our form values
-      this.form.email = ''
-      this.form.name = ''
-      this.form.food = null
-      this.form.checked = []
-      // Trick to reset/clear native browser form validation state
-      this.show = false
-      this.$nextTick(() => {
-        this.show = true
-      })
-    },
+    // onReset(event) {
+    //   event.preventDefault()
+    //   // Reset our form values
+    //   this.form.
+    //   this.form.email = null
+    //   this.form.title = null
+    //   this.form.password = null
+    //   this.form.password_confirmation = null
+    //   this.form.checked = []
+    //   // Trick to reset/clear native browser form validation state
+    //   this.show = false
+    //   this.$nextTick(() => {
+    //     this.show = true
+    //   })
+    // },
   },
 }
 </script>

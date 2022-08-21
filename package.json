@@ -6,7 +6,7 @@
     "dev": "npm run development",
     "development": "mix",
     "hot": "mix watch --hot",
-    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\"",
+    "i18n:report": "vue-cli-service i18n:report --src \"./resources/vue/**/*.?(js|vue)\" --locales \"./resources/vue/**/*.json\"",
     "prod": "npm run production",
     "production": "mix --production",
     "watch": "mix watch",
