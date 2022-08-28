@@ -22,12 +22,31 @@ app.config.globalProperties.$axios = axios
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 
-app.use(BootstrapVue3)
-   .use(VueCookies, { expire: '3d', samesite: 'none'})
-   .use(store)
-   .use(router)
-   .use(i18n)
-   .use(CoreuiVue)
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.getters['auth/isAuthenticated']) {
+      next({ name: 'login' })
+    } else {
+      next()
+    }
+  } else if (to.matched.some((record) => record.meta.withoutAuth)) {
+    if (store.getters['auth/isAuthenticated']) {
+      next({ name: 'home' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+app
+  .use(BootstrapVue3)
+  .use(VueCookies, { expire: '3d', samesite: 'none' })
+  .use(store)
+  .use(router)
+  .use(i18n)
+  .use(CoreuiVue)
 
 app.provide('icons', icons)
 app.component('CIcon', CIcon)

@@ -3,7 +3,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 export const routes = [
   {
     path: '',
-    redirect: '/home'
+    redirect: '/home',
   },
   {
     name: 'base',
@@ -12,23 +12,29 @@ export const routes = [
       {
         name: 'home',
         path: '/home',
-        component: () => import('../pages/welcome/Home.vue')
+        component: () => import('../pages/welcome/Home.vue'),
       },
       {
         name: 'register',
         path: '/register',
-        component: () => import('../pages/welcome/Register.vue')
+        component: () => import('../pages/welcome/Register.vue'),
+        meta: {
+          withoutAuth: true,
+        },
       },
       {
         name: 'login',
         path: '/login',
-        component: () => import('../pages/welcome/Login.vue')
-      }
-    ]
+        component: () => import('../pages/welcome/Login.vue'),
+        meta: {
+          withoutAuth: true,
+        },
+      },
+    ],
   },
   {
     path: '/cabinet',
-    name: 'Admin',
+    name: 'admin',
     component: () => import('../layouts/AdminPageLayout'),
     meta: {
       requiresAuth: true,
@@ -36,24 +42,24 @@ export const routes = [
     children: [
       {
         path: 'home',
-        name: 'HomeAdmin',
+        name: 'homeadmin',
         component: () => import('../pages/admin/MainPage.vue'),
       },
       {
         path: 'dashboard',
-        name: 'Dashboard',
+        name: 'dashboard',
         component: () => import('../pages/admin/Dashboard.vue'),
       },
       {
         path: 'employees/list',
-        name: 'ListUser',
+        name: 'listuser',
         component: () => import('../pages/admin/Employees/List.vue'),
       },
     ],
   },
   {
     path: '/:pathMatch(.*)*',
-    name: 'Page404',
+    name: 'page404',
     component: () => import('../pages/errors/Page404'),
   },
 ]

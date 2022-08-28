@@ -26,5 +26,12 @@
   "login.submit": "Login",
   "login.failed": "Failed to autorize. Check your email, phone or password",
   "login.email-confirm": "Please confirm your email",
-  "server-error": "Server is temporary is unavailable. Check your internet connection or try to clear cache"
+  "server-error": "Server is temporary is unavailable. Check your internet connection or try to clear cache",
+  "page-not-found": "Page not found... You get lost?",
+  "page-not-found.description": "This page was deleted, moved or maybe you type wrong URL",
+  "router.homepage": "Home page",
+  "router.login": "Sing in",
+  "router.register": "Sign up",
+  "router.logout": "Logout",
+  "router.my-space":  "My space"
 }
