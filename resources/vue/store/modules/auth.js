@@ -74,10 +74,10 @@ export default {
       return new Promise((resolve, reject) => {
         register(
           data.email,
-          data.name,
-          data.surname,
-          data.personal_uid,
-          data.personal_uid_confirmation,
+          data.title,
+          data.password,
+          data.password_confirmation,
+          data.phone,
         )
           .then((response) => {
             resolve(response)

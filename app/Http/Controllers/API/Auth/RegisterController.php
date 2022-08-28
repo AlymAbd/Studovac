@@ -17,6 +17,21 @@ class RegisterController extends ApiModelController
         $requestData = $model->createModifierAfterValidation($requestData);
         $requestData['unique_name'] = \App\Models\Model::generateUniqueName();
         $result = $model::create($requestData);
-        return response()->json(['data' => $result], Response::HTTP_CREATED);
+        $userSettings = new \App\Models\System\UserSetting;
+        $userSettings::create([
+            'user_id' => $result['id'],
+            'settings' => [
+                'lang' => 'cz',
+                'device' => ['desktop' => true, 'mobile' => false],
+                'dark_mode' => false,
+                'location' => 'CZE',
+                'account_adress' => null,
+                'email_notifications' => false,
+                'telegram_notifications' => false,
+                'telegram_id' => null,
+            ]
+        ]);
+
+        return response()->json(['data' => $result, 'settings' => $userSettings], Response::HTTP_CREATED);
     }
 }

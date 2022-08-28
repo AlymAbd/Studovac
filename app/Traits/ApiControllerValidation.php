@@ -16,21 +16,22 @@ trait ApiControllerValidation
      * @return Validator|null
      */
     public function validate(
-        Request|Array $request,
-        Array $rules,
-        Array $messages = []
+        Request|array $request,
+        array $rules,
+        array $messages = []
     ) {
         $request = $request instanceof Request ? $request->all() : $request;
         if (empty($request)) {
             abort(
-                response()->json(['error' => 'no data to process'], 401)
+                response()->json(['error' => 'no data to process'], 400)
             );
         }
+        $messages = $messages ?: $this->getValidationMessages();
 
         $validation = $this->getValidator()::make($request, $rules, $messages);
         if ($validation->fails()) {
             abort(
-                response()->json($validation->messages(), 401)
+                response()->json($validation->messages(), 400)
             );
         } else {
             return $validation;
@@ -46,5 +47,22 @@ trait ApiControllerValidation
     public function getValidator()
     {
         return Validator::class;
+    }
+
+    /**
+     * Standart messages
+     */
+    public function getValidationMessages(): array
+    {
+        return [
+            'required' => 'Field :attribute is required',
+            'string' => 'Field :attribute should be string',
+            'numeric' => 'Field :attribute should be number',
+            'email' => 'Field :attribute isn\'\t an email',
+            'min' => 'Field :attribute should be minimum than :min',
+            'max' => 'Field :attribute should be max than :max',
+            'confirmed' => 'Field :attribute should be confirmed',
+            'unique' => 'Field :attribute is not unique'
+        ];
     }
 }

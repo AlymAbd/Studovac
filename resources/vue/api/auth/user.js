@@ -9,7 +9,7 @@ const register = (
 ) => {
   return base.post(`/register/`, {
     email: email,
-    name: name,
+    title: name,
     password: password,
     password_confirmation: password_confirmation,
     phone: phone

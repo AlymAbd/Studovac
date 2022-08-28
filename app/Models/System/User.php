@@ -134,4 +134,9 @@ class User extends Authenticatable
             self::ADMIN => 'Administrator'
         ];
     }
+
+    public function settings()
+    {
+        return $this->hasOne(UserSettings::class, 'user_id');
+    }
 }
