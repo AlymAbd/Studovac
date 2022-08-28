@@ -62,7 +62,8 @@ trait ApiControllerValidation
             'min' => 'Field :attribute should be minimum than :min',
             'max' => 'Field :attribute should be max than :max',
             'confirmed' => 'Field :attribute should be confirmed',
-            'unique' => 'Field :attribute is not unique'
+            'unique' => 'Field :attribute is not unique',
+            'regex' => 'Field :attribute does not look like a phone number'
         ];
     }
 }

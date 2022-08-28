@@ -16,5 +16,15 @@
   "register.password-confirmation.description": "Password confirmation",
   "register.im-teacher": "I want to be a teacher",
   "register.submit": "Register",
-  "register.is-required": "Is required"
+  "register.success": "Successfully registered. Please check your email or phone and finish confirmation",
+  "register.is-required": "Is required",
+  "register.waiting-for-fill": "Waiting for data",
+  "login.password": "Password",
+  "login.password.description": "Your password",
+  "login.email-or-phone": "Phone or email",
+  "login.email-or-phone.description": "Your phone or email",
+  "login.submit": "Login",
+  "login.failed": "Failed to autorize. Check your email, phone or password",
+  "login.email-confirm": "Please confirm your email",
+  "server-error": "Server is temporary is unavailable. Check your internet connection or try to clear cache"
 }

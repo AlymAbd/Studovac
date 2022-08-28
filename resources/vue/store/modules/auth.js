@@ -46,21 +46,30 @@ export default {
     },
   },
   actions: {
-    login(context, data) {
+    authorizeUser(context, data) {
       context.commit('removeToken')
       return new Promise((resolve, reject) => {
-        obtainToken(data.email, data.personal_uid)
+        login(data.email, data.phone, data.password)
           .then((response) => {
             if (response.status == 200) {
+              if (response.data.email_verified_at === null) {
+                reject({response: response})
+                return
+              }
+
               context.commit('updateLocalStorage', {
                 access: response.data.token,
               })
               context.commit('updateUserInfo', {
                 id: response.data.id,
-                name: response.data.name,
-                surname: response.data.surname,
+                name: response.data.title,
                 email: response.data.email,
-                is_admin: response.data.is_administrator,
+                phone: response.data.phone,
+                access: response.data.access_type,
+                photo: response.data.path_to_photo,
+                is_verified: response.data.account_verified,
+                email_verified: response.data.email_verified_at,
+                phone_verified: response.data.phone_verified_at
               })
               resolve(response.data)
             }

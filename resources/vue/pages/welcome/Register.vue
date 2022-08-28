@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-md-center">
     <div class="col-5">
-      <b-form @submit="onSubmit">
+      <b-form @submit="onSubmit" v-show="result.message == null">
         <b-form-group
           :label="$t('register.email.description')"
           label-for="input-email"
@@ -91,12 +91,16 @@
           ></b-form-checkbox>
         </b-form-group>
 
-        <b-button type="submit" variant="primary">
-          <b-spinner small type="grow" v-if="show"></b-spinner>
-          {{ show ? $('wait') : $t('register.submit') }}
+        <b-button type="submit" variant="primary" :disabled="!validated">
+          {{
+            validated ? $t('register.submit') : $t('register.waiting-for-fill')
+          }}
         </b-button>
       </b-form>
     </div>
+    <b-alert :variant="result.variant" v-show="result.message !== null" show>
+      {{ result.message }}
+    </b-alert>
   </div>
 </template>
 
@@ -120,7 +124,10 @@ export default {
         password_confirmation: this.$t('register.is-required'),
         as_teacher: false,
       },
-      show: false,
+      result: {
+        variant: null,
+        message: null,
+      },
     }
   },
   methods: {
@@ -130,19 +137,22 @@ export default {
       this.$store
         .dispatch('auth/createUser', this.form)
         .then((response) => {
-          console.log(response)
+          this.result.variant = 'success'
+          this.result.message = this.$t('register.success')
         })
         .catch((error) => {
-          if (error.response.status) {
+          if (error.response.status === 400) {
             let errors = error.response.data
             Object.keys(errors).forEach((err) => {
               let messages = ''
               errors[err].map((row) => {
-                console.log(row)
                 messages += this.capitalize(row) + '. '
               })
               this.validations[err] = messages
             })
+          } else {
+            this.result.variant = 'danger'
+            this.result.message = this.$t('server-error')
           }
         })
       this.inProcessing = false
@@ -150,21 +160,16 @@ export default {
     capitalize(s) {
       return s && s[0].toUpperCase() + s.slice(1)
     },
-    // onReset(event) {
-    //   event.preventDefault()
-    //   // Reset our form values
-    //   this.form.
-    //   this.form.email = null
-    //   this.form.title = null
-    //   this.form.password = null
-    //   this.form.password_confirmation = null
-    //   this.form.checked = []
-    //   // Trick to reset/clear native browser form validation state
-    //   this.show = false
-    //   this.$nextTick(() => {
-    //     this.show = true
-    //   })
-    // },
+  },
+  computed: {
+    validated() {
+      return (
+        this.form.title !== null &&
+        this.form.password !== null &&
+        this.form.password_confirmation !== null &&
+        (this.form.phone !== null || this.form.email !== null)
+      )
+    },
   },
 }
 </script>

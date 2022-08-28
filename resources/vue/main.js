@@ -10,6 +10,10 @@ import VueCookies from 'vue-cookies'
 import BootstrapVue3 from 'bootstrap-vue-3'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+import CoreuiVue from '@coreui/vue'
+import CIcon from '@coreui/icons-vue'
+import { freeSet as icons } from '@coreui/icons'
+
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 
@@ -23,6 +27,11 @@ app.use(BootstrapVue3)
    .use(store)
    .use(router)
    .use(i18n)
+   .use(CoreuiVue)
+
+app.provide('icons', icons)
+app.component('CIcon', CIcon)
+
 app.mount('#app')
 
 if (!$cookies.get('lang')) {

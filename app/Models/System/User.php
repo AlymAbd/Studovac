@@ -29,6 +29,7 @@ class User extends Authenticatable
         'unique_name',
         'title',
         'email',
+        'phone',
         'password',
         'access_type',
         'deleted_at',
@@ -94,8 +95,8 @@ class User extends Authenticatable
         return [
             'create' => [
                 'title' => ['required', 'string', 'max:50'],
-                'phone' => ['required_without:email', 'numeric', 'min:8', 'unique:users,phone'],
-                'email' => ['required_without:phone', 'string', 'email', 'max:255', 'unique:users'],
+                'phone' => ['regex:/[0-9]/', 'min:7', 'unique:users,phone'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'min:8', 'confirmed']
             ],
             'update' => [

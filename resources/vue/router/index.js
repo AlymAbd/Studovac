@@ -26,6 +26,13 @@ export const routes = [
       }
     ]
   },
+  // {
+  //   name: 'cabinetBase',
+  //   component: () => import(''),
+  //   children: [
+
+  //   ]
+  // }
 ]
 
 const router = createRouter({
