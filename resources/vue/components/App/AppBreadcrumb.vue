@@ -13,7 +13,7 @@
 
 <script>
 import { onMounted, ref } from 'vue'
-import router from '@/router'
+import router from '@v/router'
 
 export default {
   name: 'AppBreadcrumb',

@@ -12,8 +12,10 @@
     "
   >
     <CSidebarBrand>
-      <CIcon custom-class-name="sidebar-brand-full" :width="220" :height="40" />
-      <CIcon custom-class-name="sidebar-brand-narrow" :height="35" />
+      <div class="sidebar-brand-full">
+        <h5 style="margin-right: 10px">Studovač</h5>
+      </div>
+      <CIcon :icon="fullLogo" :height="50" />
     </CSidebarBrand>
     <AppSidebarNav />
     <CSidebarToggler
@@ -27,6 +29,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { AppSidebarNav } from './AppSidebarNav'
+import { fullLogo } from '@v/assets/svg/logo.js'
 
 export default {
   name: 'AppSidebar',
@@ -38,6 +41,7 @@ export default {
     return {
       sidebarUnfoldable: computed(() => store.state.sidebarUnfoldable),
       sidebarVisible: computed(() => store.state.sidebarVisible),
+      fullLogo,
     }
   },
 }

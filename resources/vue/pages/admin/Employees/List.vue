@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { session } from '@/api/axios'
+import { session } from '@v/api/axios'
 
 export default {
   data() {

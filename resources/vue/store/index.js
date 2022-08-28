@@ -1,17 +1,36 @@
 import { createStore, createLogger } from 'vuex'
 import auth from './modules/auth'
+import axiosMessages from './modules/axiosMessages'
 
 const debug = process.env.NODE_ENV !== 'production'
 
 const store = createStore({
   modules: {
     auth,
+    axiosMessages,
   },
   strict: debug,
   plugins: debug ? [createLogger()] : [],
-  state: {},
+  state: {
+    // admin
+    sidebarVisible: '',
+    sidebarUnfoldable: false,
+    // endadmin
+  },
   computed: {},
-  mutations: {},
+  mutations: {
+    // admin
+    toggleSidebar(state) {
+      state.sidebarVisible = !state.sidebarVisible
+    },
+    toggleUnfoldable(state) {
+      state.sidebarUnfoldable = !state.sidebarUnfoldable
+    },
+    updateSidebarVisible(state, payload) {
+      state.sidebarVisible = payload.value
+    },
+    // endadmin
+  },
   actions: {},
 })
 

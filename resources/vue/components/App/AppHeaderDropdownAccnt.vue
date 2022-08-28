@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import avatar from '@/assets/images/avatars/default.png'
+import avatar from '@v/assets/images/avatars/default.png'
 export default {
   name: 'AppHeaderDropdownAccnt',
   setup() {

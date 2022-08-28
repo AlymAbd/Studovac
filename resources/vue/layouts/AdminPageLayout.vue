@@ -19,10 +19,10 @@
 </template>
 <script>
 import { CContainer } from '@coreui/vue'
-import AppFooter from '@/components/App/AppFooter.vue'
-import AppHeader from '@/components/App/AppHeader.vue'
-import AppSidebar from '@/components/App/AppSidebar.vue'
-import ToasterMessage from '@/components/App/ToasterMessage.vue'
+import AppFooter from '@v/components/App/AppFooter.vue'
+import AppHeader from '@v/components/App/AppHeader.vue'
+import AppSidebar from '@v/components/App/AppSidebar.vue'
+import ToasterMessage from '@v/components/App/ToasterMessage.vue'
 import { mapGetters } from 'vuex'
 
 export default {

@@ -26,13 +26,36 @@ export const routes = [
       }
     ]
   },
-  // {
-  //   name: 'cabinetBase',
-  //   component: () => import(''),
-  //   children: [
-
-  //   ]
-  // }
+  {
+    path: '/cabinet',
+    name: 'Admin',
+    component: () => import('../layouts/AdminPageLayout'),
+    meta: {
+      requiresAuth: true,
+    },
+    children: [
+      {
+        path: 'home',
+        name: 'HomeAdmin',
+        component: () => import('../pages/admin/MainPage.vue'),
+      },
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('../pages/admin/Dashboard.vue'),
+      },
+      {
+        path: 'employees/list',
+        name: 'ListUser',
+        component: () => import('../pages/admin/Employees/List.vue'),
+      },
+    ],
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'Page404',
+    component: () => import('../pages/errors/Page404'),
+  },
 ]
 
 const router = createRouter({
