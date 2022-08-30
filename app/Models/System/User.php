@@ -5,8 +5,10 @@ namespace App\Models\System;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Symfony\Component\HttpFoundation\Response;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\ModelApiTrait;
+use Mail;
 
 class User extends Authenticatable
 {
@@ -88,6 +90,18 @@ class User extends Authenticatable
     public static function validateEmail($email, $token)
     {
         //
+    }
+
+    public static function sendVerificationEmail($email)
+    {
+        $user = self::whereNull('email_verified_at')
+            ->where('email', '=', $email)
+            ->get()
+            ->first();
+        if (empty($user)) {
+            return response()->json(['status' => 'users email already confirmed'], Response::HTTP_FORBIDDEN);
+        }
+        dd($user->email);
     }
 
     public function rules(): array

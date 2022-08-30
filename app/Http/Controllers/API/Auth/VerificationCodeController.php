@@ -3,29 +3,27 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
+use App\Models\System\User;
+use Illuminate\Http\Request;
 
 class VerificationCodeController extends Controller
 {
     /**
      * Verify pin from email
      */
-    public function verify(Request $request, String $email, Int $pin)
+    public function verify(Request $request)
     {
-        $validated = $this->validate([
-            'email' => $email,
-            'pin_code' => $pin
-        ], $this->rules())->validated();
+        $validated = $this->validate($request, $this->rules())->validated();
         dd($validated);
     }
 
     /**
      * Resend pin verification
      */
-    public function resend(Request $request, String $email)
+    public function resend(Request $request)
     {
-        $validated = $this->validate(['email' => $email], $this->rules())->validated();
-        dd($validated);
+        $validated = $this->validate($request, ['email' => ['required', 'email', 'exists:users,email']])->validated();
+        User::sendVerificationEmail($validated['email']);
     }
 
     /**
@@ -36,8 +34,7 @@ class VerificationCodeController extends Controller
     protected function rules()
     {
         return [
-            'email' => 'required|string|email|max:255',
-            'pin_code' => 'number|max:9999|min:1000'
+            'hash' => 'required|string',
         ];
     }
 }

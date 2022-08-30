@@ -41,11 +41,12 @@ Route::middleware('auth:sanctum')->namespace('App\Http\Controllers')->group(func
         ->name('logout');
     Route::post('token', 'API\Auth\LoginLogoutController@token')
         ->name('token.obtain');
+
+    Route::post('user/pin-code/resend', 'API\Auth\VerificationCodeController@resend');
+    Route::post('user/pin-code/verify', 'API\Auth\VerificationCodeController@verify');
 });
 
 Route::namespace('App\Http\Controllers\API')->group(function () {
     Route::post('login', 'Auth\LoginLogoutController@login')->name('login');
     Route::post('register', 'Auth\RegisterController@store')->name('register');
-    Route::post('user/pin-code/resend', 'Auth\VerifyPinController@resend');
-    Route::post('user/pin-code/verify', 'Auth\VerifyPinController@verify');
 });

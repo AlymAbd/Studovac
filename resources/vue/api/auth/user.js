@@ -28,4 +28,16 @@ const login = (
   })
 }
 
-export { register, login }
+const verifyEmail = (hash) => {
+  return base.post('user/pin-code/verify', {
+    hash: hash,
+  })
+}
+
+const resendVerification = (email) => {
+  return base.post('user/pin-code/resend', {
+    email: email,
+  })
+}
+
+export { register, login, verifyEmail, resendVerification }
