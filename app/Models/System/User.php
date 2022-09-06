@@ -2,6 +2,7 @@
 
 namespace App\Models\System;
 
+use App\Mail\EmailVerification;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\ModelApiTrait;
 use Mail;
+use App\Utils\Crypt;
 
 class User extends Authenticatable
 {
@@ -99,9 +101,18 @@ class User extends Authenticatable
             ->get()
             ->first();
         if (empty($user)) {
-            return response()->json(['status' => 'users email already confirmed'], Response::HTTP_FORBIDDEN);
+            return response()->json(['status' => 'user email already confirmed'], Response::HTTP_FORBIDDEN);
         }
-        dd($user->email);
+
+        $now = new \DateTime;
+        $timediff = ($now->getTimestamp() - $user->updated_at->getTimestamp()) > 45;
+        if (($user->created_at !== $user->updated_at) && $timediff) {
+            return response()->json(['status' => 'too much requests'], Response::HTTP_FORBIDDEN);
+        }
+        $jwt = Crypt::encrypt(['email' => $user->email, 'pin' => $user->pin_code]);
+        $user->pin_code = rand(1000, 9999);
+        $user->save();
+        return response()->json(['token' => $jwt]);
     }
 
     public function rules(): array
