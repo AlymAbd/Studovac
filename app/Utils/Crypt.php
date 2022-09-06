@@ -14,13 +14,15 @@ class Crypt implements iEncrypt
     public static function encrypt(array $payload)
     {
         $encrypt = (new self)->getEncrypter();
+        $payload = json_encode($payload);
         return $encrypt->encrypt($payload);
     }
 
     public static function decrypt(String $payload)
     {
         $encrypt = (new self)->getEncrypter();
-        return $encrypt->decrypt($payload);
+        $data = $encrypt->decrypt($payload);
+        return json_decode($data);
     }
 }
 

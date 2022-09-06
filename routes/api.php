@@ -42,8 +42,10 @@ Route::middleware('auth:sanctum')->namespace('App\Http\Controllers')->group(func
     Route::post('token', 'API\Auth\LoginLogoutController@token')
         ->name('token.obtain');
 
-    Route::post('user/pin-code/resend', 'API\Auth\VerificationCodeController@resend');
-    Route::post('user/pin-code/verify', 'API\Auth\VerificationCodeController@verify');
+    Route::post('user/pin-code/resend', 'API\Auth\VerificationCodeController@resend')
+        ->name('email.resend');
+    Route::post('user/pin-code/verify', 'API\Auth\VerificationCodeController@verify')
+        ->name('email.verify');
 });
 
 Route::namespace('App\Http\Controllers\API')->group(function () {

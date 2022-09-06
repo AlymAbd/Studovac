@@ -18,9 +18,8 @@ class EmailVerification extends Mailable
      *
      * @return void
      */
-    public function __construct($email, $pincode)
+    public function __construct($token)
     {
-        $jwt = JWT::toJwt(['email' => $email, 'pin' => $pincode]);
         $this->token = $token;
     }
 
@@ -31,6 +30,8 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->view('email.emailVerification')->with(['token' => $this->token]);
+        return $this->view('email.emailVerification')->with([
+            'link' => rtrim(config('app.url'), '/') . '/verify_email/' . $this->token
+        ]);
     }
 }

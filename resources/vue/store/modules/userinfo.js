@@ -17,5 +17,8 @@ export default {
     getAccess: (state) => {
       return state.userInfo.access
     },
+    hasVerifiedEmail: (state) => {
+      return state.userInfo !== null ? state.userInfo.email_verified_at !== null : false
+    }
   },
 }

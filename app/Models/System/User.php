@@ -94,25 +94,34 @@ class User extends Authenticatable
         //
     }
 
-    public static function sendVerificationEmail($email)
+    public static function createEmailVerification($email): array
     {
         $user = self::whereNull('email_verified_at')
             ->where('email', '=', $email)
-            ->get()
-            ->first();
+            ->firstOrFail();
         if (empty($user)) {
-            return response()->json(['status' => 'user email already confirmed'], Response::HTTP_FORBIDDEN);
+            return [
+                'status' => Response::HTTP_FORBIDDEN,
+                'message' => ['message' => 'user email already confirmed']
+            ];
         }
 
         $now = new \DateTime;
-        $timediff = ($now->getTimestamp() - $user->updated_at->getTimestamp()) > 45;
+        $timediff = ($now->getTimestamp() - $user->updated_at->getTimestamp()) < 45;
         if (($user->created_at !== $user->updated_at) && $timediff) {
-            return response()->json(['status' => 'too much requests'], Response::HTTP_FORBIDDEN);
+            return [
+                'status' => Response::HTTP_FORBIDDEN,
+                'message' => ['message' => 'too much requests']
+            ];
         }
         $jwt = Crypt::encrypt(['email' => $user->email, 'pin' => $user->pin_code]);
         $user->pin_code = rand(1000, 9999);
         $user->save();
-        return response()->json(['token' => $jwt]);
+        return [
+            'status' => Response::HTTP_OK,
+            'token' => $jwt,
+            'message' => 'OK'
+        ];
     }
 
     public function rules(): array

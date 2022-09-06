@@ -30,6 +30,12 @@ export const routes = [
           withoutAuth: true,
         },
       },
+      {
+        name: 'verify-email',
+        path: '/verify_email/:token',
+        props: true,
+        component: () => import('../pages/welcome/EmailVerification'),
+      }
     ],
   },
   {
