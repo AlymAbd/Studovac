@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-md-center">
-    <div class="col-5 mb-3">
+    <div class="col-6 mb-3">
       <b-form @submit="onSubmit">
         <b-form-group
           :label="$t('login.email-or-phone.description')"
@@ -26,19 +26,24 @@
             required
           ></b-form-input>
         </b-form-group>
-
         <b-button type="submit" variant="primary">
           {{ $t('login.submit') }}
         </b-button>
       </b-form>
     </div>
-    <b-alert :variant="result.variant" v-show="result.message !== null" show>
-      {{ result.message }}
-    </b-alert>
+  </div>
+  <div class="row justify-content-md-center">
+    <div class="col-5 mb-3">
+      <b-alert :variant="result.variant" v-show="result.message !== null" show>
+        {{ result.message }}
+      </b-alert>
+    </div>
   </div>
 </template>
 
 <script>
+import { parseEmailOrPhone } from '@v/config/utils'
+
 export default {
   data() {
     return {
@@ -55,7 +60,7 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault()
-      let form = this.parseEmailOrPhone(this.form.email_or_phone)
+      let form = parseEmailOrPhone(this.form.email_or_phone)
       form.password = this.form.password
       this.clearState()
 
@@ -65,12 +70,12 @@ export default {
           this.$router.go({ name: 'home' })
         })
         .catch((error) => {
-          if (error.response.status === 403) {
+          if ([400, 401, 403].includes(error.response.status)) {
             this.result.variant = 'danger'
             this.result.message = this.$t('login.failed')
-          } else if (error.response.status === 200) {
+          } else {
             this.result.variant = 'warning'
-            this.result.message = this.$t('login.email-confirm')
+            this.result.message = this.$t('server-error')
           }
         })
     },
@@ -79,23 +84,6 @@ export default {
         variant: null,
         message: null,
       }
-    },
-    parseEmailOrPhone(emailOrPhone) {
-      let result = {
-        email: null,
-        phone: null,
-      }
-      let parsed = String(emailOrPhone)
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        )
-      if (parsed === null) {
-        result.phone = emailOrPhone
-      } else {
-        result.email = emailOrPhone
-      }
-      return result
     },
   },
 }

@@ -1,5 +1,5 @@
 import { destroyToken } from '@v/api/auth/token'
-import { register, login } from '@v/api/auth/user'
+import { register, login, resendVerification } from '@v/api/auth/user'
 import { ACCESS_TOKEN, USER_DATA, EXPIR_DATE } from '@v/config/definitions'
 
 export default {
@@ -21,6 +21,9 @@ export default {
         return false
       }
     },
+    isVerified: (state) => {
+      return state.userInfo !== null ? state.userInfo.email_verified_at !== null : false
+    },
     userInformation: (state) => {
       return state.userInfo
     },
@@ -37,6 +40,7 @@ export default {
     removeToken(state) {
       localStorage.removeItem(ACCESS_TOKEN)
       localStorage.removeItem(EXPIR_DATE)
+      localStorage.removeItem(USER_DATA)
       state.accessToken = null
       state.expireToken = null
     },
@@ -52,11 +56,6 @@ export default {
         login(data.email, data.phone, data.password)
           .then((response) => {
             if (response.status == 200) {
-              if (response.data.email_verified_at === null) {
-                reject({response: response})
-                return
-              }
-
               context.commit('updateLocalStorage', {
                 access: response.data.token,
               })
@@ -71,7 +70,7 @@ export default {
                 email_verified: response.data.email_verified_at,
                 phone_verified: response.data.phone_verified_at
               })
-              resolve(response.data)
+              resolve(response)
             }
           })
           .catch((error) => {
@@ -98,13 +97,21 @@ export default {
     },
     logout(context) {
       destroyToken()
-        .then((response) => {
-          console.log(response)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
       context.commit('removeToken')
     },
+    removeUserInfo(context) {
+      context.commit('removeToken')
+    },
+    resendVerificationCode(context, data) {
+      return new Promise((resolve, reject) => {
+        resendVerification(data.email, data.phone)
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          reject(error)
+        })
+      })
+    }
   },
 }

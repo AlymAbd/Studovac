@@ -2,15 +2,11 @@
 
 namespace App\Models\System;
 
-use App\Mail\EmailVerification;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Symfony\Component\HttpFoundation\Response;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\ModelApiTrait;
-use Mail;
-use App\Utils\Crypt;
 
 class User extends Authenticatable
 {
@@ -37,7 +33,6 @@ class User extends Authenticatable
         'password',
         'access_type',
         'deleted_at',
-        'pin_code',
         'email_verified_at',
         'phone_verified_at',
         'account_verified'
@@ -50,8 +45,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
-        'pin_code'
+        'remember_token'
     ];
 
     /**
@@ -94,36 +88,6 @@ class User extends Authenticatable
         //
     }
 
-    public static function createEmailVerification($email): array
-    {
-        $user = self::whereNull('email_verified_at')
-            ->where('email', '=', $email)
-            ->firstOrFail();
-        if (empty($user)) {
-            return [
-                'status' => Response::HTTP_FORBIDDEN,
-                'message' => ['message' => 'user email already confirmed']
-            ];
-        }
-
-        $now = new \DateTime;
-        $timediff = ($now->getTimestamp() - $user->updated_at->getTimestamp()) < 45;
-        if (($user->created_at !== $user->updated_at) && $timediff) {
-            return [
-                'status' => Response::HTTP_FORBIDDEN,
-                'message' => ['message' => 'too much requests']
-            ];
-        }
-        $jwt = Crypt::encrypt(['email' => $user->email, 'pin' => $user->pin_code]);
-        $user->pin_code = rand(1000, 9999);
-        $user->save();
-        return [
-            'status' => Response::HTTP_OK,
-            'token' => $jwt,
-            'message' => 'OK'
-        ];
-    }
-
     public function rules(): array
     {
         return [
@@ -155,7 +119,6 @@ class User extends Authenticatable
     public function createModifierAfterValidation(array $query): array
     {
         $query['access_type'] = self::GUEST;
-        $query['pin_code'] = rand(1000, 9999);
         $query['password'] = bcrypt($query['password']);
         return $query;
     }
@@ -173,5 +136,10 @@ class User extends Authenticatable
     public function settings()
     {
         return $this->hasOne(UserSettings::class, 'user_id');
+    }
+
+    public function passwordResets()
+    {
+        return $this->hasOne(PasswordReset::class, 'user_id');
     }
 }

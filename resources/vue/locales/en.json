@@ -25,7 +25,7 @@
   "login.email-or-phone.description": "Your phone or email",
   "login.submit": "Login",
   "login.failed": "Failed to autorize. Check your email, phone or password",
-  "login.email-confirm": "Please confirm your email",
+  "login.account-confirm": "Please confirm your email or phone number",
   "server-error": "Server is temporary is unavailable. Check your internet connection or try to clear cache",
   "page-not-found": "Page not found... You get lost?",
   "page-not-found.description": "This page was deleted, moved or maybe you type wrong URL",
@@ -33,5 +33,13 @@
   "router.login": "Sing in",
   "router.register": "Sign up",
   "router.logout": "Logout",
-  "router.my-space":  "My space"
+  "router.my-space":  "My space",
+  "resend-password.resend": "Reset password",
+  "user-confirmation.resend": "Resend confirmation email",
+  "user-confirmation.success": "We sent your confirmation email or phone",
+  "user-confirmation.annoying": "Please confirm your phone or email. If you don't receive code so ",
+  "link": "click here",
+  "user-confirmation.401": "Something went wrong, please check your data",
+  "403": "You don't able to do this",
+  "429": "Too many requests"
 }

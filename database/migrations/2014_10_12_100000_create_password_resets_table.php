@@ -15,10 +15,13 @@ class CreatePasswordResetsTable extends Migration
     public function up()
     {
         Schema::create($this->table, function (Blueprint $table) {
-            $table->string('unique_name', 63);
-            $table->string('email')->index();
-            $table->string('token');
+            $table->id();
+            $table->integer('user_id')->unsigned();
+            $table->enum('type', ['phone', 'email'])->default('email');
+            $table->string('token')->index();
             $table->timestamp('created_at')->nullable();
+
+            $table->foreign('user_id')->on('users')->references('id')->onDelete('cascade');
         });
     }
 

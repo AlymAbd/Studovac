@@ -1,4 +1,4 @@
-import { base } from '@v/api/axios'
+import { base, session } from '@v/api/axios'
 
 const register = (
   email,
@@ -34,9 +34,10 @@ const verifyEmail = (hash) => {
   })
 }
 
-const resendVerification = (email) => {
-  return base.post('user/pin-code/resend', {
+const resendVerification = (email, phone) => {
+  return session.post('user/pin-code/resend', {
     email: email,
+    phone: phone
   })
 }
 

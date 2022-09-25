@@ -14,12 +14,12 @@
           <a class="nav-link" href="#" @click="logout">Выйти</a>
         </CNavItem>
         <CNavItem v-if="!isAuthenticated">
-          <router-link class="nav-link" :to="{ name: 'Login' }"
+          <router-link class="nav-link" :to="{ name: 'login' }"
             >Вход</router-link
           >
         </CNavItem>
         <CNavItem v-if="!isAuthenticated">
-          <router-link class="nav-link" :to="{ name: 'Register' }"
+          <router-link class="nav-link" :to="{ name: 'register' }"
             >Регистрация</router-link
           >
         </CNavItem>

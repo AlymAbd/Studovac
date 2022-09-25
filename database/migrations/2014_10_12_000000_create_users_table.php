@@ -24,10 +24,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->boolean('account_verified')->default(false);
-            $table->integer('pin_code')->nullable();
             $table->string('password');
             $table->enum('access_type', ['guest', 'student', 'teacher', 'tester', 'moderator', 'administrator']);
-            $table->string('path_to_photo', 255)->nullable();
+            $table->string('path_to_photo', 255)->nullable()->default('/images/default.png');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

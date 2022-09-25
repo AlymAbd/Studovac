@@ -31,6 +31,14 @@ export const routes = [
         },
       },
       {
+        name: 'verify-email-resend',
+        path: '/verify_email',
+        component: () => import('../pages/welcome/ResendEmailVerification'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
         name: 'verify-email',
         path: '/verify_email/:token',
         props: true,
