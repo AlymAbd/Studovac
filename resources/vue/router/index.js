@@ -69,10 +69,16 @@ export const routes = [
         component: () => import('../pages/admin/Dashboard.vue'),
       },
       {
-        path: '/employees/list',
-        name: 'listuser',
-        component: () => import('../pages/admin/Employees/List.vue'),
-      },
+        path: '/manage',
+        name: 'Cabinet Manage',
+        children: [
+          {
+            path: '/categories',
+            name: 'Manage categories',
+            component: () => import('../pages/admin/Users/List.vue')
+          }
+        ]
+      }
     ],
   },
   {

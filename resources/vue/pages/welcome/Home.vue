@@ -5,9 +5,6 @@
       <b>{{ this.$t('link') }}</b>
     </router-link>
   </b-alert>
-  <div>
-    <router-view></router-view>
-  </div>
 </template>
 
 <script>
@@ -20,11 +17,6 @@ export default {
   },
   components: {
     BasicComponent,
-  },
-  data() {
-    return {
-      //
-    }
   },
 }
 </script>
