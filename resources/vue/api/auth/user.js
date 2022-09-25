@@ -28,9 +28,9 @@ const login = (
   })
 }
 
-const verifyEmail = (hash) => {
-  return base.post('user/pin-code/verify', {
-    hash: hash,
+const verifyEmail = (token) => {
+  return session.post('user/pin-code/verify', {
+    token: token,
   })
 }
 

@@ -18,7 +18,14 @@ export default {
       return state.userInfo.access
     },
     hasVerifiedEmail: (state) => {
-      return state.userInfo !== null ? state.userInfo.email_verified_at !== null : false
+      return state.userInfo !== null ? state.userInfo.email_verified != null : false
     }
   },
+  mutations: {
+    setAccountVerified(state) {
+      let data = JSON.parse(localStorage.getItem(USER_DATA))
+      state.is_verified = data.is_verified = true
+      localStorage.setItem(USER_DATA, JSON.stringify(data))
+    }
+  }
 }

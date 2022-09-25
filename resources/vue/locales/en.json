@@ -37,9 +37,12 @@
   "resend-password.resend": "Reset password",
   "user-confirmation.resend": "Resend confirmation email",
   "user-confirmation.success": "We sent your confirmation email or phone",
+  "user-confirmation.confirm-failed": "Failed to confirm. Token is not valid or already confirmed",
   "user-confirmation.annoying": "Please confirm your phone or email. If you don't receive code so ",
   "link": "click here",
   "user-confirmation.401": "Something went wrong, please check your data",
   "403": "You don't able to do this",
-  "429": "Too many requests"
+  "429": "Too many requests",
+  "vtoken": "Verification token",
+  "user-confirmation.click": "Click to confirm token"
 }

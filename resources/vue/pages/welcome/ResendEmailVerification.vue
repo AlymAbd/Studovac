@@ -43,11 +43,6 @@ export default {
       },
     }
   },
-  beforeCreate() {
-    if (1) {
-      //
-    }
-  },
   methods: {
     onSubmit(event) {
       event.preventDefault()
@@ -60,25 +55,25 @@ export default {
         })
         .catch((error) => {
           switch (error.response.status) {
-            case 403:
+            case 400:
               this.result.variant = 'warning'
-              this.result.message = this.$t('403')
-              break
-            case 500:
-              this.result.variant = 'danger'
-              this.result.message = this.$t('server-error')
+              this.result.message = this.$t('user-confirmation.401')
               break
             case 401:
               this.result.variant = 'warning'
               this.result.message = this.$t('user-confirmation.401')
               break
-            case 400:
+            case 403:
               this.result.variant = 'warning'
-              this.result.message = this.$t('user-confirmation.401')
+              this.result.message = this.$t('403')
               break
             case 429:
               this.result.variant = 'warning'
               this.result.message = this.$t('429')
+              break
+            default:
+              this.result.variant = 'danger'
+              this.result.message = this.$t('server-error')
               break
           }
         })

@@ -20,7 +20,7 @@ class PasswordReset extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -32,7 +32,7 @@ class PasswordReset extends Model
         return self::create([
             'type' => $type,
             'user_id' => $userId,
-            'token' => Str::random(50)
+            'token' => Str::random(99)
         ]);
     }
 }

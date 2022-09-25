@@ -1,5 +1,5 @@
 <template>
-  <b-alert variant="success" show v-if="isVerified">
+  <b-alert variant="success" show v-if="!isVerified && isAuthenticated">
     {{ this.$t('user-confirmation.annoying') }}
     <router-link :to="{ name: 'verify-email-resend' }">
       <b>{{ this.$t('link') }}</b>

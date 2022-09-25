@@ -43,6 +43,9 @@ export const routes = [
         path: '/verify_email/:token',
         props: true,
         component: () => import('../pages/welcome/EmailVerification'),
+        meta: {
+          requiresAuth: true
+        }
       }
     ],
   },

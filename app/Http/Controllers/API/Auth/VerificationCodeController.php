@@ -7,12 +7,12 @@ use App\Models\System\User;
 use App\Models\System\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Password;
 use Symfony\Component\HttpFoundation\Response;
+use Carbon\Carbon;
 
 class VerificationCodeController extends Controller
 {
-    const COOLDOWN_SECONDS = 45;
+    const COOLDOWN_SECONDS = 60;
 
     /**
      * Verify pin from email
@@ -20,7 +20,16 @@ class VerificationCodeController extends Controller
     public function verify(Request $request)
     {
         $validated = $this->validate($request, $this->rules('verify'))->validated();
-        dd($validated);
+        $password = PasswordReset::where('token', $validated['token'])->with('user');
+        $password->whereHas('user', function ($query) {
+            return $query->whereNull('email_verified_at');
+        });
+        $password = $password->firstOrFail();
+        $password->user->email_verified_at = Carbon::now();
+        $password->user->account_verified = true;
+        $password->user->save();
+        $password->delete();
+        return response()->json(['message' => 'OK']);
     }
 
     /**
@@ -79,7 +88,7 @@ class VerificationCodeController extends Controller
                 'email' => ['required_without:phone', 'email', 'exists:users,email'],
                 'phone' => ['required_without:email', 'exists:users,phone']
             ],
-            'verify' => ['hash' => ['required', 'string']]
+            'verify' => ['token' => ['required', 'string']]
         ];
         return empty($type) ? $rules : $rules[$type];
     }

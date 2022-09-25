@@ -67,7 +67,7 @@ export default {
       this.$store
         .dispatch('auth/authorizeUser', form)
         .then((response) => {
-          this.$router.go({ name: 'home' })
+          this.$router.push({ name: 'home' })
         })
         .catch((error) => {
           if ([400, 401, 403].includes(error.response.status)) {
