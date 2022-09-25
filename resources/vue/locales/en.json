@@ -44,5 +44,7 @@
   "403": "You don't able to do this",
   "429": "Too many requests",
   "vtoken": "Verification token",
-  "user-confirmation.click": "Click to confirm token"
+  "user-confirmation.click": "Click to confirm token",
+  "cabinet.home": "User place",
+  "cabinet.my-orders": "My order history"
 }

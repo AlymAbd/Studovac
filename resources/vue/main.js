@@ -45,8 +45,8 @@ app
   .use(VueCookies, { expire: '3d', samesite: 'none' })
   .use(store)
   .use(router)
-  .use(i18n)
   .use(CoreuiVue)
+  .use(i18n)
 
 app.provide('icons', icons)
 app.component('CIcon', CIcon)

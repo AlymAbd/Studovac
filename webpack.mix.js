@@ -1,5 +1,7 @@
 const mix = require('laravel-mix')
 const path = require('path')
+require('dotenv').config();
+
 
 mix.alias({
   '@': path.resolve(__dirname, 'resources'),

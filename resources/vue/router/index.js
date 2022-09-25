@@ -1,4 +1,5 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import AdminPageLayout from '../layouts/AdminPageLayout'
 
 export const routes = [
   {
@@ -52,23 +53,23 @@ export const routes = [
   {
     path: '/cabinet',
     name: 'admin',
-    component: () => import('../layouts/AdminPageLayout'),
+    component: AdminPageLayout,
     meta: {
       requiresAuth: true,
     },
     children: [
       {
-        path: 'home',
+        path: '/home',
         name: 'homeadmin',
         component: () => import('../pages/admin/MainPage.vue'),
       },
       {
-        path: 'dashboard',
+        path: '/dashboard',
         name: 'dashboard',
         component: () => import('../pages/admin/Dashboard.vue'),
       },
       {
-        path: 'employees/list',
+        path: '/employees/list',
         name: 'listuser',
         component: () => import('../pages/admin/Employees/List.vue'),
       },
@@ -82,7 +83,7 @@ export const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(process.env.MIX_BASE_URL),
   routes: routes,
   linkExactActiveClass: 'active',
 })

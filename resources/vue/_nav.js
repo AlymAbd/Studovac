@@ -1,21 +1,23 @@
-import store from '@v/store/index'
+import store from '@v/store'
+import i18n from '@v/i18n'
+import router from '@v/router'
+console.log(router)
 
+let $t = i18n.global.t
 let access = store.getters['userinfo/getAccess']
 
 let routes = [
   {
     component: 'CNavItem',
-    name: 'Домашняя',
-    to: '/secret_place/home',
+    name: $t('cabinet.home'),
+    to: 'cabinet/home',
     icon: 'cil-cursor',
-    access: ['guest'],
   },
   {
     component: 'CNavItem',
-    name: 'Мои смены',
-    to: '/secret_place/sessions',
-    icon: 'cil-star',
-    access: ['pooo'],
+    name: $t('cabinet.my-orders'),
+    to: 'cabinet/orders',
+    icon: 'cil-cursor',
   },
 ]
 
