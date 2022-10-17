@@ -67,10 +67,10 @@ export default {
       this.$store
         .dispatch('auth/authorizeUser', form)
         .then((response) => {
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'Home' })
         })
         .catch((error) => {
-          if ([400, 401, 403].includes(error.response.status)) {
+          if ([400, 401, 403].includes(error.response.status ?? false)) {
             this.result.variant = 'danger'
             this.result.message = this.$t('login.failed')
           } else {

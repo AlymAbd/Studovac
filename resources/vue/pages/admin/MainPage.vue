@@ -31,7 +31,7 @@ export default {
       return arr.join(' ')
     },
     updateUserInfo() {
-      this.$store.dispatch('auth/fillUserInfo')
+      // this.$store.dispatch('auth/fillUserInfo')
     },
   },
   beforeMount() {

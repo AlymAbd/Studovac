@@ -103,7 +103,6 @@ export default {
         })
         .catch((error) => {
           this.employees = []
-          console.log(error)
         })
     },
     swapStaffStatus(row) {

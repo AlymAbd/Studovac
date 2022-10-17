@@ -54,9 +54,7 @@ export default {
         login(data.email, data.phone, data.password)
           .then((response) => {
             if (response.status == 200) {
-              context.commit('updateAccess', {
-                access: response.data.token,
-              })
+              context.commit('updateAccess', response.data.token)
               context.commit('updateUserInfo', {
                 id: response.data.id,
                 name: response.data.title,
@@ -118,9 +116,7 @@ export default {
     },
     updateToken(context) {
       obtainToken().then(response=> {
-        context.commit('updateAccess', {
-          access: response.data.token,
-        })
+        context.commit('updateAccess', response.data.token)
       }).catch(error => {
         context.commit('removeToken')
         this.$router.push({name: 'home'})

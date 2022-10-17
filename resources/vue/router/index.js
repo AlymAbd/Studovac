@@ -11,12 +11,12 @@ export const routes = [
     component: () => import('../components/welcome/BasicComponent.vue'),
     children: [
       {
-        name: 'home',
+        name: 'Home',
         path: '/home',
         component: () => import('../pages/welcome/Home.vue'),
       },
       {
-        name: 'register',
+        name: 'Register',
         path: '/register',
         component: () => import('../pages/welcome/Register.vue'),
         meta: {
@@ -24,7 +24,7 @@ export const routes = [
         },
       },
       {
-        name: 'login',
+        name: 'Login',
         path: '/login',
         component: () => import('../pages/welcome/Login.vue'),
         meta: {
@@ -32,7 +32,7 @@ export const routes = [
         },
       },
       {
-        name: 'verify-email-resend',
+        name: 'Verify Email Resend',
         path: '/verify_email',
         component: () => import('../pages/welcome/ResendEmailVerification'),
         meta: {
@@ -40,7 +40,7 @@ export const routes = [
         }
       },
       {
-        name: 'verify-email',
+        name: 'Verify Email',
         path: '/verify_email/:token',
         props: true,
         component: () => import('../pages/welcome/EmailVerification'),
@@ -52,30 +52,30 @@ export const routes = [
   },
   {
     path: '/cabinet',
-    name: 'admin',
+    name: 'Admin',
     component: AdminPageLayout,
     meta: {
       requiresAuth: true,
     },
     children: [
       {
-        path: '/home',
-        name: 'homeadmin',
+        name: 'Main Page',
+        path: 'home',
         component: () => import('../pages/admin/MainPage.vue'),
       },
       {
-        path: '/dashboard',
-        name: 'dashboard',
+        name: 'Dashboard',
+        path: 'dashboard',
         component: () => import('../pages/admin/Dashboard.vue'),
       },
       {
-        path: '/manage',
+        path: 'manage',
         name: 'Cabinet Manage',
         children: [
           {
-            path: '/categories',
             name: 'Manage categories',
-            component: () => import('../pages/admin/Users/List.vue')
+            path: 'categories',
+            component: () => import('../pages/cabinet/management/Category.vue')
           }
         ]
       }

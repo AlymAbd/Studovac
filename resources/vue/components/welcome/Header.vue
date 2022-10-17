@@ -19,19 +19,19 @@
         <ul
           class="nav nav-pills col-12 col-lg-auto me-lg-auto mb-2 justify-content-right mb-md-0"
         >
-          <router-link class="nav-link px-3" :to="{ name: 'home' }">{{
+          <router-link class="nav-link px-3" :to="{ name: 'Home' }">{{
             $t('router.homepage')
           }}</router-link>
           <router-link
             v-show="!isAuthenticated"
             class="nav-link px-3"
-            :to="{ name: 'login' }"
+            :to="{ name: 'Login' }"
             >{{ $t('router.login') }}</router-link
           >
           <router-link
             v-show="!isAuthenticated"
             class="nav-link px-3"
-            :to="{ name: 'register' }"
+            :to="{ name: 'Register' }"
             >{{ $t('router.register') }}</router-link
           >
         </ul>
@@ -54,12 +54,12 @@
           <ul class="dropdown-menu text-small">
             <div v-show="!isAuthenticated">
               <li>
-                <router-link class="nav-link px-3" :to="{ name: 'login' }">{{
+                <router-link class="nav-link px-3" :to="{ name: 'Login' }">{{
                   $t('router.login')
                 }}</router-link>
               </li>
               <li>
-                <router-link class="nav-link px-3" :to="{ name: 'register' }">{{
+                <router-link class="nav-link px-3" :to="{ name: 'Register' }">{{
                   $t('router.register')
                 }}</router-link>
               </li>
@@ -67,7 +67,7 @@
             <div v-show="isAuthenticated">
               <CDropdownItem>
                 <CIcon icon="cil-house" />
-                <router-link :to="{ name: 'admin' }">
+                <router-link :to="{ name: 'Admin' }">
                   {{ $t('router.my-space') }}
                 </router-link>
               </CDropdownItem>
@@ -94,10 +94,10 @@ export default {
       this.$store
         .dispatch('auth/logout')
         .then(() => {
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'Home' })
         })
         .catch(() => {
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'Home' })
         })
     },
   },

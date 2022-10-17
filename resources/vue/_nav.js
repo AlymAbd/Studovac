@@ -1,10 +1,9 @@
 import store from '@v/store'
 import i18n from '@v/i18n'
-import { useRouter } from 'vue-router'
+
 
 let $t = i18n.global.t
 let access = store.getters['userinfo/getAccess']
-console.log(useRouter)
 let routes = [
   {
     component: 'CNavItem',

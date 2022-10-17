@@ -13,25 +13,27 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import CoreuiVue from '@coreui/vue'
 import CIcon from '@coreui/icons-vue'
 import { freeSet as icons } from '@coreui/icons'
+import model from '@v/config/models'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axios
+app.config.globalProperties.$model = model
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters['auth/isAuthenticated']) {
-      next({ name: 'login' })
+      next({ name: 'Login' })
     } else {
       next()
     }
   } else if (to.matched.some((record) => record.meta.withoutAuth)) {
     if (store.getters['auth/isAuthenticated']) {
-      next({ name: 'home' })
+      next({ name: 'Home' })
     } else {
       next()
     }

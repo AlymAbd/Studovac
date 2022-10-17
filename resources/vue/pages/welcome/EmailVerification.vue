@@ -46,7 +46,7 @@ export default {
         .dispatch('auth/verifyEmailToken', this.token)
         .then((response) => {
           this.$store.commit('userinfo/setAccountVerified')
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'Home' })
         })
         .catch((error) => {
           this.result.message = this.$t('user-confirmation.confirm-failed')
