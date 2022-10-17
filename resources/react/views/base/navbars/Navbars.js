@@ -19,7 +19,7 @@ import {
   CDropdown,
   CButton,
 } from '@coreui/react'
-import { DocsLink } from 'src/components'
+import { DocsLink } from '@r/components'
 
 const CNavbars = () => {
   const [visible, setVisible] = useState(false)
