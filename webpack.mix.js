@@ -5,7 +5,7 @@ require('dotenv').config();
 
 mix.alias({
   '@': path.resolve(__dirname, 'resources'),
-  '@v': path.resolve(__dirname, 'resources/vue'),
+  '@r': path.resolve(__dirname, 'resources/react'),
   '@pub': path.resolve(__dirname, 'public'),
 })
 
