@@ -11,14 +11,18 @@ import {
   CAccordionItem,
 } from '@coreui/react'
 import { DocsExample } from '@r/components'
+import { useTranslation } from "react-i18next";
 
 const Accordion = () => {
+  const { t } = useTranslation();
+
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
             <strong>React Accordion</strong>
+            {t('hello')}
           </CCardHeader>
           <CCardBody>
             <p className="text-medium-emphasis small">

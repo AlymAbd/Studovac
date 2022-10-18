@@ -1,2 +1,2 @@
 require('./bootstrap')
-require('@r/index.js')
+require('@/react/index.js')

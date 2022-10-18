@@ -6,12 +6,22 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import store from './store'
+import Cookies from 'universal-cookie'
+
+const cookies = new Cookies()
+if (!cookies.get('lang')) {
+  let userLang = navigator.language || navigator.userLanguage;
+  cookies.set('lang', userLang || "en", { path: '/' })
+}
+
+import './i18n'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <App />
   </Provider>,
 )
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
