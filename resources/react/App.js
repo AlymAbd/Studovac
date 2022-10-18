@@ -2,6 +2,9 @@ import React, { Component, Suspense } from 'react'
 import { HashRouter, Routes } from 'react-router-dom'
 import './scss/style.scss'
 import routes from './routes'
+import { createBrowserHistory } from 'history'
+
+const history = createBrowserHistory()
 
 const loading = (
   <div className="pt-3 text-center">
@@ -14,9 +17,7 @@ class App extends Component {
     return (
       <HashRouter>
         <Suspense fallback={loading}>
-          <Routes>
-            {routes}
-          </Routes>
+          <Routes>{routes}</Routes>
         </Suspense>
       </HashRouter>
     )
