@@ -1,8 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-
-import routes from '../routes'
-
+import routes from '@r/routes/cabinet_routes'
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 
 const AppBreadcrumb = () => {
@@ -33,7 +31,7 @@ const AppBreadcrumb = () => {
 
   return (
     <CBreadcrumb className="m-0 ms-2">
-      <CBreadcrumbItem href="/">Home</CBreadcrumbItem>
+      <CBreadcrumbItem href="/cabinet">Home</CBreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => {
         return (
           <CBreadcrumbItem

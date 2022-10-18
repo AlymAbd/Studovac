@@ -19,7 +19,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Dashboard',
-    to: '/dashboard',
+    to: '/cabinet/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     badge: {
       color: 'info',
@@ -33,13 +33,13 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Colors',
-    to: '/theme/colors',
+    to: '/cabinet/theme/colors',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Typography',
-    to: '/theme/typography',
+    to: '/cabinet/theme/typography',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   {
@@ -49,28 +49,28 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Base',
-    to: '/base',
+    to: '/cabinet/base',
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Accordion',
-        to: '/base/accordion',
+        to: '/cabinet/base/accordion',
       },
       {
         component: CNavItem,
         name: 'Breadcrumb',
-        to: '/base/breadcrumbs',
+        to: '/cabinet/base/breadcrumbs',
       },
       {
         component: CNavItem,
         name: 'Cards',
-        to: '/base/cards',
+        to: '/cabinet/base/cards',
       },
       {
         component: CNavItem,
         name: 'Carousel',
-        to: '/base/carousels',
+        to: '/cabinet/base/carousels',
       },
       {
         component: CNavItem,
@@ -80,17 +80,17 @@ const _nav = [
       {
         component: CNavItem,
         name: 'List group',
-        to: '/base/list-groups',
+        to: '/cabinet/base/list-groups',
       },
       {
         component: CNavItem,
         name: 'Navs & Tabs',
-        to: '/base/navs',
+        to: '/cabinet/base/navs',
       },
       {
         component: CNavItem,
         name: 'Pagination',
-        to: '/base/paginations',
+        to: '/cabinet/base/paginations',
       },
       {
         component: CNavItem,
