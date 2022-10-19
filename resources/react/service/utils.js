@@ -1,4 +1,7 @@
 import routes from '@r/routes'
+import Cookies from 'universal-cookie'
+
+const cookies = new Cookies()
 
 const parseEmailOrPhone = (emailOrPhone) => {
   let result = {
@@ -25,4 +28,13 @@ const getRoute = (pathname) => {
   return currentRoute ? currentRoute.props : false
 }
 
-export { parseEmailOrPhone, getRoute }
+const getLanguage = () => {
+  return cookies.get('lang') || 'en'
+}
+
+const setLanguage = (language) => {
+  cookies.set('lang', language)
+  return language
+}
+
+export { parseEmailOrPhone, getRoute, getLanguage, setLanguage }

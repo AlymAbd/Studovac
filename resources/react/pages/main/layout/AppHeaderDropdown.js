@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { CAvatar, CDropdown, CDropdownDivider, CDropdownHeader, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
-import { cilUser, cilUserPlus, cilAccountLogout, cilHouse } from '@coreui/icons'
+import { cilUser, cilUserPlus, cilAccountLogout, cilHouse, cilLanguage } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import avatar from '@r/assets/images/avatars/default.png'
-import { useTranslation } from 'react-i18next'
+import LanguageChange from '@r/components/LanguageChange'
+import i18next from 'i18next'
+
+const t = i18next.t
 
 let isAuthorized = true
 
@@ -15,7 +18,6 @@ const generateLink = (url) => {
 }
 
 const DropDownItems = () => {
-  const { t } = useTranslation()
   if (isAuthorized) {
     return [
       <CDropdownItem href={generateLink('cabinet')} key="cabinet">
@@ -41,19 +43,46 @@ const DropDownItems = () => {
   }
 }
 
-const AppHeaderDropdown = () => {
-  const { t } = useTranslation()
-  return (
-    <CDropdown variant="nav-item">
-      <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar} size="md" />
-      </CDropdownToggle>
-      <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">{t('Account')}</CDropdownHeader>
-        {<DropDownItems />}
-      </CDropdownMenu>
-    </CDropdown>
-  )
+class AppHeaderDropdown extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      visible: false,
+    }
+    this.showModal = this.showModal.bind(this)
+    this.hideModal = this.hideModal.bind(this)
+  }
+
+  showModal = () => {
+    this.setState({ visible: true })
+  }
+
+  hideModal = () => {
+    this.setState({ visible: false })
+  }
+
+  render() {
+    return (
+      <>
+        <LanguageChange closeCallback={this.hideModal} visible={this.state.visible} />
+        <CDropdown variant="nav-item">
+          <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
+            <CAvatar src={avatar} size="md" />
+          </CDropdownToggle>
+          <CDropdownMenu className="pt-0" placement="bottom-end">
+            <CDropdownHeader className="bg-light fw-semibold py-2">{t('Account')}</CDropdownHeader>
+            <CDropdownItem onClick={this.showModal}>
+              <CIcon icon={cilLanguage} className="me-2" />
+              {t('Language')}
+            </CDropdownItem>
+            <CDropdownDivider />
+            {<DropDownItems />}
+          </CDropdownMenu>
+        </CDropdown>
+      </>
+    )
+  }
 }
 
 export default AppHeaderDropdown

@@ -1,3 +1,8 @@
 {
-  "hello": "Ahoj"
+  "hello": "Ahoj",
+  "Cabinet": "Muj profil",
+  "Logout": "Odejit",
+  "Login": "Prihlasit se",
+  "Register": "Novy ucet",
+  "Language": "Jazyk"
 }
