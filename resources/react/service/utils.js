@@ -1,3 +1,5 @@
+import routes from '@r/routes'
+
 const parseEmailOrPhone = (emailOrPhone) => {
   let result = {
     email: null,
@@ -16,4 +18,11 @@ const parseEmailOrPhone = (emailOrPhone) => {
   return result
 }
 
-export { parseEmailOrPhone }
+const getRoute = (pathname) => {
+  const currentRoute = routes.find((route) => {
+    return route.props.path === pathname
+  })
+  return currentRoute ? currentRoute.props : false
+}
+
+export { parseEmailOrPhone, getRoute }

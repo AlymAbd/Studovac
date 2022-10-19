@@ -4,6 +4,7 @@ import { CContainer, CHeader, CHeaderBrand, CHeaderNav, CNavLink, CNavItem } fro
 import CIcon from '@coreui/icons-react'
 import { cilBell, cilEnvelopeOpen, cilList } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
+import AppHeaderDropdown from './AppHeaderDropdown'
 
 const AppHeader = () => {
   const { t } = useTranslation()
@@ -35,22 +36,8 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
         </CHeaderNav>
-        <CHeaderNav>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
-          </CNavItem>
+        <CHeaderNav className="ms-3">
+          <AppHeaderDropdown />
         </CHeaderNav>
         <CHeaderNav className="ms-3"></CHeaderNav>
       </CContainer>

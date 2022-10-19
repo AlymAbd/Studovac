@@ -1,10 +1,14 @@
 import React, { Component, Suspense } from 'react'
 import { HashRouter, Routes } from 'react-router-dom'
+
 import './scss/style.scss'
 import routes from './routes'
-import { createBrowserHistory } from 'history'
+import EventBus from './service/eventbus'
+import AuthService from './service/auth'
 
-const history = createBrowserHistory()
+// import { createBrowserHistory } from 'history'
+
+// const history = createBrowserHistory()
 
 const loading = (
   <div className="pt-3 text-center">
@@ -13,7 +17,46 @@ const loading = (
 )
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      currentUser: null,
+      accessToken: null,
+    }
+  }
+
+  componentDidMount() {
+    const user = AuthService.getCurrentUser()
+
+    if (user) {
+      this.setState({
+        currentUser: user,
+        showModeratorBoard: user.roles.includes('ROLE_MODERATOR'),
+        showAdminBoard: user.roles.includes('ROLE_ADMIN'),
+      })
+    }
+
+    EventBus.on('logout', () => {
+      this.logout()
+    })
+  }
+
+  componentWillUnmount() {
+    EventBus.remove('logout')
+  }
+
+  logout() {
+    AuthService.logout()
+    this.setState({
+      currentUser: null,
+      accessToken: null,
+    })
+  }
+
   render() {
+    const { accessToken, currentUser } = this.state
+
     return (
       <HashRouter>
         <Suspense fallback={loading}>
