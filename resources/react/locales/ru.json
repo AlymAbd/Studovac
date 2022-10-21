@@ -4,5 +4,6 @@
   "Logout": "Выход",
   "Login": "Вход",
   "Register": "Регистрация",
-  "Language": "Язык"
+  "Language": "Язык",
+  "Change language": "Сменить язык"
 }

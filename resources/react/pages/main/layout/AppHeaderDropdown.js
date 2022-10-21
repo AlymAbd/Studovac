@@ -4,17 +4,21 @@ import { cilUser, cilUserPlus, cilAccountLogout, cilHouse, cilLanguage } from '@
 import CIcon from '@coreui/icons-react'
 import avatar from '@r/assets/images/avatars/default.png'
 import LanguageChange from '@r/components/LanguageChange'
-import i18next from 'i18next'
+import AuthService from '@r/service/auth'
 
-const t = i18next.t
-
-let isAuthorized = true
+const t = global.$t
+let isAuthorized = AuthService.getCurrentUser()
 
 const generateLink = (url) => {
   if (url && ![url.slice(1, 2), url.slice(0, 1)].includes('#')) {
     url = '/#/' + url
   }
   return url || '/#'
+}
+
+const logout = () => {
+  AuthService.logout()
+  window.location.reload()
 }
 
 const DropDownItems = () => {
@@ -24,7 +28,7 @@ const DropDownItems = () => {
         <CIcon icon={cilHouse} className="me-2" />
         {t('Cabinet')}
       </CDropdownItem>,
-      <CDropdownItem href={generateLink('logout')} key="logout">
+      <CDropdownItem onClick={logout} key="logout">
         <CIcon icon={cilAccountLogout} className="me-2" />
         {t('Logout')}
       </CDropdownItem>,

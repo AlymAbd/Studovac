@@ -8,6 +8,9 @@ import { Provider } from 'react-redux'
 import store from './store'
 import Cookies from 'universal-cookie'
 import * as ServiceWorker from './service/worker'
+import i18next from 'i18next'
+
+global.$t = i18next.t
 
 const cookies = new Cookies()
 if (!cookies.get('lang')) {

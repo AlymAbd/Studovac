@@ -37,4 +37,8 @@ const setLanguage = (language) => {
   return language
 }
 
-export { parseEmailOrPhone, getRoute, getLanguage, setLanguage }
+const stripTrailingChar = (str, char) => {
+  return str.endsWith(char) ? str.slice(0, -1) : str
+}
+
+export { parseEmailOrPhone, getRoute, getLanguage, setLanguage, stripTrailingChar }

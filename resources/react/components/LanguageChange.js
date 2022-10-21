@@ -1,7 +1,6 @@
 import Modal from './Modal'
-import { CButton, CModalBody, CModalFooter, CListGroup, CListGroupItem } from '@coreui/react'
+import { CModalBody, CListGroup, CListGroupItem } from '@coreui/react'
 import { Component } from 'react'
-import { useTranslation } from 'react-i18next'
 import { cifCz, cifGb, cifRu } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { getLanguage, setLanguage } from '@r/service/utils'
@@ -36,9 +35,10 @@ class LanguageChange extends Component {
   }
 
   render() {
+    const t = global.$t
     return (
       <>
-        <Modal closeCallback={this.props.closeCallback} visible={this.props.visible} title="Close">
+        <Modal closeCallback={this.props.closeCallback} visible={this.props.visible} title={t('Change language')}>
           <CModalBody>
             <CListGroup>{this.getGroupLang(getLanguage())}</CListGroup>
           </CModalBody>
@@ -47,5 +47,4 @@ class LanguageChange extends Component {
     )
   }
 }
-
 export default LanguageChange
