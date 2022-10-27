@@ -18,7 +18,7 @@ class CreateLevelsTable extends Migration
         // Level of the exam. Example: A1, A2, B1, B2, Junior, Middle etc
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('unique_name', 63);
+            $table->string('name', 63);
             $table->string('level_name', 255);
             $table->integer('level_id')->unsigned(); // foreign key
 

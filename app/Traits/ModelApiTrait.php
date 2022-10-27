@@ -6,7 +6,7 @@ trait ModelApiTrait
 {
     public function rules(): array
     {
-        return ['unique_name' => ['unique' . static::getTableName(), 'max:64']];
+        return ['name' => ['unique' . static::getTableName(), 'max:64']];
     }
 
     public function updateModifierAfterValidation(array $query): array

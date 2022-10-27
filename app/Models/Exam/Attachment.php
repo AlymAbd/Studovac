@@ -9,7 +9,7 @@ class Attachment extends Model
     protected $table = 'exam_attachments';
 
     protected $fillable = [
-        'unique_name',
+        'name',
         'title',
         'filename',
         'file_type',

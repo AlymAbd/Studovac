@@ -17,7 +17,7 @@ class CreateExerciseAnswerOptionsTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('unique_name', 63);
+            $table->string('name', 63);
             $table->bigInteger('exercise_id')->unsigned();
             $table->string('answer', 1200);
             $table->boolean('is_correct')->default(false);

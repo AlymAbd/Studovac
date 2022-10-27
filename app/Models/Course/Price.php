@@ -9,7 +9,7 @@ class Price extends Model
     protected $table = 'course_prices';
 
     protected $fillable = [
-        'unique_name',
+        'name',
         'title',
         'course_id',
         'currency',

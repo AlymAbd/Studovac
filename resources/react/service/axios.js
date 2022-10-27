@@ -8,13 +8,13 @@ const base = axios.create({
   xsrfHeaderName: CSRF_HEADER_NAME,
 })
 
-const session = base
-
-session.defaults.headers.common = {
+base.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
   Accept: 'application/json',
   ContentType: 'application/json',
 }
+
+const session = base
 
 session.interceptors.request.use(
   (config) => {

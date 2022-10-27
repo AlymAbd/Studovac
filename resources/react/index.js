@@ -20,6 +20,8 @@ if (!cookies.get('lang')) {
 
 import './i18n'
 
+global.$cookie = cookies
+
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <App />

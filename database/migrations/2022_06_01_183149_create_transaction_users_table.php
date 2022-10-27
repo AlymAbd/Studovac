@@ -15,7 +15,7 @@ class CreateTransactionUsersTable extends Migration
     {
         Schema::create('transaction_users', function (Blueprint $table) {
             $table->id();
-            $table->string('unique_name', 63);
+            $table->string('name', 63);
             $table->string('reference')->nullable();
             $table->boolean('is_paid')->default(false);
             $table->decimal('initial_amount', 127, 2)->unsigned();

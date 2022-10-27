@@ -1,7 +1,6 @@
 const mix = require('laravel-mix')
 const path = require('path')
-require('dotenv').config();
-
+require('dotenv').config()
 
 mix.alias({
   '@': path.resolve(__dirname, 'resources'),
@@ -9,8 +8,5 @@ mix.alias({
   '@pub': path.resolve(__dirname, 'public'),
 })
 
-mix
-  .js('resources/js/app.js', 'public/js')
-  .react()
-  .sass('resources/sass/app.scss', 'public/css')
-  .sourceMaps()
+mix.js('resources/js/app.js', 'public/js').react().sourceMaps()
+mix.sass('resources/react/scss/style.scss', 'public/css/app.css')

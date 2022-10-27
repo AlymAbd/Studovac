@@ -18,7 +18,7 @@ class CreateExamsTable extends Migration
         // Exam table contains all the exams of course
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('unique_name', 63);
+            $table->string('name', 63);
             $table->string('title', 255);
             $table->dateTimeTz('active_from');
             $table->dateTimeTz('active_to');

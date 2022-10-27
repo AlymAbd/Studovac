@@ -9,7 +9,7 @@ class Category extends Model
     protected $table = 'course_categories';
 
     protected $fillable = [
-        'unique_name',
+        'name',
         'title',
         'description',
         'parent_id',

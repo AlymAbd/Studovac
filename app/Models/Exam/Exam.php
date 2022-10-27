@@ -12,7 +12,7 @@ class Exam extends Model
     protected $table = 'exams';
 
     protected $fillable = [
-        'unique_name',
+        'name',
         'title',
         'active_from',
         'active_to',

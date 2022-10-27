@@ -15,7 +15,7 @@ class CreateCoursePriceDiscountsTable extends Migration
     {
         Schema::create('course_price_discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('unique_name', 63);
+            $table->string('name', 63);
             $table->string('activation_code', 63);
             $table->string('title', 255);
             $table->integer('course_price_id')->unsigned()->nullable();

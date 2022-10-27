@@ -54,7 +54,7 @@ class AuthService {
     })
   }
 
-  register(email, name, password, password_confirmation, phone) {
+  register({ email, name, password, password_confirmation, phone }) {
     return base.post(`/register/`, {
       email: email,
       title: name,

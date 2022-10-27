@@ -2,13 +2,12 @@ import React, { Component, Suspense } from 'react'
 import { HashRouter, Routes } from 'react-router-dom'
 
 import './scss/style.scss'
+import 'react-datepicker/dist/react-datepicker.css'
+
 import routes from './routes'
 import EventBus from './service/eventbus'
 import AuthService from './service/auth'
-
-// import { createBrowserHistory } from 'history'
-
-// const history = createBrowserHistory()
+import history from './service/history'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -58,7 +57,7 @@ class App extends Component {
     return (
       <HashRouter>
         <Suspense fallback={loading}>
-          <Routes>{routes}</Routes>
+          <Routes history={history}>{routes}</Routes>
         </Suspense>
       </HashRouter>
     )

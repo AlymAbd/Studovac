@@ -15,7 +15,7 @@ class CreateAchievementsTable extends Migration
     {
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
-            $table->string('unique_name', 63);
+            $table->string('name', 63);
             $table->string('title', 255);
             $table->string('description', 255)->nullable();
             $table->enum('type', ['for_teacher', 'for_student']);

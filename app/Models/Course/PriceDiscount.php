@@ -10,7 +10,7 @@ class PriceDiscount extends Model
     protected $table = 'course_price_discounts';
 
     protected $fillable = [
-        'unique_name',
+        'name',
         'title',
         'course_id',
         'currency',

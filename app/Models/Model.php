@@ -14,6 +14,8 @@ class Model extends ModelParent
     public const API_ACCESS_TYPE_DELETE = 4;
     public const API_ACCESS_TYPE_ALL = [self::API_ACCESS_TYPE_CREATE, self::API_ACCESS_TYPE_DELETE, self::API_ACCESS_TYPE_READ, self::API_ACCESS_TYPE_WRITE];
 
+    protected $hidden = ['id'];
+
     use ModelApiTrait;
     /**
      * array|integer

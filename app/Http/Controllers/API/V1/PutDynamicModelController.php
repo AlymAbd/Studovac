@@ -16,7 +16,7 @@ class PutDynamicModelController extends ApiModelController
     public function update(Request $request, String $folder, String $model, String $id)
     {
         $model = $this->getModel($folder, $model, $request->all());
-        $object = $model::where('unique_name', $id)->firstOrFail();
+        $object = $model::where('name', $id)->firstOrFail();
         $requestData = $model->updateModifierBeforeValidation($request->all());
         $validated = $this->validate($requestData, $model->getRules('update'))->validated();
         $requestData = $model->updateModifierAfterValidation($validated);

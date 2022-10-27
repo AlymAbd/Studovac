@@ -16,10 +16,12 @@ const ForgotPassword = React.lazy(() => import('@r/pages/main/ForgotPassword'))
 
 const routes = [
   <Route exact path="/" name="Home" element={<Main />} key="rHome" display="home" />,
-  <Route path="/cabinet/*" name="Cabinet" element={<DefaultLayout />} key="rCabinet" display="home" authType="only" />,
+
+  <Route exact path="/cabinet/*" name="Cabinet" element={<DefaultLayout />} key="rCabinet" display="home" authType="only" />,
   <Route exact path="/login" name="Login Page" element={<Login />} key="rLogin" display="home" authType="without" />,
   <Route exact path="/register" name="Register Page" element={<Register />} key="rRegister" display="home" authType="without" />,
   <Route exact path="/reset_password" name="Reset Password" element={<ForgotPassword />} key="rRestPass" authType="without" />,
+
   <Route exact path="/500" name="500" element={<Page500 />} key="r500" />,
   <Route path="*" element={<Navigate replace to="/" />} key="rredirect404" />,
 ]

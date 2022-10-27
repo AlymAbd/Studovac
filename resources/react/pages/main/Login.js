@@ -5,7 +5,7 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { Main } from './layout'
 import AuthService from '@r/service/auth'
-import { parseEmailOrPhone } from '@r/service/utils'
+import { parseEmailOrPhone, capitalize } from '@r/service/utils'
 
 class Login extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class Login extends Component {
   }
 
   handleInput = (e) => {
-    let data = {}
+    let data = this.state
     if (e.target.id == 'emailorphone') {
       data = parseEmailOrPhone(e.target.value)
     } else {
@@ -39,11 +39,10 @@ class Login extends Component {
       })
       .catch((error) => {
         this.setState({ message_type: 'danger' })
-        if (error.response && error.response.status !== 500) {
-          this.setState({ message_text: error.response.data.error })
+        if (error.response && (error.response.status !== 400 || error.response.status !== 403)) {
+          this.setState({ message_text: capitalize(error.response.data.error) })
         } else {
-          this.setState({ message_text: 'Server Error' })
-          console.log(error)
+          this.setState({ message_text: error.response.statusText })
         }
       })
   }

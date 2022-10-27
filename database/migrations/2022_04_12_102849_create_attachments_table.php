@@ -18,7 +18,7 @@ class CreateAttachmentsTable extends Migration
         // files, videos for the exam or exercise
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('unique_name', 63);
+            $table->string('name', 63);
             $table->string('title');
             $table->string('filename');
             $table->string('file_type');

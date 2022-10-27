@@ -15,6 +15,7 @@ class UserSettings extends Migration
     {
         Schema::create('user_settings', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 63);
             $table->integer('user_id')->unsigned()->unique();
             $table->json('settings');
             $table->timestamps();

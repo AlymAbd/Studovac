@@ -17,7 +17,7 @@ class DeleteDynamicModelController extends ApiModelController
     {
         $model = $this->getModel($folder, $model, $request->all());
         $permanent = $request->input('permanent', false);
-        $object = $model::where('unique_name', $id)->firstOrFail();
+        $object = $model::where('name', $id)->firstOrFail();
         if ($permanent) {
             $object->forceDelete();
         } else {

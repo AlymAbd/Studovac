@@ -21,7 +21,7 @@ class PostDynamicModelController extends ApiModelController
         $requestData = $model->createModifierBeforeValidation($requestData);
         $requestData = $this->validate($requestData, $model->getRules('create'))->validated();
         $requestData = $model->createModifierAfterValidation($requestData);
-        $requestData['unique_name'] = \App\Models\Model::generateUniqueName();
+        $requestData['name'] = \App\Models\Model::generateUniqueName();
         $result = $model::create($requestData);
         return response()->json(['data' => $result], Response::HTTP_CREATED);
     }

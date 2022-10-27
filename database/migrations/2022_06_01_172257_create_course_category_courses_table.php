@@ -15,7 +15,7 @@ class CreateCourseCategoryCoursesTable extends Migration
     {
         Schema::create('course_category_courses', function (Blueprint $table) {
             $table->id();
-            $table->string('unique_name', 63);
+            $table->string('name', 63);
             $table->integer('category_id')->unsigned();
             $table->integer('course_id')->unsigned();
 

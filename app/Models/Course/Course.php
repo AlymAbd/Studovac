@@ -13,7 +13,7 @@ class Course extends Model
     protected $table = 'courses';
 
     protected $fillable = [
-        'unique_name',
+        'name',
         'title',
         'description',
         'creator_id',

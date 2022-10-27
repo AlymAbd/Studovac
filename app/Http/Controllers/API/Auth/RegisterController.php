@@ -21,12 +21,13 @@ class RegisterController extends ApiModelController
         $requestData = $model->createModifierBeforeValidation($requestData);
         $requestData = $this->validate($requestData, $model->getRules('create'))->validated();
         $requestData = $model->createModifierAfterValidation($requestData);
-        $requestData['unique_name'] = \App\Models\Model::generateUniqueName();
+        $requestData['name'] = \App\Models\Model::generateUniqueName();
 
         try {
             $result = $model::create($requestData);
             $userSettings = new \App\Models\System\UserSetting;
             $userSettings::create([
+                'name' => $requestData['name'],
                 'user_id' => $result['id'],
                 'settings' => [
                     'lang' => 'cz',

@@ -26,7 +26,7 @@ class GetDynamicModelController extends ApiModelController
                 return in_array($key, ['where', 'whereOr', 'whereIn']);
             }, ARRAY_FILTER_USE_KEY);
 
-            foreach($queryFilters as $key => $value) {
+            foreach ($queryFilters as $key => $value) {
                 switch ($key) {
                     case 'where':
                         $model = $this->modifyWhere($model, ['where' => $value]);
@@ -43,7 +43,7 @@ class GetDynamicModelController extends ApiModelController
             $model = $this->modifyScope($model, $query);
             $model = $model->simplePaginate(15);
         } catch (\Illuminate\Database\QueryException $e) {
-            return abort(400, 'Wrong input data: '. $e);
+            return abort(400, 'Wrong input data: ' . $e);
         }
         return $model;
     }
@@ -59,7 +59,7 @@ class GetDynamicModelController extends ApiModelController
         try {
             $query = $request->all();
             $model = $this->getModel($folder, $model, $request->all());
-            $model = $model::where('unique_name', $id);
+            $model = $model::where('name', $id);
             $model = $this->modifySelect($model, $query);
             $model = $model->firstOrFail();
         } catch (\Illuminate\Database\QueryException) {
@@ -68,11 +68,11 @@ class GetDynamicModelController extends ApiModelController
         return ['data' => $model];
     }
 
-    protected function modifySelect(Builder $eloq, Array $query): Builder
+    protected function modifySelect(Builder $eloq, array $query): Builder
     {
         if (isset($query['fields'])) {
             $relation = [];
-            foreach($query['fields'] as $ind => $field) {
+            foreach ($query['fields'] as $ind => $field) {
                 if (str_contains($field, '.')) {
                     $fields = explode('.', $field);
                     $relation[$fields[0]][] = $fields[1];
@@ -87,15 +87,15 @@ class GetDynamicModelController extends ApiModelController
         }
     }
 
-    protected function getRelation(Builder $eloq, Array $query): Builder
+    protected function getRelation(Builder $eloq, array $query): Builder
     {
-        foreach($query as $relation => $fields) {
-            $eloq = $eloq->with([$relation.':id,'.implode(',', $fields)]);
+        foreach ($query as $relation => $fields) {
+            $eloq = $eloq->with([$relation . ':id,' . implode(',', $fields)]);
         }
         return $eloq;
     }
 
-    protected function modifyOrder(Builder $eloq, Array $query): Builder
+    protected function modifyOrder(Builder $eloq, array $query): Builder
     {
         if (isset($query['order_field'])) {
             return $eloq->orderBy($query['order_field'], ($query['order_destination'] ?? 'asc'));
@@ -104,37 +104,54 @@ class GetDynamicModelController extends ApiModelController
         }
     }
 
-    protected function modifyWhere(Builder $eloq, Array $query): Builder
+    protected function modifyWhere(Builder $eloq, array $query): Builder
     {
         if (isset($query['where'])) {
-            foreach($query['where'] as $field => $value) {
+            foreach ($query['where'] as $field => $value) {
+                $fields = explode('.', $field);
+                if (count($fields) > 1) {
+                    $eloq->whereHas($fields[0], function ($query) use ($fields, $value) {
+                        return $query->where($fields[1], $value);
+                    });
+                } else {
+                    $eloq->where($field, $value);
+                }
+            }
+        }
+        return $eloq;
+    }
+
+    protected function modifyWhereRelation(Builder $eloq, array $query): Builder
+    {
+        if (isset($query['where'])) {
+            foreach ($query['where'] as $field => $value) {
                 $eloq = $eloq->where($field, $value);
             }
         }
         return $eloq;
     }
 
-    protected function modifyWhereOr(Builder $eloq, Array $query): Builder
+    protected function modifyWhereOr(Builder $eloq, array $query): Builder
     {
         if (isset($query['whereOr'])) {
-            foreach($query['whereOr'] as $field => $value) {
+            foreach ($query['whereOr'] as $field => $value) {
                 $eloq = $eloq->orWhere($field, $value);
             }
         }
         return $eloq;
     }
 
-    protected function modifyWhereIn(Builder $eloq, Array $query): Builder
+    protected function modifyWhereIn(Builder $eloq, array $query): Builder
     {
         if (isset($query['whereIn'])) {
-            foreach($query['whereIn'] as $field => $value) {
+            foreach ($query['whereIn'] as $field => $value) {
                 $eloq = $eloq->whereIn($field, $value);
             }
         }
         return $eloq;
     }
 
-    protected function modifyScope(Builder $eloq, Array $query): Builder
+    protected function modifyScope(Builder $eloq, array $query): Builder
     {
         if (isset($query['modifier'])) {
             return $eloq->{$query['modifier']}($query['modifier_params'] ?: []);

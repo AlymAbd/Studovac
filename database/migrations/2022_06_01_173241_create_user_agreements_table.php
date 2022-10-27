@@ -15,6 +15,7 @@ class CreateUserAgreementsTable extends Migration
     {
         Schema::create('agreements_user', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 63);
             $table->integer('user_id')->unsigned();
             $table->integer('agreement_id')->unsigned();
             $table->dateTime('assigned_at');

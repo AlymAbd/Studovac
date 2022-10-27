@@ -8,7 +8,13 @@ class UserSetting extends Model
 {
     protected $table = 'user_settings';
 
+    protected $hidden = [
+        'id',
+        'user_id'
+    ];
+
     protected $fillable = [
+        'name',
         'user_id',
         'settings',
     ];
@@ -25,6 +31,6 @@ class UserSetting extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
