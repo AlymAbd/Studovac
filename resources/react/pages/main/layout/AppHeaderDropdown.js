@@ -7,7 +7,7 @@ import LanguageChange from '@r/components/LanguageChange'
 import AuthService from '@r/service/auth'
 
 const t = global.$t
-let isAuthorized = AuthService.getCurrentUser()
+let isAuthorized = AuthService.getCurrentUserData()
 
 const generateLink = (url) => {
   if (url && ![url.slice(1, 2), url.slice(0, 1)].includes('#')) {

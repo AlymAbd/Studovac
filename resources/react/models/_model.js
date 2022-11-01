@@ -2,32 +2,42 @@ import { session } from '@r/service/axios'
 
 class Model {
   route = null
-  methods = null
-  description = null
-  size = 4
+  description = ''
   columns = []
 
-  getColumns = () => {
-    return this.columns.filter((row) => {
-      return !row.hidden
-    })
+  getColumns = (getAll = false) => {
+    if (getAll) {
+      return this.columns
+    } else {
+      return this.columns.filter((row) => {
+        return !row.hidden
+      })
+    }
   }
 
-  getColumnsForState = (columns = null) => {
+  getColumnValues = (columns = null, validation = false) => {
+    let cols = {}
+    columns = columns ? columns : this.columns
+    columns.forEach((row) => {
+      cols[row.name] = validation ? '' : row.getValueOrDefault()
+      if (row instanceof CJSON) {
+        if (validation) {
+          cols = { ...cols, ...row.getSchemeValidation(validation) }
+        } else {
+          cols = { ...cols, ...row.getSchemeValues() }
+        }
+        delete cols[row.name]
+      }
+    })
+    return cols
+  }
+
+  getColumnState = (columns) => {
     let cols = {}
     columns = columns ? columns : this.columns
     columns.forEach((row) => {
       if (!row.hidden) {
-        let value
-        switch (row.format) {
-          case Column.FORMAT_CHECKBOX:
-            value = Boolean(row.default ? row.default : false)
-            break
-          default:
-            value = String(row.default ? row.default : '')
-            break
-        }
-        cols[row.name] = value
+        cols[row.name] = row
       }
       if (row instanceof CJSON) {
         cols = { ...cols, ...row.getScheme() }
@@ -36,21 +46,7 @@ class Model {
     return cols
   }
 
-  getColumnsForValidation = (columns) => {
-    let cols = {}
-    columns = columns ? columns : this.columns
-    columns.forEach((row) => {
-      if (!row.hidden) {
-        cols[row.name] = ''
-      }
-      if (row instanceof CJSON) {
-        cols = { ...cols, ...row.getSchemeValidation() }
-      }
-    })
-    return cols
-  }
-
-  getRoute(param = null) {
+  getRoute = (param = null) => {
     let url = this.route
     if (param) {
       url = url + '/detail/' + param
@@ -58,15 +54,7 @@ class Model {
     return url
   }
 
-  getMethods() {
-    return this.methods
-  }
-
-  getDescription() {
-    return this.description
-  }
-
-  handleData(modelState) {
+  handleData = (modelState) => {
     let data = {}
 
     Object.keys(modelState).forEach((column) => {
@@ -83,6 +71,112 @@ class Model {
       }
     })
     return data
+  }
+
+  // API Handlers block
+  prepareColumns = (data) => {
+    Object.keys(data).forEach((row) => {
+      if (data[row] !== null && typeof data[row] === 'object') {
+        Object.keys(data[row]).forEach((subRow) => {
+          data[row + '__' + subRow] = data[row][subRow]
+        })
+        delete data[row]
+      }
+    })
+    return data
+  }
+
+  applyValues = (data) => {
+    this.prepareColumns(data)
+    this.getColumns(true).forEach((column) => {
+      switch (column.format) {
+        case Column.FORMAT_JSON:
+          column.scheme.forEach((jsonCol) => {
+            jsonCol.setValue(data[jsonCol.name] !== undefined || data[jsonCol.name] !== null ? data[jsonCol.name] : jsonCol.default)
+          })
+          break
+        default:
+          column.setValue(data[column.name])
+          break
+      }
+    })
+  }
+
+  getAllRecords = (filters = null) => {
+    return new Promise((resolve, reject) => {
+      session
+        .get(this.getRoute() + '/?' + filters)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getDetailRecord = (id) => {
+    return new Promise((resolve, reject) => {
+      session
+        .get(this.getRoute(id))
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  createRecord = (data) => {
+    return new Promise((resolve, reject) => {
+      session
+        .post(this.getRoute(), data)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  updateRecord = (data, id) => {
+    return new Promise((resolve, reject) => {
+      session
+        .put(this.getRoute(id), data)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  deleteRecord = (id) => {
+    return new Promise((resolve, reject) => {
+      session
+        .delete(this.getRoute(id))
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  get title() {
+    return ''
+  }
+
+  get description() {
+    return this.description
+  }
+
+  get methods() {
+    return this.methods
   }
 }
 
@@ -124,6 +218,8 @@ class Column {
   _title = null
   _maxLength = -1
   _disabled = false
+  _value = null
+  _settedValues = false
 
   constructor(name, title = null) {
     this._name = name
@@ -133,6 +229,20 @@ class Column {
 
   static new(name, title = null) {
     return new this(name, title)
+  }
+
+  serialize = (value) => {
+    return value ? String(value) : ''
+  }
+
+  getValueOrDefault = () => {
+    return this.value !== null ? this.value : this.default
+  }
+
+  setValue = (value) => {
+    this._value = this.serialize(value)
+    this._settedValues = true
+    return this
   }
 
   setFormat = (value) => {
@@ -166,7 +276,7 @@ class Column {
   }
 
   setDefault = (value) => {
-    this._default = value
+    this._default = this.serialize(value)
     return this
   }
 
@@ -244,9 +354,15 @@ class Column {
   get disabled() {
     return this._disabled
   }
+
+  get value() {
+    return this._value || this.default
+  }
 }
 
 class CString extends Column {
+  _default = ''
+
   constructor(name, title = null) {
     super(name, title)
     if (name == 'password') {
@@ -261,6 +377,7 @@ class CString extends Column {
 
 class CText extends Column {
   _rows = 5
+  _default = ''
 
   constructor(name, title = null, rows = 5) {
     super(name, title)
@@ -279,6 +396,8 @@ class CText extends Column {
 }
 
 class CNumber extends Column {
+  _default = 0
+
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_INTEGER)
@@ -287,6 +406,8 @@ class CNumber extends Column {
 }
 
 class CFloat extends Column {
+  _default = 0
+
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_FLOAT)
@@ -297,6 +418,7 @@ class CFloat extends Column {
 class CDecimal extends Column {
   _max = null
   _places = null
+  _default = 0
 
   constructor(name, title = null, max = 100, places = 2) {
     super(name, title)
@@ -308,18 +430,30 @@ class CDecimal extends Column {
 }
 
 class CDateTime extends Column {
+  _default = ''
+
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_DATETIME)
     this.setFormat(Column.FORMAT_DATETIME)
   }
+
+  serialize = (value) => {
+    return new Date(value)
+  }
 }
 
 class CDate extends Column {
+  _default = ''
+
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_DATE)
     this.setFormat(Column.FORMAT_DATE)
+  }
+
+  serialize = (value) => {
+    return new Date(value)
   }
 
   withTime = () => {
@@ -330,14 +464,22 @@ class CDate extends Column {
 }
 
 class CBool extends Column {
+  _default = false
+
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_BOOL)
     this.setFormat(Column.FORMAT_CHECKBOX)
   }
+
+  serialize = (value) => {
+    return Boolean(value)
+  }
 }
 
 class CEnum extends Column {
+  _default = []
+
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_ARRAY)
@@ -400,6 +542,7 @@ class CForeign extends Column {
 
 class CJSON extends Column {
   _scheme = {}
+  _default = {}
 
   constructor(name, title = null) {
     super(name, title)
@@ -416,12 +559,17 @@ class CJSON extends Column {
 
   getScheme = () => {
     let model = new Model()
-    return model.getColumnsForState(this._scheme)
+    return model.getColumnState(this._scheme)
   }
 
-  getSchemeValidation = () => {
+  getSchemeValues = () => {
     let model = new Model()
-    return model.getColumnsForValidation(this._scheme)
+    return model.getColumnValues(this._scheme)
+  }
+
+  getSchemeValidation = (validation) => {
+    let model = new Model()
+    return model.getColumnValues(this._scheme, validation)
   }
 
   get requestName() {
@@ -434,6 +582,8 @@ class CJSON extends Column {
 }
 
 class CFile extends Column {
+  _default = ''
+
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_STRING)
@@ -441,4 +591,14 @@ class CFile extends Column {
   }
 }
 
-export { Model, Column, CFile, CBool, CDate, CDateTime, CFloat, CDecimal, CNumber, CText, CString, CEnum, CForeign, CJSON }
+class CImage extends Column {
+  _default = ''
+
+  constructor(name, title = null) {
+    super(name, title)
+    this.setType(Column.TYPE_STRING)
+    this.setFormat(Column.FORMAT_FILE)
+  }
+}
+
+export { Model, Column, CFile, CBool, CDate, CDateTime, CFloat, CDecimal, CNumber, CText, CString, CEnum, CForeign, CJSON, CImage }

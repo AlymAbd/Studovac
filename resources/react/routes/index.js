@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Navigate } from 'react-router-dom'
 import Auth from '@r/service/auth'
 
-const auth = Auth.getCurrentUser()
+const auth = Auth.getCurrentUserData()
 
 // System pages
 const Page500 = React.lazy(() => import('@r/pages/Page500'))

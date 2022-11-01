@@ -13,8 +13,13 @@ class AuthService {
     }
   }
 
-  getCurrentUser() {
-    return JSON.parse(localStorage.getItem(USER_DATA))
+  getCurrentUserData(key = null) {
+    const data = JSON.parse(localStorage.getItem(USER_DATA))
+    if (key) {
+      return data[key] || null
+    } else {
+      return data
+    }
   }
 
   setAccessToken(token) {

@@ -1,39 +1,63 @@
-import { Component } from 'react'
-import { CCol, CRow } from '@coreui/react'
-import FormMaker from '@r/components/FormMaker'
 import withRouter from '@r/components/WithRouter'
-import { session } from '@r/service/axios'
+import AbstractDetailForm from './abstract/DetailFormAbs'
+import {
+  CFormCheck,
+  CButton,
+  CCol,
+  CRow,
+  CFormInput,
+  CFormSelect,
+  CFormTextarea,
+  CForm,
+  CFormSwitch,
+  CFormLabel,
+  CCard,
+  CCardBody,
+  CButtonGroup,
+  CCardHeader,
+  CFormFeedback,
+} from '@coreui/react'
 
-class ObjectDetail extends Component {
+class ObjectDetail extends AbstractDetailForm {
   constructor(props) {
     super(props)
-
-    this.model = new props.model()
     this.id = this.props.id
-    this.state = {
-      model: null,
-    }
-
-    this.request().then((response) => {
-      this.setState({ model: response.data.data })
-    })
   }
 
-  request = () => {
-    return new Promise((resolve, reject) => {
-      session
-        .get(this.model.getRoute() + '?where[user.name]=' + this.id)
-        .then((response) => {
-          resolve(response)
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
+  submitForm = (event) => {
+    event.preventDefault()
+    const data = this.getValuesForRequest()
+    console.log(data)
+    this.model
+      .updateRecord(data, this.id)
+      .then((response) => {
+        this.onSubmitCallback(response)
+        console.log(response)
+      })
+      .catch((error) => {
+        this.onSubmitErrorCallback(error)
+      })
   }
 
-  render() {
-    return <FormMaker model={this.props.model} />
+  generateButtons = () => {
+    return (
+      <CButton color="danger" variant="outline" type="submit">
+        {global.$t('Update')}
+      </CButton>
+    )
+  }
+
+  componentDidMount() {
+    this.model
+      .getDetailRecord(this.id)
+      .then((response) => {
+        let data = response.data.data
+        this.model.applyValues(data)
+        this.setState({ model: this.model.getColumnValues() })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 

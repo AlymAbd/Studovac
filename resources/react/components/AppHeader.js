@@ -7,10 +7,12 @@ import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 
 import { AppHeaderDropdown } from './header/index'
 import { logo } from '@r/assets/brand/logo'
+import AuthService from '@r/service/auth'
 
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const userId = AuthService.getCurrentUserData('name')
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -31,7 +33,7 @@ const AppHeader = () => {
             <CNavLink href="#">Users</CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="/#/cabinet/user_settings">Settings</CNavLink>
+            <CNavLink href={'/#/cabinet/user_settings/' + userId}>Settings</CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav>

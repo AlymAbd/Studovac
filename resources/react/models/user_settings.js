@@ -1,14 +1,16 @@
-import { Model, CString, CDate, CDateTime, CJSON, CBool, CForeign } from './_model'
-import User from '@r/models/users'
+import { Model, CString, CDate, CDateTime, CJSON, CBool, CForeign, CImage } from './_model'
 
 const t = global.$t
+
 class UserSettings extends Model {
   route = '/system/user-setting'
   methods = ['POST', 'GET', 'PUT']
   description = t('Setup your settings')
+  title = t('User settings')
 
   columns = [
-    CForeign.new('user_id', 'User').setForeign(User).asHidden(),
+    CString.new('name', 'ID').asDisabled(),
+    CImage.new('path_to_photo', 'Photo'),
     CJSON.new('settings', t('Settings')).setScheme([
       CString.new('lang', t('Language'))
         .setOptions([
@@ -22,10 +24,11 @@ class UserSettings extends Model {
       CString.new('location', t('Location')).asDisabled(),
       CBool.new('email_notifications', t('Email notification')),
       CBool.new('telegram_notifications', t('Telegram notification')),
+      ,
       CString.new('telegram_id', t('Telegram ID')).asDisabled(),
     ]),
-    CDate.new('created_at', t('Created')).asDisabled(),
-    CDateTime.new('updated_at', t('Updated')).asDisabled(),
+    CDateTime.new('created_at', t('Created')).asDisabled().setDefault(new Date()),
+    CDateTime.new('updated_at', t('Updated')).asDisabled().setDefault(new Date()),
   ]
 }
 
