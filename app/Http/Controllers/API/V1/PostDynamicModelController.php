@@ -25,4 +25,19 @@ class PostDynamicModelController extends ApiModelController
         $result = $model::create($requestData);
         return response()->json(['data' => $result], Response::HTTP_CREATED);
     }
+
+    /**
+     * Upload files
+     */
+    public function uploadFile(Request $request, String $folder, String $model, String $id)
+    {
+        $model = $this->getModel($folder, $model, $request->all());
+        $filepaths = [];
+        foreach ($request->files->all() as $index => $file) {
+            $path = $request->file($index)->store($index);
+            $model->attachFile($path, $file, $id);
+            $filepaths[] = $path;
+        }
+        return response()->json(['data' => $filepaths], Response::HTTP_CREATED);
+    }
 }

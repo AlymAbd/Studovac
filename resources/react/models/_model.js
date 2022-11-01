@@ -154,6 +154,24 @@ class Model {
     })
   }
 
+  uploadFile = (formData, id) => {
+    return new Promise((resolve, reject) => {
+      session
+        .post(this.getRoute(id), formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            ContentType: 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   deleteRecord = (id) => {
     return new Promise((resolve, reject) => {
       session
@@ -207,6 +225,7 @@ class Column {
   static FORMAT_FOREIGN = 'foreign'
   static FORMAT_ENUM = 'enum'
   static FORMAT_JSON = 'json'
+  static FORMAT_IMAGE = 'image'
 
   _name = null
   _format = null
@@ -583,21 +602,64 @@ class CJSON extends Column {
 
 class CFile extends Column {
   _default = ''
+  _filetype = '*'
+  _multiple = false
+  _maxSize = 1024
+  _files = []
 
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_STRING)
     this.setFormat(Column.FORMAT_FILE)
   }
+
+  asMultiple = () => {
+    this._multiple = true
+    return this
+  }
+
+  text = () => {
+    this._filetype = '.txt'
+    return this
+  }
+
+  excel = () => {
+    this._filetype = '.xlsx,.xls'
+    return this
+  }
+
+  csv = () => {
+    this._filetype = '.csv'
+    return this
+  }
+
+  addFile = (filename) => {
+    this._files.push(filename)
+  }
+
+  serialize = (value) => {
+    return String(value)
+  }
+
+  /**
+   * @param {number} value
+   */
+  set maxSize(value) {
+    this._maxSize = value
+  }
+
+  get accepts() {
+    return this._filetype
+  }
 }
 
-class CImage extends Column {
-  _default = ''
+class CImage extends CFile {
+  _filetype = 'image/*'
 
   constructor(name, title = null) {
     super(name, title)
     this.setType(Column.TYPE_STRING)
-    this.setFormat(Column.FORMAT_FILE)
+    this.setFormat(Column.FORMAT_IMAGE)
   }
 }
 

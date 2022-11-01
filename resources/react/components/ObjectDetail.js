@@ -1,47 +1,32 @@
 import withRouter from '@r/components/WithRouter'
 import AbstractDetailForm from './abstract/DetailFormAbs'
-import {
-  CFormCheck,
-  CButton,
-  CCol,
-  CRow,
-  CFormInput,
-  CFormSelect,
-  CFormTextarea,
-  CForm,
-  CFormSwitch,
-  CFormLabel,
-  CCard,
-  CCardBody,
-  CButtonGroup,
-  CCardHeader,
-  CFormFeedback,
-} from '@coreui/react'
+import { CButton } from '@coreui/react'
 
 class ObjectDetail extends AbstractDetailForm {
   constructor(props) {
     super(props)
     this.id = this.props.id
-  }
 
-  submitForm = (event) => {
-    event.preventDefault()
-    const data = this.getValuesForRequest()
-    console.log(data)
-    this.model
-      .updateRecord(data, this.id)
-      .then((response) => {
-        this.onSubmitCallback(response)
-        console.log(response)
-      })
-      .catch((error) => {
-        this.onSubmitErrorCallback(error)
-      })
+    if (props.hasOwnProperty('onUpload')) {
+      this.onUploadCallback = props.onUpload
+    }
+
+    if (props.hasOwnProperty('onFailUpload')) {
+      this.onUploadErrorCallback = props.onFailUpload
+    }
+
+    if (props.hasOwnProperty('onSubmit')) {
+      this.onSubmitCallback = props.onSubmit
+    }
+
+    if (props.hasOwnProperty('onFailSubmit')) {
+      this.onSubmitErrorCallback = props.onFailSubmit
+    }
   }
 
   generateButtons = () => {
     return (
-      <CButton color="danger" variant="outline" type="submit">
+      <CButton color="warning" type="submit">
         {global.$t('Update')}
       </CButton>
     )
@@ -56,7 +41,7 @@ class ObjectDetail extends AbstractDetailForm {
         this.setState({ model: this.model.getColumnValues() })
       })
       .catch((error) => {
-        console.log(error)
+        //
       })
   }
 }

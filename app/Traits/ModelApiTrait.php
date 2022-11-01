@@ -6,7 +6,10 @@ trait ModelApiTrait
 {
     public function rules(): array
     {
-        return ['name' => ['unique' . static::getTableName(), 'max:64']];
+        return [
+            'update' => ['name' => ['unique:' . $this->getTable(), 'max:64']],
+            'created' => [],
+        ];
     }
 
     public function updateModifierAfterValidation(array $query): array

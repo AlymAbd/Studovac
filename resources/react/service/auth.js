@@ -32,6 +32,10 @@ class AuthService {
     localStorage.setItem(USER_DATA, JSON.stringify(data))
   }
 
+  updateUserInfo(key, value) {
+    localStorage.setItem(key, value)
+  }
+
   logout() {
     localStorage.removeItem(ACCESS_TOKEN)
     localStorage.removeItem(USER_DATA)

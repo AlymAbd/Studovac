@@ -7,6 +7,7 @@ use App\Models\Model;
 class UserSetting extends Model
 {
     protected $table = 'user_settings';
+    protected $filecol = 'path_to_photo';
 
     protected $hidden = [
         'id',
@@ -17,6 +18,7 @@ class UserSetting extends Model
         'name',
         'user_id',
         'settings',
+        'path_to_photo'
     ];
 
     protected $casts = [
@@ -32,5 +34,18 @@ class UserSetting extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function rules(): array
+    {
+        return [
+            'update' => [
+                'settings' => ['required', 'array'],
+            ],
+            'create' => [
+                'name' => ['unique:' . $this->getTable(), 'max:64'],
+                'settings' => ['array'],
+            ]
+        ];
     }
 }

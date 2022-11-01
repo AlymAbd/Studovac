@@ -17,6 +17,7 @@ class UserSettings extends Migration
             $table->id();
             $table->string('name', 63);
             $table->integer('user_id')->unsigned()->unique();
+            $table->string('path_to_photo', 255)->nullable()->default('/images/default.png');
             $table->json('settings');
             $table->timestamps();
 

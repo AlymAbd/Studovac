@@ -27,8 +27,8 @@ class UserSettings extends Model {
       ,
       CString.new('telegram_id', t('Telegram ID')).asDisabled(),
     ]),
-    CDateTime.new('created_at', t('Created')).asDisabled().setDefault(new Date()),
-    CDateTime.new('updated_at', t('Updated')).asDisabled().setDefault(new Date()),
+    CDateTime.new('created_at', t('Created')).asHidden(),
+    CDateTime.new('updated_at', t('Updated')).asHidden(),
   ]
 }
 

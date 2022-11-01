@@ -47,6 +47,9 @@ Route::prefix('v1')->group(function () {
 
             Route::put('{folder}/{model}/detail/{id}', 'PutDynamicModelController@update')
                 ->name('v1.model.detail.update');
+
+            Route::post('{folder}/{model}/detail/{id}', 'PostDynamicModelController@uploadFile')
+                ->name('v1.model.detail.upload');
         });
     });
 
