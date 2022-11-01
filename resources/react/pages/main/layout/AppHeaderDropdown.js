@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { CAvatar, CDropdown, CDropdownDivider, CDropdownHeader, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
 import { cilUser, cilUserPlus, cilAccountLogout, cilHouse, cilLanguage } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import avatar from '@r/assets/images/avatars/default.png'
 import LanguageChange from '@r/components/LanguageChange'
+import { getAvatar } from '@r/service/utils'
 import AuthService from '@r/service/auth'
 
 const t = global.$t
@@ -72,7 +72,7 @@ class AppHeaderDropdown extends Component {
         <LanguageChange closeCallback={this.hideModal} visible={this.state.visible} />
         <CDropdown variant="nav-item">
           <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-            <CAvatar src={avatar} size="md" />
+            <CAvatar src={getAvatar()} size="md" />
           </CDropdownToggle>
           <CDropdownMenu className="pt-0" placement="bottom-end">
             <CDropdownHeader className="bg-light fw-semibold py-2">{t('Account')}</CDropdownHeader>

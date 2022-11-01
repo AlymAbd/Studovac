@@ -1,6 +1,7 @@
 import React from 'react'
 
-const UserSettings = React.lazy(() => import('../pages/cabinet/user/user_settings'))
+const UserSettings = React.lazy(() => import('@r/pages/cabinet/user/UserSettings'))
+const UserTable = React.lazy(() => import('@r/pages/cabinet/user/User'))
 
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('../views/theme/colors/Colors'))
@@ -54,6 +55,7 @@ const Widgets = React.lazy(() => import('../views/widgets/Widgets'))
 
 const routes = [
   { path: '/user_settings/:id', name: 'User settings', element: UserSettings },
+  { path: '/users/', name: 'Users', element: UserTable },
 
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

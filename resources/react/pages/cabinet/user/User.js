@@ -1,27 +1,17 @@
-import UserSettings from '@r/models/user_settings'
-import ObjectDetail from '@r/components/ObjectDetail'
+import User from '@r/models/Users'
+import ObjectTable from '@r/components/ObjectTable'
 import { Component } from 'react'
 import { CCol, CRow } from '@coreui/react'
-import withRouter from '@r/components/WithRouter'
-import AuthService from '@r/service/auth'
-
-const auth = AuthService.updateUserInfo
 
 class UserSettingsComponent extends Component {
   constructor(props) {
     super(props)
 
-    let { id } = props.params
-    this.state = {
-      id: id,
-    }
+    this.state = {}
   }
 
   onSubmitCallback = (response) => {
-    response = response.data
-    auth('night_mode', response['settings__dark_mode'])
-    auth('photo', response['path_to_photo'])
-    global.$cookie.set('lang', response['settings__lang'])
+    //
   }
 
   onFailSubmitCallback = (response) => {
@@ -29,7 +19,7 @@ class UserSettingsComponent extends Component {
   }
 
   onUploadCallback = (response) => {
-    auth('photo', response.data.data[0])
+    //
   }
 
   onFailUploadCallback = (response) => {
@@ -40,9 +30,9 @@ class UserSettingsComponent extends Component {
     return (
       <CRow>
         <CCol xs={6}>
-          <ObjectDetail
+          <ObjectTable
             id={this.state.id}
-            model={UserSettings}
+            model={User}
             onUpload={this.onUploadCallback}
             onFailUpload={this.onFailUploadCallback}
             onSubmit={this.onSubmitCallback}
@@ -54,4 +44,4 @@ class UserSettingsComponent extends Component {
   }
 }
 
-export default withRouter(UserSettingsComponent)
+export default UserSettingsComponent

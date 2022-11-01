@@ -50,4 +50,8 @@ const capitalize = (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
-export { parseEmailOrPhone, getRoute, getLanguage, setLanguage, stripTrailingChar, parseURL, capitalize }
+const getAvatar = () => {
+  return localStorage.getItem('photo') || '/images/default.png'
+}
+
+export { parseEmailOrPhone, getRoute, getLanguage, setLanguage, stripTrailingChar, parseURL, capitalize, getAvatar }
