@@ -36,7 +36,7 @@ class UserSetting extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function rules(): array
+    public function rules($params = null, $object = null): array
     {
         return [
             'update' => [

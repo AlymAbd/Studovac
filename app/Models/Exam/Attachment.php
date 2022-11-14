@@ -19,7 +19,7 @@ class Attachment extends Model
         'valid_to'
     ];
 
-    public function rules(): array
+    public function rules($params = null, $object = null): array
     {
         return [
             'title' => 'string|required|max:255',

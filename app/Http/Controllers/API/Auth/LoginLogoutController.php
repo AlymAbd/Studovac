@@ -57,7 +57,7 @@ class LoginLogoutController extends Controller
      *
      * @return array
      */
-    protected function rules()
+    protected function rules($params = null, $object = null)
     {
         return [
             'email' => 'required_without:phone|email|max:255',

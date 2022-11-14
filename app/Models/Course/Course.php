@@ -33,7 +33,7 @@ class Course extends Model
         'checked_at' => 'datetime'
     ];
 
-    public function rules(): array
+    public function rules($params = null, $object = null): array
     {
         return [
             'create' => [
@@ -70,7 +70,7 @@ class Course extends Model
         return $this->belongsTo('App\Models\User\User', 'moderator_id');
     }
 
-    public function createModifierAfterValidation(array $query): array
+    public function createModifierAfterValidation(array $query, $object = null): array
     {
         $query['creator_id'] = auth()->id();
         return $query;

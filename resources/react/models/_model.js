@@ -15,9 +15,16 @@ class Model {
     }
   }
 
+  getColumn = (name, fromAll = true) => {
+    const colum = this.getColumns(fromAll).filter((row) => {
+      return row.name == name
+    })
+    return colum === undefined ? null : colum[0]
+  }
+
   getColumnValues = (columns = null, validation = false) => {
     let cols = {}
-    columns = columns ? columns : this.columns
+    columns = columns ? columns : this.getColumns()
     columns.forEach((row) => {
       cols[row.name] = validation ? '' : row.getValueOrDefault()
       if (row instanceof CJSON) {
@@ -90,6 +97,9 @@ class Model {
     this.prepareColumns(data)
     this.getColumns(true).forEach((column) => {
       switch (column.format) {
+        case Column.FORMAT_FOREIGN:
+          column.setValue(data[column.name + '__name'])
+          break
         case Column.FORMAT_JSON:
           column.scheme.forEach((jsonCol) => {
             jsonCol.setValue(data[jsonCol.name] !== undefined || data[jsonCol.name] !== null ? data[jsonCol.name] : jsonCol.default)
@@ -102,10 +112,18 @@ class Model {
     })
   }
 
-  getAllRecords = (filters = null) => {
+  getAllRecords = (limit = 10, page = 1, orderBy = null, orderDest = 'asc', otherFilters = null) => {
+    let filters = ['limit=' + limit, 'page=' + page]
+    if (orderBy) {
+      filters = filters.concat(filters, ['order_by=' + orderBy, 'order_dest=' + orderDest])
+    }
+    if (otherFilters) {
+      filters.concat(filters, otherFilters)
+    }
+
     return new Promise((resolve, reject) => {
       session
-        .get(this.getRoute() + '/?' + filters)
+        .get(this.getRoute() + '/?' + filters.join('&'))
         .then((response) => {
           resolve(response)
         })
@@ -115,10 +133,20 @@ class Model {
     })
   }
 
-  getDetailRecord = (id) => {
+  getDetailRecord = (id, relations = null) => {
+    let route = this.getRoute(id)
+    if (relations) {
+      if (Array.isArray(relations)) {
+        relations.forEach((rel) => {
+          route = route + '/?with[]=' + rel
+        })
+      } else {
+        route = route + '/?with=' + relations
+      }
+    }
     return new Promise((resolve, reject) => {
       session
-        .get(this.getRoute(id))
+        .get(route)
         .then((response) => {
           resolve(response)
         })
@@ -226,6 +254,7 @@ class Column {
   static FORMAT_ENUM = 'enum'
   static FORMAT_JSON = 'json'
   static FORMAT_IMAGE = 'image'
+  static FORMAT_ID = 'cid'
 
   _name = null
   _format = null
@@ -239,6 +268,8 @@ class Column {
   _disabled = false
   _value = null
   _settedValues = false
+  _canSort = false
+  _canFilter = false
 
   constructor(name, title = null) {
     this._name = name
@@ -256,6 +287,17 @@ class Column {
 
   getValueOrDefault = () => {
     return this.value !== null ? this.value : this.default
+  }
+
+  getOption = (value = null, label = null) => {
+    let option = this.options.filter((row) => {
+      if (label) {
+        return row.label === label
+      } else {
+        return row.value === value
+      }
+    })
+    return option.length > 0 ? option[0] : {}
   }
 
   setValue = (value) => {
@@ -309,6 +351,11 @@ class Column {
     return this
   }
 
+  asMultipleSelect = () => {
+    this.setFormat(Column.FORMAT_MULTISELECT)
+    return this
+  }
+
   asRadio = () => {
     this.setFormat(Column.FORMAT_RADIO)
     return this
@@ -324,14 +371,35 @@ class Column {
     return this
   }
 
-  asHidden = () => {
-    this._hidden = true
+  asHidden = (value = true) => {
+    this._hidden = value
     return this
   }
 
   asDisabled = () => {
     this._disabled = true
     return this
+  }
+
+  asFilterable = () => {
+    this._canFilter = true
+    return this
+  }
+
+  asSortable = () => {
+    this._canSort = true
+    return this
+  }
+
+  getOption = (value = null, label = null) => {
+    value = value ? value : this.value
+    return this.options.filter((row) => {
+      if (label) {
+        return row.label === label
+      } else {
+        return row.value === value
+      }
+    })
   }
 
   get name() {
@@ -377,6 +445,14 @@ class Column {
   get value() {
     return this._value || this.default
   }
+
+  get sortable() {
+    return this._canSort
+  }
+
+  get filterable() {
+    return this._canFilter
+  }
 }
 
 class CString extends Column {
@@ -391,6 +467,17 @@ class CString extends Column {
     }
     this.setType(Column.TYPE_STRING)
     this.setMaxlength(255)
+  }
+}
+
+class CID extends Column {
+  _default = ''
+
+  constructor(name, title = null) {
+    super(name, title)
+    this.setFormat(Column.FORMAT_ID)
+    this.setType(Column.TYPE_STRING)
+    this.asDisabled()
   }
 }
 
@@ -460,6 +547,15 @@ class CDateTime extends Column {
   serialize = (value) => {
     return new Date(value)
   }
+
+  toNormalDate = (value) => {
+    const date = this.serialize(value)
+    const mm = date.getMonth() + 1
+    const dd = date.getDate()
+    const datet = [date.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('.')
+    const time = [date.getHours(), date.getMinutes(), date.getSeconds()].join(':')
+    return datet + ' ' + time
+  }
 }
 
 class CDate extends Column {
@@ -479,6 +575,13 @@ class CDate extends Column {
     this.setType(Column.TYPE_DATETIME)
     this.setFormat(Column.FORMAT_DATETIME)
     return this
+  }
+
+  toNormalDate = (value) => {
+    const date = this.serialize(value)
+    const mm = date.getMonth() + 1
+    const dd = date.getDate()
+    return [date.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('.')
   }
 }
 
@@ -510,6 +613,7 @@ class CForeign extends Column {
   _requestName = null
   _foreign = null
   _where = null
+  _default = ''
 
   constructor(name, title = null) {
     super(name, title)
@@ -663,4 +767,4 @@ class CImage extends CFile {
   }
 }
 
-export { Model, Column, CFile, CBool, CDate, CDateTime, CFloat, CDecimal, CNumber, CText, CString, CEnum, CForeign, CJSON, CImage }
+export { Model, Column, CID, CFile, CBool, CDate, CDateTime, CFloat, CDecimal, CNumber, CText, CString, CEnum, CForeign, CJSON, CImage }

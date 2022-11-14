@@ -16,14 +16,15 @@ class PostDynamicModelController extends ApiModelController
      */
     public function store(Request $request, String $folder, String $model)
     {
-        $model = $this->getModel($folder, $model, $request->all());
         $requestData = $request->all();
-        $requestData = $model->createModifierBeforeValidation($requestData);
+        $model = $this->getModel($folder, $model, $requestData);
+        $requestData = $model->createModifierBeforeValidation($request->all());
         $requestData = $this->validate($requestData, $model->getRules('create'))->validated();
         $requestData = $model->createModifierAfterValidation($requestData);
         $requestData['name'] = \App\Models\Model::generateUniqueName();
-        $result = $model::create($requestData);
-        return response()->json(['data' => $result], Response::HTTP_CREATED);
+        $object = $model::create($requestData);
+        $object = $model->afterCreate($request->all(), $requestData, $object);
+        return response()->json(['data' => $object], Response::HTTP_CREATED);
     }
 
     /**

@@ -8,6 +8,8 @@ use App\Http\Controllers\API\ApiModelController;
 
 class GetDynamicModelController extends ApiModelController
 {
+    protected $paginate = 10;
+
     /**
      * Display resource.
      *
@@ -18,7 +20,8 @@ class GetDynamicModelController extends ApiModelController
     {
         try {
             $query = $request->all();
-            $model = $this->getModel($folder, $model, $request->all())::select('*');
+            $modelClass = $this->getModel($folder, $model, $request->all());
+            $model = $modelClass::select('*');
             $model = $this->modifySelect($model, $query);
             $model = $this->modifyOrder($model, $query);
 
@@ -40,8 +43,11 @@ class GetDynamicModelController extends ApiModelController
                 }
             }
 
+            if (array_key_exists('limit', $query) && $query['limit'] < $modelClass->getMaxLimit()) {
+                $this->paginate = $query['limit'];
+            }
             $model = $this->modifyScope($model, $query);
-            $model = $model->simplePaginate(15);
+            $model = $model->paginate($this->paginate);
         } catch (\Illuminate\Database\QueryException $e) {
             return abort(400, 'Wrong input data: ' . $e);
         }
@@ -70,7 +76,10 @@ class GetDynamicModelController extends ApiModelController
 
     protected function modifySelect(Builder $eloq, array $query): Builder
     {
-        if (isset($query['fields'])) {
+        if ($query['with'] ?? false) {
+            return $eloq->with($query['with']);
+        }
+        if ($query['fields'] ?? false) {
             $relation = [];
             foreach ($query['fields'] as $ind => $field) {
                 if (str_contains($field, '.')) {
@@ -97,8 +106,8 @@ class GetDynamicModelController extends ApiModelController
 
     protected function modifyOrder(Builder $eloq, array $query): Builder
     {
-        if (isset($query['order_field'])) {
-            return $eloq->orderBy($query['order_field'], ($query['order_destination'] ?? 'asc'));
+        if (isset($query['order_by'])) {
+            return $eloq->orderBy($query['order_by'], ($query['order_dest'] ?? 'asc'));
         } else {
             return $eloq->orderBy('id');
         }

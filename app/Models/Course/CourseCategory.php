@@ -28,7 +28,7 @@ class CourseCategory extends Model
         'valid_to' => 'datetime',
     ];
 
-    public function rules(): array
+    public function rules($params = null, $object = null): array
     {
         return [
             'course_id' => 'exists:courses,id',

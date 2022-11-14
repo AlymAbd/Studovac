@@ -21,7 +21,7 @@ class Order extends Model
         'order_status',
     ];
 
-    public function rules(): array
+    public function rules($params = null, $object = null): array
     {
         return [
             'create' => [

@@ -2,6 +2,10 @@ import React from 'react'
 
 const UserSettings = React.lazy(() => import('@r/pages/cabinet/user/UserSettings'))
 const UserTable = React.lazy(() => import('@r/pages/cabinet/user/User'))
+const UserDetail = React.lazy(() => import('@r/pages/cabinet/user/UserDetail'))
+
+const CourseCategory = React.lazy(() => import('@r/pages/cabinet/course/Categories'))
+const CourseCategoryDetail = React.lazy(() => import('@r/pages/cabinet/course/CategoriesDetail'))
 
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('../views/theme/colors/Colors'))
@@ -55,7 +59,13 @@ const Widgets = React.lazy(() => import('../views/widgets/Widgets'))
 
 const routes = [
   { path: '/user_settings/:id', name: 'User settings', element: UserSettings },
-  { path: '/users/', name: 'Users', element: UserTable },
+  { path: '/users', exact: true, name: 'Users', element: UserTable },
+  { path: '/users/create', exact: true, name: 'User create', element: UserDetail },
+  { path: '/users/:id', name: 'User detail', element: UserDetail },
+
+  { path: '/course/category', exact: true, name: 'Course category', element: CourseCategory },
+  { path: '/course/category/create', exact: true, name: 'Course category detail', element: CourseCategoryDetail },
+  { path: '/course/category/:id', name: 'Course category detail', element: CourseCategoryDetail },
 
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

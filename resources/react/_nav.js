@@ -62,7 +62,7 @@ const _nav = [
       {
         component: CNavItem,
         name: t('Category courses'),
-        to: '/cabinet/course_categories',
+        to: '/cabinet/course/category',
         icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
       },
       {

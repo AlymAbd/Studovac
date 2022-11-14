@@ -6,7 +6,6 @@ import {
   CCol,
   CRow,
   CFormInput,
-  CFormSelect,
   CFormTextarea,
   CForm,
   CFormSwitch,
@@ -18,9 +17,27 @@ import {
   CFormFeedback,
   CImage,
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
 import DatePicker from 'react-datepicker'
+import Select, { components } from 'react-select'
 
 const t = global.$t
+const { Option } = components
+
+const IconOption = (props) => {
+  let items = ''
+  if (props.data.hasOwnProperty('icon')) {
+    items = <CIcon icon={props.data.icon} />
+  }
+
+  return (
+    <Option {...props}>
+      {items}
+      {'  '}
+      {props.data.label}
+    </Option>
+  )
+}
 
 class AbstractColumnGenerators extends Component {
   getForeign = (column) => {
@@ -37,19 +54,35 @@ class AbstractColumnGenerators extends Component {
   // fields
   generateForeign = (column, options) => {
     if (!this.state.foreign.hasOwnProperty(column.name)) {
-      column.requestOptions().then((response) => {
-        let data = this.state
-        data.foreign[column.name] = []
+      column.requestOptions(this.state.model[column.name]).then((response) => {
+        this.state.foreign[column.name] = []
         response.data.data.forEach((row) => {
-          data.foreign[column.name].push({
+          this.state.foreign[column.name].push({
             label: row.title,
-            value: row.unique_title,
+            value: row.name,
           })
         })
-        this.setState(data)
+        this.setState({ foreign: this.state.foreign })
       })
     }
-    return <CFormSelect value={this.state.model[column.name]} options={this.state.foreign[column.name]} {...options} />
+    const currentValue = this.state.foreign[column.name]
+      ? this.state.foreign[column.name].find((item) => item.value === this.state.model[column.name])
+      : ''
+    const selectOptions = this.state.foreign[column.name]
+      ? this.state.foreign[column.name].filter((row) => {
+          return row.value !== this.state.model[column.name]
+        })
+      : []
+    return (
+      <CRow>
+        <CCol xs={11}>
+          <Select name={column.name} isSearchable options={selectOptions} value={currentValue} onChange={this.handleSelect} {...options.isolated} />
+        </CCol>
+        <CCol xs={1}>
+          <button className="btn btn-dark">X</button>
+        </CCol>
+      </CRow>
+    )
   }
 
   generateNumber = (column, options) => {
@@ -61,7 +94,16 @@ class AbstractColumnGenerators extends Component {
   }
 
   generateSelect = (column, options) => {
-    return <CFormSelect options={column.options} value={this.state.model[column.name]} {...options} />
+    return (
+      <Select
+        name={column.name}
+        options={column.options}
+        value={column.options.find((item) => item.value === this.state.model[column.name])}
+        onChange={this.handleSelect}
+        components={{ Option: IconOption }}
+        {...options.isolated}
+      />
+    )
   }
 
   generateDate = (column, options) => {
@@ -77,10 +119,6 @@ class AbstractColumnGenerators extends Component {
     options['showTimeSelect'] = true
     options['dateFormat'] = 'Pp'
     return this.generateDate(column, options)
-  }
-
-  generateMultiselect = (column, options) => {
-    return <CFormSelect options={column.options} value={this.state.model[column.name]} multiple {...options} />
   }
 
   generateCheckbox = (column, options) => {
@@ -212,16 +250,21 @@ class AbstractColumnGenerators extends Component {
       case Column.FORMAT_TEXT:
         col = this.generateText(column, options)
         break
-      case Column.FORMAT_SELECT:
+      case Column.FORMAT_MULTISELECT:
+        options.isolated = {
+          isMulti: true,
+        }
         col = this.generateSelect(column, options)
         break
-      case Column.FORMAT_MULTISELECT:
-        col = this.generateMultiselect(column, options)
+      case Column.FORMAT_SELECT:
+        options.isolated = {}
+        col = this.generateSelect(column, options)
         break
       case Column.FORMAT_TEXTAREA:
         col = this.generateTextarea(column, options)
         break
       case Column.FORMAT_FOREIGN:
+        options.isolated = {}
         col = this.generateForeign(column, options)
         break
       case Column.FORMAT_FILE:
@@ -239,16 +282,18 @@ class AbstractColumnGenerators extends Component {
 
     if ([Column.FORMAT_JSON, Column.FORMAT_IMAGE].includes(column.format)) {
       return (
-        <div key={'input' + column.name} className="mb-3">
+        <div key={'input' + column.name} className="mb-2">
           {col}
         </div>
       )
     } else {
       return (
-        <div key={'input' + column.name} className="mb-4">
+        <div key={'input' + column.name} className="mb-2">
           <CFormLabel htmlFor={column.name}>{column.title}</CFormLabel>
           {col}
-          <CFormFeedback invalid>{this.state.validation[column.name]}</CFormFeedback>
+          <CFormFeedback style={{ whiteSpace: 'pre-line' }} invalid>
+            {this.state.validation[column.name]}
+          </CFormFeedback>
         </div>
       )
     }
@@ -295,19 +340,22 @@ class AbstractDetailForm extends AbstractColumnGenerators {
   }
 
   handleInput = (e) => {
-    let data = this.state
     let value = e.target.value
     if (e.target.type === 'checkbox') {
-      value = !data.model[e.target.id ? e.target.id : e.target.name]
+      value = !this.state.model[e.target.id ? e.target.id : e.target.name]
     }
-    data.model[e.target.id ? e.target.id : e.target.name] = value
-    this.setState(data)
+    this.state.model[e.target.id ? e.target.id : e.target.name] = value
+    this.setState({ model: this.state.model })
   }
 
   handleDate = (date, model) => {
-    let data = this.state
-    data.model[model] = date.getTime()
-    this.setState(data)
+    this.state.model[model] = date.getTime()
+    this.setState({ model: this.state.model })
+  }
+
+  handleSelect = ({ label, value, ...other }, e) => {
+    this.state.model[e.name] = value
+    this.setState({ model: this.state.model })
   }
 
   handleFile = (e) => {
@@ -331,7 +379,6 @@ class AbstractDetailForm extends AbstractColumnGenerators {
 
   uploadFile = (event) => {
     event.preventDefault()
-
     let formData = new FormData()
     Object.keys(this.state.files).forEach((fileType) => {
       Object.keys(this.state.files[fileType]).forEach((fileName) => {
@@ -350,17 +397,48 @@ class AbstractDetailForm extends AbstractColumnGenerators {
 
   submitForm = (event) => {
     event.preventDefault()
-    this.model
-      .updateRecord(this.getValuesForRequest(), this.id)
-      .then((response) => {
-        let data = response.data
-        this.model.applyValues(data)
-        this.setState({ model: this.model.getColumnValues() })
-        this.onSubmitCallback(response)
-      })
-      .catch((error) => {
-        this.onSubmitErrorCallback(error)
-      })
+    this.setState({ validation: this.model.getColumnValues(null, true) })
+    if (this.id) {
+      this.model
+        .updateRecord(this.getValuesForRequest(), this.id)
+        .then((response) => {
+          let data = response.data
+          this.model.applyValues(data)
+          this.setState({ model: this.model.getColumnValues() })
+          this.onSubmitCallback(response)
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 400) {
+            this.handleError(error)
+          }
+          this.onSubmitErrorCallback(error)
+        })
+    } else {
+      this.model
+        .createRecord(this.getValuesForRequest())
+        .then((response) => {
+          let data = response.data
+          this.model.applyValues(data)
+          this.setState({ model: this.model.getColumnValues() })
+          this.onSubmitCallback(response)
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 400) {
+            this.handleError(error)
+          }
+          this.onSubmitErrorCallback(error)
+        })
+    }
+  }
+
+  handleError = (error) => {
+    let errors = error.response.data
+    Object.keys(this.state.validation).forEach((key) => {
+      if (errors.hasOwnProperty(key)) {
+        this.state.validation[key] = errors[key].join('\n')
+      }
+    })
+    this.setState({ validation: this.state.validation })
   }
 
   onSubmitCallback = (response) => {
@@ -395,13 +473,15 @@ class AbstractDetailForm extends AbstractColumnGenerators {
     return formData
   }
 
-  render() {
+  prepareForm = () => {
     let form = []
-
     this.model.getColumns().forEach((col, i) => {
       form.push(this.generateField(col))
     })
+    return form
+  }
 
+  render() {
     return (
       <div className="mb-4">
         {this.genereateTopBar()}
@@ -410,7 +490,7 @@ class AbstractDetailForm extends AbstractColumnGenerators {
           <p>
             <strong className="text-medium-emphasis">{this.description}</strong>
           </p>
-          {form}
+          {this.prepareForm()}
           <CRow>
             <CCol xs={4}>
               <CButtonGroup role="group" aria-label="Basic outlined example">

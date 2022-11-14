@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\ModelApiTrait;
+use Illuminate\Validation\Rule;
 
 class User extends Authenticatable
 {
@@ -19,6 +20,8 @@ class User extends Authenticatable
     const STUDENT = 'student';
     const TEACHER = 'teacher';
     const ADMIN = 'administrator';
+
+    const MAX_LIMIT = 50;
 
     /**
      * The attributes that are mass assignable.
@@ -89,7 +92,7 @@ class User extends Authenticatable
         //
     }
 
-    public function rules(): array
+    public function rules($params, $object): array
     {
         return [
             'create' => [
@@ -100,13 +103,14 @@ class User extends Authenticatable
             ],
             'update' => [
                 'title' => ['string', 'max:50'],
-                'phone' => ['numeric', 'min:8', 'unique:users,phone'],
-                'password' => ['min:8', 'confirmed']
+                'phone' => ['numeric', 'min:8', 'unique:users,phone,' . $object->id, "nullable"],
+                'password' => ['min:8', 'confirmed'],
+                'access_type' => Rule::in(array_keys($this->getRoles()))
             ]
         ];
     }
 
-    public function updateModifierAfterValidation(array $query): array
+    public function updateModifierAfterValidation(array $query, $object = null): array
     {
         if (array_key_exists('password', $query)) {
             $query['password'] = \Hash::make($query['password']);
@@ -117,7 +121,7 @@ class User extends Authenticatable
         return $query;
     }
 
-    public function createModifierAfterValidation(array $query): array
+    public function createModifierAfterValidation(array $query, $object = null): array
     {
         $query['access_type'] = self::GUEST;
         $query['password'] = bcrypt($query['password']);
@@ -142,5 +146,10 @@ class User extends Authenticatable
     public function passwordResets()
     {
         return $this->hasOne(PasswordReset::class, 'user_id');
+    }
+
+    public function getMaxLimit()
+    {
+        return self::MAX_LIMIT;
     }
 }

@@ -24,7 +24,7 @@ class Price extends Model
         'valid_to' => 'datetime',
     ];
 
-    public function rules(): array
+    public function rules($params = null, $object = null): array
     {
         return [
             'create' => [

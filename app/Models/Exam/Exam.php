@@ -26,7 +26,7 @@ class Exam extends Model
         'level_logic_id'
     ];
 
-    public function rules(): array
+    public function rules($params = null, $object = null): array
     {
         return [
             'create' => [
