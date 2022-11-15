@@ -6,21 +6,18 @@ import App from './app'
 import reportWebVitals from './service/report_web_vitals'
 import { Provider } from 'react-redux'
 import store from './store'
-import Cookies from 'universal-cookie'
 import * as ServiceWorker from './service/worker'
 import i18next from 'i18next'
+import { cookies } from '@r/service/utils'
 
 global.$t = i18next.t
 
-const cookies = new Cookies()
 if (!cookies.get('lang')) {
-  let userLang = navigator.language || navigator.userLanguage
-  cookies.set('lang', userLang || 'en', { path: '/' })
+  let userLang = navigator.language || navigator.userLanguage || 'en'
+  cookies.set('lang', userLang, { path: '/', sameSite: 'lax' })
 }
 
 import './i18n'
-
-global.$cookie = cookies
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>

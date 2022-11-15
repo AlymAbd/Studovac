@@ -1,11 +1,26 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { CAlert, CButton, CCard, CCardBody, CCardGroup, CCol, CContainer, CForm, CFormInput, CInputGroup, CInputGroupText, CRow } from '@coreui/react'
+import {
+  CAlert,
+  CButton,
+  CCard,
+  CCardBody,
+  CCardGroup,
+  CCol,
+  CContainer,
+  CForm,
+  CFormInput,
+  CFormSwitch,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
+} from '@coreui/react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { Main } from './layout'
 import AuthService from '@r/service/auth'
 import { parseEmailOrPhone, capitalize } from '@r/service/utils'
+import { t } from 'i18next'
 
 class Login extends Component {
   constructor(props) {
@@ -15,6 +30,7 @@ class Login extends Component {
       email: '',
       phone: '',
       password: '',
+      remember: true,
       message_type: 'primary',
       message_text: '',
     }
@@ -31,6 +47,10 @@ class Login extends Component {
     this.setState(data)
   }
 
+  handleCheckbox = (e) => {
+    this.setState({ remember: e.target.checked })
+  }
+
   handleAuth = (event) => {
     event.preventDefault()
     AuthService.login(this.state)
@@ -41,8 +61,11 @@ class Login extends Component {
         this.setState({ message_type: 'danger' })
         if (error.response && (error.response.status !== 400 || error.response.status !== 403)) {
           this.setState({ message_text: capitalize(error.response.data.error) })
-        } else {
+        } else if (error.response) {
           this.setState({ message_text: error.response.statusText })
+        } else {
+          this.setState({ message_text: t('Server error :(') })
+          console.error(error)
         }
       })
   }
@@ -84,10 +107,13 @@ class Login extends Component {
                           />
                         </CInputGroup>
                         <CRow>
-                          <CCol xs={6}>
+                          <CCol xs={5}>
                             <CButton color="primary" className="px-4" type="submit">
                               {t('Login')}
                             </CButton>
+                          </CCol>
+                          <CCol xs={3}>
+                            <CFormSwitch label={t('Remember me')} checked={this.state.remember} onChange={this.handleCheckbox} />
                           </CCol>
                           <CCol xs={6} className="text-right">
                             <Link to="/reset_password">

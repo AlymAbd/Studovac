@@ -54,4 +54,4 @@ const getAvatar = () => {
   return localStorage.getItem('photo') || '/images/default.png'
 }
 
-export { parseEmailOrPhone, getRoute, getLanguage, setLanguage, stripTrailingChar, parseURL, capitalize, getAvatar }
+export { parseEmailOrPhone, cookies, getRoute, getLanguage, setLanguage, stripTrailingChar, parseURL, capitalize, getAvatar }

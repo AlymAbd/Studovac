@@ -1,31 +1,45 @@
 import { base, session } from './axios'
-import { ACCESS_TOKEN, USER_DATA, EXPIR_DATE } from './config'
+import { ACCESS_TOKEN, USER_DATA } from './config'
+import { cookies } from './utils'
 
 class AuthService {
+  _getToken() {
+    return cookies.get(ACCESS_TOKEN) || sessionStorage.getItem(ACCESS_TOKEN)
+  }
+
   getAccessToken() {
-    if (Number(localStorage.getItem(EXPIR_DATE)) > new Date().getTime()) {
-      return localStorage.getItem(ACCESS_TOKEN)
+    const token = this._getToken()
+    if (token) {
+      return token
     } else {
-      localStorage.removeItem(ACCESS_TOKEN)
-      localStorage.removeItem(USER_DATA)
-      localStorage.removeItem(EXPIR_DATE)
+      this.logout()
       return false
     }
   }
 
   getCurrentUserData(key = null) {
-    const data = JSON.parse(localStorage.getItem(USER_DATA))
-    if (key) {
-      return data[key] || null
+    if (this.getAccessToken()) {
+      const data = JSON.parse(localStorage.getItem(USER_DATA))
+      if (key) {
+        return data[key] || null
+      } else {
+        return data
+      }
     } else {
-      return data
+      return false
     }
   }
 
-  setAccessToken(token) {
-    localStorage.setItem(EXPIR_DATE, new Date().getTime() + 70000000)
-    localStorage.setItem(ACCESS_TOKEN, token)
-    return token
+  setAccessToken(token, remember = false) {
+    if (remember) {
+      cookies.set(ACCESS_TOKEN, token, {
+        path: '/',
+        expires: new Date(new Date().getTime() + 1000000000),
+        sameSite: 'strict',
+      })
+    } else {
+      sessionStorage.setItem(ACCESS_TOKEN, token)
+    }
   }
 
   setCurrentUser(data) {
@@ -37,12 +51,14 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem(ACCESS_TOKEN)
+    cookies.remove(ACCESS_TOKEN)
+    cookies.removeItem('studovac_session')
+    cookies.removeItem('XSRF-TOKEN')
     localStorage.removeItem(USER_DATA)
     return true
   }
 
-  login({ email, phone, password }) {
+  login({ email, phone, password, remember }) {
     return new Promise((resolve, reject) => {
       base
         .post('/login/', {
@@ -51,7 +67,7 @@ class AuthService {
           password: password,
         })
         .then((response) => {
-          this.setAccessToken(response.data.token)
+          this.setAccessToken(response.data.token, remember)
           delete response.data.token
           delete response.data.id
           this.setCurrentUser(response.data)
