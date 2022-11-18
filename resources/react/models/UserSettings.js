@@ -1,4 +1,5 @@
 import { Model, CString, CDate, CDateTime, CJSON, CBool, CForeign, CImage } from './_model'
+import { cookies } from '@r/service/utils'
 
 const t = global.$t
 
@@ -19,7 +20,7 @@ class UserSettings extends Model {
           { value: 'ru', label: 'Русский' },
         ])
         .asSelect()
-        .setDefault(global.$cookie.get('lang')),
+        .setDefault(cookies.get('lang')),
       CBool.new('dark_mode', t('Night mode')),
       CString.new('location', t('Location')).asDisabled(),
       CBool.new('email_notifications', t('Email notification')),
@@ -27,8 +28,8 @@ class UserSettings extends Model {
       ,
       CString.new('telegram_id', t('Telegram ID')).asDisabled(),
     ]),
-    CDateTime.new('created_at', t('Created')).asHidden(),
-    CDateTime.new('updated_at', t('Updated')).asHidden(),
+    CDateTime.new('created_at', t('Created')).asDisabled().asHidden(),
+    CDateTime.new('updated_at', t('Updated')).asDisabled().asHidden(),
   ]
 }
 

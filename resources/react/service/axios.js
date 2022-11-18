@@ -1,5 +1,10 @@
 import axios from 'axios'
 import { ACCESS_TOKEN, CSRF_HEADER_NAME, CSRF_COOKIE_NAME, APP_URL } from './config'
+import { cookies } from './utils'
+
+const getToken = () => {
+  return cookies.get(ACCESS_TOKEN) || sessionStorage.getItem(ACCESS_TOKEN)
+}
 
 axios.defaults.baseURL = APP_URL
 
@@ -9,7 +14,7 @@ const base = axios.create({
 })
 
 base.defaults.headers.common = {
-  Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
+  Authorization: `Bearer ${getToken()}`,
   Accept: 'application/json',
   ContentType: 'application/json',
 }
@@ -18,7 +23,7 @@ const session = base
 
 session.interceptors.request.use(
   (config) => {
-    config.headers['Authorization'] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`
+    config.headers['Authorization'] = `Bearer ${getToken()}`
     return config
   },
   (error) => {

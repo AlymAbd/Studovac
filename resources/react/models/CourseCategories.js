@@ -64,17 +64,14 @@ class CourseCategoriesParent extends Model {
     CID.new('name', '#'),
     CString.new('title', 'Title').setMaxlength(255),
     CString.new('description', 'Description').setMaxlength(255),
-    CString.new('icon', 'Icon').setOptions(icons).asSelect(),
+    CString.new('icon', 'Icon').setOptions(icons).asSelect().asRequired(),
     CDateTime.new('created_at', 'Created').asDisabled(),
     CDateTime.new('updated_at', 'Updated').asDisabled(),
   ]
 }
 
 class CourseCategories extends CourseCategoriesParent {
-  columns = [
-    ...this.columns,
-    CForeign.new('parent_id', 'Parent').setForeign(CourseCategoriesParent).setRequestName('parent').setRequestName('parentId'),
-  ]
+  columns = [...this.columns, CForeign.new('parent_id', 'Parent').setForeign(CourseCategoriesParent).setRequestName('parentId')]
 }
 
 export default CourseCategories

@@ -39,6 +39,6 @@ class PostDynamicModelController extends ApiModelController
             $model->attachFile($path, $file, $id);
             $filepaths[] = $path;
         }
-        return response()->json(['data' => $filepaths], Response::HTTP_CREATED);
+        return response()->json(['data' => $filepaths], empty($filepaths) ? Response::HTTP_NO_CONTENT : Response::HTTP_CREATED);
     }
 }

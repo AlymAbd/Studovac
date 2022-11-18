@@ -4,6 +4,7 @@ import { Component } from 'react'
 import { CCol, CRow } from '@coreui/react'
 import withRouter from '@r/components/WithRouter'
 import AuthService from '@r/service/auth'
+import { cookies } from '@r/service/utils'
 
 const auth = AuthService.updateUserInfo
 
@@ -19,9 +20,10 @@ class UserSettingsComponent extends Component {
 
   onSubmitCallback = (response) => {
     response = response.data
+    console.log(response.path_to_photo)
     auth('night_mode', response['settings__dark_mode'])
     auth('photo', response['path_to_photo'])
-    global.$cookie.set('lang', response['settings__lang'])
+    cookies.set('lang', response['settings__lang'], { sameSite: 'lax' })
     window.location.reload()
   }
 

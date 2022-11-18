@@ -63,7 +63,6 @@ class Model {
 
   handleData = (modelState) => {
     let data = {}
-
     Object.keys(modelState).forEach((column) => {
       if (column.includes('__')) {
         let jsonKey = column.split('__')[0]
@@ -415,7 +414,11 @@ class Column {
   }
 
   get options() {
-    return this._options
+    if (this.required) {
+      return [{ label: <i>{global.$t('empty')}</i>, value: '' }].concat(this._options)
+    } else {
+      return this._options
+    }
   }
 
   get required() {

@@ -1,9 +1,11 @@
 import withRouter from '@r/components/WithRouter'
-import AbstractDetailForm from './abstract/DetailFormAbs'
+import FormGenerator from './object_form/FormGenerator'
 import { CButton } from '@coreui/react'
 import { Column } from '../models/_model'
 
-class ObjectDetail extends AbstractDetailForm {
+const t = global.$t
+
+class ObjectDetail extends FormGenerator {
   constructor(props) {
     super(props)
     this.id = this.props.id
@@ -23,22 +25,24 @@ class ObjectDetail extends AbstractDetailForm {
     if (props.hasOwnProperty('onFailSubmit')) {
       this.onSubmitErrorCallback = props.onFailSubmit
     }
-  }
 
-  generateButtons = () => {
-    if (this.props.id) {
-      return (
+    this.buttons = (
+      <CButton color="success" type="submit">
+        {t('Save')}
+      </CButton>
+    )
+    if (this.id) {
+      this.buttons = (
         <CButton color="warning" type="submit">
-          {global.$t('Update')}
-        </CButton>
-      )
-    } else {
-      return (
-        <CButton color="success" type="submit">
-          {global.$t('Create')}
+          {t('Update')}
         </CButton>
       )
     }
+  }
+
+  // button generation
+  generateButtons = () => {
+    return this.buttons
   }
 
   componentDidMount = () => {
@@ -56,13 +60,11 @@ class ObjectDetail extends AbstractDetailForm {
         .then((response) => {
           let data = response.data.data
           this.model.applyValues(data)
-          this.setState({ model: this.model.getColumnValues() })
+          this.setFormValues(this.model.getColumnValues())
         })
         .catch((error) => {
           console.error(error)
         })
-    } else {
-      this.prepareForm()
     }
   }
 }
