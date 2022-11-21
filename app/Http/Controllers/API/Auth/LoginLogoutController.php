@@ -26,6 +26,7 @@ class LoginLogoutController extends Controller
         $user = Auth::user();
         $this->removeTokens();
         $user['token'] = $user->createToken('auth_token')->plainTextToken;
+        $user->settings;
         return response()->json($user);
     }
 

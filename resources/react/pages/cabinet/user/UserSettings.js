@@ -4,9 +4,8 @@ import { Component } from 'react'
 import { CCol, CRow } from '@coreui/react'
 import withRouter from '@r/components/WithRouter'
 import AuthService from '@r/service/auth'
-import { cookies } from '@r/service/utils'
 
-const auth = AuthService.updateUserInfo
+const auth = AuthService.handleUserSettings
 
 class UserSettingsComponent extends Component {
   constructor(props) {
@@ -20,10 +19,7 @@ class UserSettingsComponent extends Component {
 
   onSubmitCallback = (response) => {
     response = response.data
-    console.log(response.path_to_photo)
-    auth('night_mode', response['settings__dark_mode'])
-    auth('photo', response['path_to_photo'])
-    cookies.set('lang', response['settings__lang'], { sameSite: 'lax' })
+    auth({ path_to_photo: response['path_to_photo'], lang: response['settings__lang'], dark_mode: response['settings__dark_mode'] })
     window.location.reload()
   }
 
@@ -32,7 +28,7 @@ class UserSettingsComponent extends Component {
   }
 
   onUploadCallback = (response) => {
-    auth('photo', response.data.data[0])
+    auth({ path_to_photo: response.data.data[0] })
   }
 
   onFailUploadCallback = (response) => {

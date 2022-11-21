@@ -43,6 +43,9 @@ class AuthService {
   }
 
   setCurrentUser(data) {
+    if (data.settings) {
+      this.handleUserSettings({ path_to_photo: data.settings.path_to_photo, ...data.settings.settings })
+    }
     localStorage.setItem(USER_DATA, JSON.stringify(data))
   }
 
@@ -102,6 +105,18 @@ class AuthService {
       email: email,
       phone: phone,
     })
+  }
+
+  handleUserSettings({ path_to_photo, lang, dark_mode }) {
+    if (path_to_photo) {
+      localStorage.setItem(PATH_PHOTO, path_to_photo)
+    }
+    if (dark_mode) {
+      localStorage.setItem(NIGHT_MODE, dark_mode)
+    }
+    if (lang) {
+      cookies.set('lang', lang, { sameSite: 'lax' })
+    }
   }
 }
 

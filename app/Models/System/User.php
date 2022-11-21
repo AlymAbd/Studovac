@@ -140,7 +140,7 @@ class User extends Authenticatable
 
     public function settings()
     {
-        return $this->hasOne(UserSettings::class, 'user_id');
+        return $this->hasOne(UserSetting::class, 'user_id');
     }
 
     public function passwordResets()
