@@ -1,5 +1,5 @@
 import { base, session } from './axios'
-import { ACCESS_TOKEN, USER_DATA } from './config'
+import { ACCESS_TOKEN, USER_DATA, PATH_PHOTO, XSRF_TOKEN, SESSION, NIGHT_MODE } from './config'
 import { cookies } from './utils'
 
 class AuthService {
@@ -52,8 +52,10 @@ class AuthService {
 
   logout() {
     cookies.remove(ACCESS_TOKEN)
-    cookies.removeItem('studovac_session')
-    cookies.removeItem('XSRF-TOKEN')
+    cookies.remove(SESSION)
+    cookies.remove(XSRF_TOKEN)
+    localStorage.removeItem(NIGHT_MODE)
+    localStorage.removeItem(PATH_PHOTO)
     localStorage.removeItem(USER_DATA)
     return true
   }

@@ -8,4 +8,24 @@ const EXPIR_DATE = 'token_expire_at'
 const CSRF_COOKIE_NAME = 'csrftoken'
 const CSRF_HEADER_NAME = 'X-CSRFToken'
 
-export { ACCESS_TOKEN, REFRESH_TOKEN, USER_DATA, EXPIR_DATE, CSRF_COOKIE_NAME, CSRF_HEADER_NAME, APP_NAME, APP_URL }
+const XSRF_TOKEN = 'XSRF-TOKEN'
+const SESSION = 'studovac_session'
+
+// user settings
+const PATH_PHOTO = 'photo'
+const NIGHT_MODE = 'night_mode'
+
+export {
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  USER_DATA,
+  EXPIR_DATE,
+  CSRF_COOKIE_NAME,
+  CSRF_HEADER_NAME,
+  APP_NAME,
+  APP_URL,
+  PATH_PHOTO,
+  NIGHT_MODE,
+  SESSION,
+  XSRF_TOKEN,
+}
