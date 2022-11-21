@@ -9,6 +9,10 @@ class Category extends Model
 {
     protected $table = 'course_categories';
 
+    protected $relations = [
+        'parent_id' => 'parentId'
+    ];
+
     protected $fillable = [
         'name',
         'title',
@@ -17,22 +21,14 @@ class Category extends Model
         'icon'
     ];
 
-
     public function parentId()
     {
         return $this->belongsTo(self::class, 'parent_id', 'id');
     }
 
-    public function relations()
-    {
-        return [
-            'parent_id' => 'parentId'
-        ];
-    }
-
     public function rules($params = null, $object = null): array
     {
-        return [
+        $rules = [
             'create' => [
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string|max:255',
@@ -42,9 +38,12 @@ class Category extends Model
             'update' => [
                 'title' => 'string|max:255',
                 'description' => 'string|max:255',
-                'parent_id' => ['nullable', 'exists:course_categories,id', Rule::notIn([$object->id])],
                 'icon' => 'string|max:63'
             ]
         ];
+        if (isset($object)) {
+            $rules['update']['parent_id'] = ['nullable', 'exists:course_categories,id', Rule::notIn([$object->id])];
+        }
+        return $rules;
     }
 }

@@ -29,7 +29,7 @@ class Model extends ModelParent
 
     public function relations()
     {
-        return [];
+        return $this->relations;
     }
 
     public static function getAccessType(): int|array

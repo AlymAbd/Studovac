@@ -8,7 +8,7 @@ trait ModelApiTrait
     {
         return [
             'update' => ['name' => ['unique:' . $this->getTable(), 'max:64']],
-            'created' => [],
+            'create' => [],
         ];
     }
 
@@ -19,15 +19,14 @@ trait ModelApiTrait
 
     public function updateModifierBeforeValidation(array $query, $object = null): array
     {
-        $relations = $this->getRelationNames();
-        foreach ($relations as $key => $relation) {
-            if (array_key_exists($key, $query) && $rel = $this->{$relation}()) {;
+        $this->relationHandler(function ($key, $relation) use (&$object, &$query) {
+            if (array_key_exists($key, $query) && $rel = $this->{$relation}()) {
                 $rel = $rel->getRelated()->where('name', $query[$key])->first();
                 if ($rel) {
                     $query[$key] = $rel->id;
                 }
             }
-        }
+        });
         return $query;
     }
 
@@ -38,22 +37,34 @@ trait ModelApiTrait
 
     public function createModifierBeforeValidation(array $query): array
     {
+        $this->relationHandler(function ($key, $relation) use (&$query) {
+            if (array_key_exists($key, $query) && $rel = $this->{$relation}()) {
+                $rel = $rel->getRelated()->where('name', $query[$key])->first();
+                if ($rel) {
+                    $query[$key] = $rel->id;
+                }
+            }
+        });
         return $query;
     }
 
     public function afterUpdate($originalData = null, $modifiedData = null, $object = null)
     {
-        $relations = $this->getRelationNames();
-        foreach ($relations as $key => $relation) {
+        $this->relationHandler(function ($key, $relation) use ($modifiedData, &$object) {
             if (array_key_exists($key, $modifiedData)) {;
-                $object->{$key} = $object->{$relation}()->first();
+                $object->{$key} = $object->{$relation};
             }
-        }
+        });
         return $object;
     }
 
-    public function afterSave($originalData = null, $modifiedData = null, $object = null)
+    public function afterCreate($originalData = null, $modifiedData = null, $object = null)
     {
+        $this->relationHandler(function ($key, $relation) use ($modifiedData, &$object) {
+            if (array_key_exists($key, $modifiedData)) {;
+                $object->{$key} = $object->{$relation};
+            }
+        });
         return $object;
     }
 
@@ -77,5 +88,13 @@ trait ModelApiTrait
             return $rules;
         }
         return [];
+    }
+
+    protected function relationHandler(callable $callback): void
+    {
+        $relations = $this->getRelationNames();
+        foreach ($relations as $key => $relation) {
+            $callback($key, $relation);
+        }
     }
 }

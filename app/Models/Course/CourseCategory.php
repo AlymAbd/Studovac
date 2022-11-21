@@ -11,6 +11,9 @@ class CourseCategory extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'course_prices';
+    protected $relations = [
+        'course_id' => 'course'
+    ];
 
     protected $fillable = [
         'name',
