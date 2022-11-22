@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\API\ApiModelController;
+use Illuminate\Database\Eloquent\RelationNotFoundException;
 
 class GetDynamicModelController extends ApiModelController
 {
@@ -20,10 +21,11 @@ class GetDynamicModelController extends ApiModelController
     {
         try {
             $query = $request->all();
-            $modelClass = $this->getModel($folder, $model, $request->all());
-            $model = $modelClass::select('*');
-            $model = $this->modifySelect($model, $query);
-            $model = $this->modifyOrder($model, $query);
+            $model = $this->getModel($folder, $model, $request->all());
+            $eloq = clone $model;
+            $eloq = $eloq::select('*');
+            $eloq = $this->modifySelect($eloq, $query, $model);
+            $eloq = $this->modifyOrder($eloq, $query);
 
             $queryFilters = array_filter($query, function ($key) {
                 return in_array($key, ['where', 'whereOr', 'whereIn']);
@@ -32,26 +34,26 @@ class GetDynamicModelController extends ApiModelController
             foreach ($queryFilters as $key => $value) {
                 switch ($key) {
                     case 'where':
-                        $model = $this->modifyWhere($model, ['where' => $value]);
+                        $eloq = $this->modifyWhere($eloq, ['where' => $value]);
                         break;
                     case 'whereOr':
-                        $model = $this->modifyWhereOr($model, ['whereOr' => $value]);
+                        $eloq = $this->modifyWhereOr($eloq, ['whereOr' => $value]);
                         break;
                     case 'whereIn':
-                        $model = $this->modifyWhereIn($model, ['whereIn' => $value]);
+                        $eloq = $this->modifyWhereIn($eloq, ['whereIn' => $value]);
                         break;
                 }
             }
 
-            if (array_key_exists('limit', $query) && $query['limit'] < $modelClass->getMaxLimit()) {
+            if (array_key_exists('limit', $query) && $query['limit'] < $model->getMaxLimit()) {
                 $this->paginate = $query['limit'];
             }
-            $model = $this->modifyScope($model, $query);
-            $model = $model->paginate($this->paginate);
+            $eloq = $this->modifyScope($eloq, $query);
+            $eloq = $eloq->paginate($this->paginate);
         } catch (\Illuminate\Database\QueryException $e) {
             return abort(400, 'Wrong input data: ' . $e);
         }
-        return $model;
+        return $eloq;
     }
 
     /**
@@ -65,17 +67,19 @@ class GetDynamicModelController extends ApiModelController
         try {
             $query = $request->all();
             $model = $this->getModel($folder, $model, $request->all());
-            $model = $model::where('name', $id);
-            $model = $this->modifySelect($model, $query);
-            $model = $model->firstOrFail();
+            $eloq = clone $model;
+            $eloq = $eloq::where('name', $id);
+            $eloq = $this->modifySelect($eloq, $query, $model);
+            $eloq = $eloq->firstOrFail();
         } catch (\Illuminate\Database\QueryException) {
             return abort(400, 'Wrong input data');
         }
-        return ['data' => $model];
+        return ['data' => $eloq];
     }
 
-    protected function modifySelect(Builder $eloq, array $query): Builder
+    protected function modifySelect(Builder $eloq, array $query, $model): Builder
     {
+        //TODO TRY CATCH RelationNotFoundException
         if ($query['with'] ?? false) {
             return $eloq->with($query['with']);
         }
@@ -92,6 +96,9 @@ class GetDynamicModelController extends ApiModelController
             $eloq = $this->getRelation($eloq, $relation);
             return $eloq;
         } else {
+            $model->relationHandler(function ($key, $relation) use (&$eloq) {
+                $eloq->with([$relation]);
+            });
             return $eloq->select('*');
         }
     }

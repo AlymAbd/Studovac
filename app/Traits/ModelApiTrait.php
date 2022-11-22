@@ -90,7 +90,7 @@ trait ModelApiTrait
         return [];
     }
 
-    protected function relationHandler(callable $callback): void
+    public function relationHandler(callable $callback): void
     {
         $relations = $this->getRelationNames();
         foreach ($relations as $key => $relation) {
