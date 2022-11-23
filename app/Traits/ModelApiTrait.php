@@ -97,4 +97,22 @@ trait ModelApiTrait
             $callback($key, $relation);
         }
     }
+
+    public function getRelationNames($name = null)
+    {
+        $relations = $this->relations();
+        if ($name) {
+            if (array_key_exists($name, $relations)) {
+                $relations = $relations[$name];
+            } else {
+                return null;
+            }
+        }
+        return $relations;
+    }
+
+    public function relations()
+    {
+        return $this->relations;
+    }
 }

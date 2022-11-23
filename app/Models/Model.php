@@ -27,11 +27,6 @@ class Model extends ModelParent
     protected $hidden = ['id'];
     protected $filecol = 'filepath';
 
-    public function relations()
-    {
-        return $this->relations;
-    }
-
     public static function getAccessType(): int|array
     {
         return self::$accessType;
@@ -47,18 +42,5 @@ class Model extends ModelParent
     public function getMaxLimit()
     {
         return self::MAX_LIMIT ?? 20;
-    }
-
-    public function getRelationNames($name = null)
-    {
-        $relations = $this->relations();
-        if ($name) {
-            if (array_key_exists($name, $relations)) {
-                $relations = $relations[$name];
-            } else {
-                return null;
-            }
-        }
-        return $relations;
     }
 }

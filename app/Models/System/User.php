@@ -63,6 +63,11 @@ class User extends Authenticatable
         'deleted_at' => 'datetime',
     ];
 
+    protected $relations = [
+        'settings' => 'settings',
+        'passwordResets' => 'passwordResets'
+    ];
+
     /**
      * If user is admin
      */

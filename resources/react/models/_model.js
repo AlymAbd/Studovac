@@ -1,7 +1,7 @@
 import { session } from '@r/service/axios'
 
 class Model {
-  route = null
+  route = ''
   description = ''
   columns = []
 
@@ -16,10 +16,9 @@ class Model {
   }
 
   getColumn = (name, fromAll = true) => {
-    const colum = this.getColumns(fromAll).filter((row) => {
+    return this.getColumns(fromAll).find((row) => {
       return row.name == name
     })
-    return colum === undefined ? null : colum[0]
   }
 
   getColumnValues = (columns = null, validation = false) => {
@@ -222,6 +221,10 @@ class Model {
 
   get methods() {
     return this.methods
+  }
+
+  get route() {
+    return '/#/cabinet' + this.route
   }
 }
 
@@ -552,12 +555,16 @@ class CDateTime extends Column {
   }
 
   toNormalDate = (value) => {
-    const date = this.serialize(value)
-    const mm = date.getMonth() + 1
-    const dd = date.getDate()
-    const datet = [date.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('.')
-    const time = [date.getHours(), date.getMinutes(), date.getSeconds()].join(':')
-    return datet + ' ' + time
+    if (value) {
+      const date = this.serialize(value)
+      const mm = date.getMonth() + 1
+      const dd = date.getDate()
+      const datet = [date.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('.')
+      const time = [date.getHours(), date.getMinutes(), date.getSeconds()].join(':')
+      return datet + ' ' + time
+    } else {
+      return ' '
+    }
   }
 }
 
@@ -581,10 +588,14 @@ class CDate extends Column {
   }
 
   toNormalDate = (value) => {
-    const date = this.serialize(value)
-    const mm = date.getMonth() + 1
-    const dd = date.getDate()
-    return [date.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('.')
+    if (value) {
+      const date = this.serialize(value)
+      const mm = date.getMonth() + 1
+      const dd = date.getDate()
+      return [date.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('.')
+    } else {
+      return ' '
+    }
   }
 }
 

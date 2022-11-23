@@ -1,7 +1,22 @@
 import { Component } from 'react'
 import { CourseCategories } from '@r/models'
-import ObjectTable from '@r/components/ObjectTable'
 import { CRow } from '@coreui/react'
+import TableGenerator from '../../../components/object_table/TableGenerator'
+import CIcon from '@coreui/icons-react'
+
+class NewTableGenerator extends TableGenerator {
+  templateText = (column, value) => {
+    if (column.name === 'icon') {
+      const cicon = column.options.find((row) => {
+        return row.value === value
+      }).icon
+      if (cicon) {
+        return <CIcon size="xl" icon={cicon} />
+      }
+    }
+    return value
+  }
+}
 
 class CategoriesComponent extends Component {
   constructor(props) {
@@ -29,7 +44,7 @@ class CategoriesComponent extends Component {
   render() {
     return (
       <CRow>
-        <ObjectTable
+        <NewTableGenerator
           id={this.state.id}
           model={CourseCategories}
           onUpload={this.onUploadCallback}

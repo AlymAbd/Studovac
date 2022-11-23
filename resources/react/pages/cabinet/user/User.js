@@ -1,7 +1,7 @@
 import User from '@r/models/Users'
-import ObjectTable from '@r/components/ObjectTable'
 import { Component } from 'react'
 import { CRow } from '@coreui/react'
+import TableGenerator from '../../../components/object_table/TableGenerator'
 
 class UserSettingsComponent extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class UserSettingsComponent extends Component {
   render() {
     return (
       <CRow>
-        <ObjectTable
+        <TableGenerator
           id={this.state.id}
           model={User}
           onUpload={this.onUploadCallback}

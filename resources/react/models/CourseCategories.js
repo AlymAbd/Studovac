@@ -74,4 +74,4 @@ class CourseCategories extends CourseCategoriesParent {
   columns = [...this.columns, CForeign.new('parent_id', 'Parent').setForeign(CourseCategoriesParent).setRequestName('parentId')]
 }
 
-export default CourseCategories
+export { CourseCategories, icons }
