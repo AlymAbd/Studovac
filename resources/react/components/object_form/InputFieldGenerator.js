@@ -1,5 +1,5 @@
 import Component from '../abstract/Component'
-import { Column } from '../../models'
+import { Column } from '../../models/items'
 
 import {
   CFormCheck,

@@ -1,7 +1,7 @@
 import withRouter from '@r/components/WithRouter'
 import FormGenerator from './object_form/FormGenerator'
 import { CButton } from '@coreui/react'
-import { Column } from '../models/_model'
+import { Column } from '../models/items'
 
 const t = global.$t
 

@@ -1,6 +1,6 @@
 import InputFieldGenerator from './InputFieldGenerator'
 import { CForm, CCol, CRow, CButtonGroup, CButton } from '@coreui/react'
-import { Column } from '../../models'
+import { Column } from '../../models/items'
 
 const t = global.$t
 

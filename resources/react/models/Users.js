@@ -1,4 +1,4 @@
-import { Model, CID, CString, CBool, CDateTime } from './_model'
+import { Model, CID, CString, CBool, CDateTime } from './items'
 
 class Users extends Model {
   route = '/system/user'

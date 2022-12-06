@@ -1,4 +1,4 @@
-import { Model, CString, CDate, CDateTime, CJSON, CBool, CForeign, CImage } from './_model'
+import { Model, CString, CDate, CDateTime, CJSON, CBool, CForeign, CImage } from './items'
 import { cookies } from '@r/service/utils'
 
 const t = global.$t

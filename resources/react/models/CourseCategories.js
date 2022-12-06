@@ -25,7 +25,7 @@ import {
   cifCn,
   cifDe,
 } from '@coreui/icons'
-import { Model, CString, CID, CForeign, CDateTime } from './_model'
+import { Model, CString, CID, CForeign, CDateTime } from './items'
 
 const icons = [
   { value: 'cibPython', label: 'Python', icon: cibPython },

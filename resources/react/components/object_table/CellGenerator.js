@@ -1,4 +1,4 @@
-import { Column } from '../../models/_model'
+import { Column } from '../../models/items'
 import Component from '../abstract/Component'
 import { cilMinus, cilCheckAlt } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'

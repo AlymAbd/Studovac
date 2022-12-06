@@ -1,4 +1,6 @@
-import { Model, Column } from './_model'
 import { CourseCategories } from './CourseCategories'
+import User from './Users'
+import UserSettings from './UserSettings'
+import Course from './Course'
 
-export { Model, Column, CourseCategories }
+export { Course, CourseCategories, User, UserSettings }
