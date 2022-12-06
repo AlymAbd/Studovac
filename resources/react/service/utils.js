@@ -33,7 +33,7 @@ const getLanguage = () => {
 }
 
 const setLanguage = (language) => {
-  cookies.set('lang', language)
+  cookies.set('lang', language, { sameSite: 'lax' })
   return language
 }
 
