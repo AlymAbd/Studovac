@@ -56,7 +56,7 @@ const _nav = [
       {
         component: CNavItem,
         name: t('Courses'),
-        to: '/cabinet/courses',
+        to: '/cabinet/course',
         icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
       },
       {
@@ -68,7 +68,7 @@ const _nav = [
       {
         component: CNavItem,
         name: t('Course prices'),
-        to: '/cabinet/course_prices',
+        to: '/cabinet/course/prices',
         icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
       },
       {
